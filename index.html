@@ -131,6 +131,10 @@ svg{display:block}
 .meta{color:var(--muted);font-size:.95rem;margin-top:-8px}
 .seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);border-radius:12px;padding:4px}
 .seg button{border:0;background:transparent;border-radius:9px;padding:9px 6px;font-weight:600;font-size:.88rem;color:var(--muted)}
+.seg.seg3{grid-template-columns:repeat(3,1fr)}
+.seg.seg3 button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 4px;line-height:1.15}
+.seg.seg3 b{font-weight:800;font-size:.9rem}
+.seg.seg3 small{font-size:.76rem;font-weight:600;opacity:.85}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08),0 0 0 1px var(--line)}
 .prog{display:flex;align-items:center;gap:12px}
 .bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
@@ -385,7 +389,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.
 /* ---------- plan y datos fijos ---------- */
 const PLAN={0:'descanso',1:'fuerza',2:'caminar',3:'fuerza',4:'caminar',5:'fuerza',6:'libre'};
 const TIPO_TXT={fuerza:'Fuerza',caminar:'Caminar',libre:'Libre',descanso:'Descanso'};
-const TIPO_DESC={fuerza:'Sesión en casa, completa o exprés',caminar:'30–40 min a paso ligero',libre:'Senderismo, bici, paseo largo…',descanso:'Recuperar también es entrenar'};
+const TIPO_DESC={fuerza:'Sesión en casa: completa, sin material o exprés',caminar:'30–40 min a paso ligero',libre:'Senderismo, bici, paseo largo…',descanso:'Recuperar también es entrenar'};
 const EXS=[
   {id:'flex',n:'Flexiones',t:'8–10 · sin llegar al fallo'},
   {id:'sent',n:'Sentadilla al banco',t:'10–12 · bajar despacio'},
@@ -401,7 +405,18 @@ const EXP=[
   {id:'superman',n:'Superman',t:'10 · aguanta 2 s arriba'},
   {id:'bicho',n:'Bicho muerto',t:'6 por lado · muy despacio'}
 ];
+const EXC=[
+  {id:'flex',n:'Flexiones',t:'8–10 · sin llegar al fallo'},
+  {id:'silla',n:'Sentadilla a una silla',t:'12–15 · 3 s bajando'},
+  {id:'superman',n:'Superman',t:'10 · aguanta 2 s arriba'},
+  {id:'puente',n:'Puente de glúteo',t:'15 · aguanta 2 s arriba'},
+  {id:'plancha',n:'Plancha',t:'20–30 s'},
+  {id:'bird',n:'Bird-dog',t:'8 por lado'}
+];
+const VARS={normal:{lab:'Completa',sub:'con material',corto:'completa'},casa:{lab:'Completa',sub:'sin material',corto:'sin material'},expres:{lab:'Exprés',sub:'15 min',corto:'exprés'}};
 const RUT={
+  casa:{exs:EXC,v:3,rest:60,warm:5,min:25,
+    wl:['1 min de marcha en el sitio','1 min de círculos de brazos, hacia delante y hacia atrás','1 min de círculos de cadera','1 min de sentadillas suaves a la silla','1 min más de marcha']},
   normal:{exs:EXS,v:3,rest:60,warm:5,min:25,
     wl:['1 min de marcha en el sitio','1 min de círculos de brazos, hacia delante y hacia atrás','1 min de círculos de cadera','1 min de sentadillas suaves al banco','1 min más de marcha']},
   expres:{exs:EXP,v:2,rest:45,warm:3,min:15,
@@ -467,7 +482,7 @@ const IC={
 };
 
 /* ---------- estado ---------- */
-const VERSION='1.0';
+const VERSION='1.1';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -508,7 +523,7 @@ function detail(d){
 }
 function title(d,tipo){
   if(d&&d.tipo==='libre'&&d.actividad)return d.actividad;
-  if(d&&d.tipo==='fuerza')return 'Fuerza'+(d.var==='expres'?' exprés':'');
+  if(d&&d.tipo==='fuerza')return 'Fuerza'+(d.var&&d.var!=='normal'&&VARS[d.var]?' '+VARS[d.var].corto:'');
   return TIPO_TXT[tipo];
 }
 function curStreak(){
@@ -595,9 +610,9 @@ function renderDia(){
   let h=`<div class="dh"><span class="eyebrow">${eb}</span><button type="button" class="link" data-sheet="tipo">Cambiar actividad</button></div>`;
   if(d.tipo==='fuerza'){
     const r=R(d),T=tot(d),n=nSets(d),vk=d.var||'normal';
-    h+=`<h2 class="dt">Fuerza <span>· ${vk==='expres'?'exprés':'completa'}</span></h2>
+    h+=`<h2 class="dt">Fuerza <span>· ${(VARS[vk]||VARS.normal).corto}</span></h2>
     <div class="meta">≈${r.min} min · ${r.exs.length} ejercicios · ${r.v} vueltas${vk==='expres'?' · sin material':''}</div>
-    <div class="seg" role="group" aria-label="Tipo de sesión"><button type="button" data-var="normal" aria-pressed="${vk==='normal'}">Completa · 25 min</button><button type="button" data-var="expres" aria-pressed="${vk==='expres'}">Exprés sin material · 15 min</button></div>
+    <div class="seg seg3" role="group" aria-label="Tipo de sesión">${['normal','casa','expres'].map(k=>`<button type="button" data-var="${k}" aria-pressed="${vk===k}"><b>${VARS[k].lab}</b><small>${VARS[k].sub}</small></button>`).join('')}</div>
     <div class="prog"><div class="bar"><i style="width:${n/T*100}%"></i></div><span class="tab">${n}/${T} series</span></div>
     ${n>=T?`<div class="done-banner">${IC.check}Entreno completado</div>`:`<button type="button" class="cta" data-guia>${IC.play}${n>0?'Seguir entreno':'Empezar entreno guiado'}</button>`}
     <button type="button" class="link center" data-exopen>${exOpen?'Ocultar ejercicios':'Ver ejercicios y marcar series a mano'}</button>`;
@@ -775,6 +790,8 @@ function saveLocal(){
 }
 function queue(){
   cur.fecha=sel; cur.ts=Date.now();
+  if(cur.tipo==='fuerza'){cur.series=nSets(cur);cur.detalle=(VARS[cur.var||'normal']||VARS.normal).lab+' '+(VARS[cur.var||'normal']||VARS.normal).sub}
+  else{cur.series='';cur.detalle=cur.tipo==='libre'?(cur.actividad||''):''}
   days[sel]=JSON.parse(JSON.stringify(cur));
   pend.add(sel); saveLocal();
   setEstado(sync.url?'Guardado · sincronizando…':'Guardado en el móvil');
