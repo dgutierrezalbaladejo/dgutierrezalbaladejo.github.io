@@ -1,0 +1,24 @@
+{
+  "name": "Mi entreno",
+  "short_name": "Mi entreno",
+  "description": "Tu plan diario de entreno en casa: fuerza, caminar, báscula y racha.",
+  "lang": "es",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#08090B",
+  "theme_color": "#08090B",
+  "categories": ["health", "fitness"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Empezar entreno", "short_name": "Entreno", "url": "./?accion=entreno", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Apuntar pasos", "short_name": "Pasos", "url": "./?accion=pasos", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Báscula", "short_name": "Báscula", "url": "./?accion=bascula", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}
