@@ -21,14 +21,15 @@
 /* Mi entreno 2.0
    Layout: una columna para usar con el pulgar. Arriba solo información (saludo, semana, anillos, tarjeta del día);
    abajo, al alcance del pulgar, la acción principal del día y la barra de pestañas con un botón central "+".
-   Paleta: grafito suave (no negro puro) en oscuro y gris muy claro en claro; un solo color de acción (menta)
-   y tres colores de anillo apagados un punto para no cansar: coral (pasos), menta (ejercicio), azul cielo (plan). */
+   Paleta: grafito suave (no negro puro) en oscuro y gris muy claro en claro; el color de acción es el degradado
+   coral→ámbar del logo, el verde solo marca lo hecho, y tres colores de anillo: coral (pasos), verde (ejercicio), cielo (plan). */
 :root{
   --bg:#F4F5F7; --surface:#FFFFFF; --surface2:#EEF0F3; --ink:#14171C; --muted:#5D6572; --line:#E2E5EA;
-  --accent:#0F8F5E; --cta:#14A06A; --cta-ink:#FFFFFF; --soft:#E3F4EC;
-  --ok:#14A06A; --ok-soft:#E1F3EA; --on-ok:#FFFFFF; --part:#B87400; --part-soft:#FDF0D8; --bad:#C8413B;
-  --r1:#E5486A; --r2:#14A06A; --r3:#1B7FD1; --flame:#E07A00; --flame2:#F5A524; --gold:#C99200;
-  --c-fuerza:#D9475F; --c-caminar:#0F8F5E; --c-libre:#1B7FD1;
+  --accent:#C9461F; --cta:#EE5043; --cta-ink:#FFFFFF; --soft:#FDEBE4;
+  --cta-bg:linear-gradient(135deg,#E8365F 0%,#F2603F 55%,#FF9A3D 100%);
+  --ok:#1E9E4A; --ok-soft:#E2F4E7; --on-ok:#FFFFFF; --part:#B87400; --part-soft:#FDF0D8; --bad:#C8413B;
+  --r1:#E5486A; --r2:#1E9E4A; --r3:#1B7FD1; --flame:#E07A00; --flame2:#F5A524; --gold:#C99200;
+  --c-fuerza:#D9475F; --c-caminar:#1E9E4A; --c-libre:#1B7FD1;
   --logo-a:#FF3B6B; --logo-b:#FF8A2B; --scrim:rgba(10,12,16,.5);
   --shadow:0 1px 2px rgba(20,23,28,.05),0 4px 16px rgba(20,23,28,.05);
   --rs:10px; --rm:16px; --rl:22px; --pill:999px;
@@ -38,17 +39,19 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#101215; --surface:#181B20; --surface2:#21252C; --ink:#ECEFF3; --muted:#98A1AE; --line:#2A2F37;
-  --accent:#5FD8A4; --cta:#4FCF98; --cta-ink:#08140E; --soft:rgba(95,216,164,.13);
-  --ok:#5FD8A4; --ok-soft:rgba(95,216,164,.14); --on-ok:#08140E; --part:#F2BE55; --part-soft:rgba(242,190,85,.14); --bad:#F07A73;
-  --r1:#FF7A8E; --r2:#5FD8A4; --r3:#6BB8FF; --flame:#FF9F2E; --flame2:#FFC857; --gold:#F2C94C;
-  --c-fuerza:#FF7A8E; --c-caminar:#5FD8A4; --c-libre:#6BB8FF;
+  --accent:#FF9A5C; --cta:#F2584A; --cta-ink:#FFFFFF; --soft:rgba(255,138,76,.14);
+  --cta-bg:linear-gradient(135deg,#E8365F 0%,#F2603F 55%,#FF9A3D 100%);
+  --ok:#3DD16F; --ok-soft:rgba(61,209,111,.14); --on-ok:#06140A; --part:#F2BE55; --part-soft:rgba(242,190,85,.14); --bad:#F07A73;
+  --r1:#FF7A8E; --r2:#3DD16F; --r3:#6BB8FF; --flame:#FF9F2E; --flame2:#FFC857; --gold:#F2C94C;
+  --c-fuerza:#FF7A8E; --c-caminar:#3DD16F; --c-libre:#6BB8FF;
   --scrim:rgba(0,0,0,.62); --shadow:none; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#101215; --surface:#181B20; --surface2:#21252C; --ink:#ECEFF3; --muted:#98A1AE; --line:#2A2F37;
-  --accent:#5FD8A4; --cta:#4FCF98; --cta-ink:#08140E; --soft:rgba(95,216,164,.13);
-  --ok:#5FD8A4; --ok-soft:rgba(95,216,164,.14); --on-ok:#08140E; --part:#F2BE55; --part-soft:rgba(242,190,85,.14); --bad:#F07A73;
-  --r1:#FF7A8E; --r2:#5FD8A4; --r3:#6BB8FF; --flame:#FF9F2E; --flame2:#FFC857; --gold:#F2C94C;
-  --c-fuerza:#FF7A8E; --c-caminar:#5FD8A4; --c-libre:#6BB8FF;
+  --accent:#FF9A5C; --cta:#F2584A; --cta-ink:#FFFFFF; --soft:rgba(255,138,76,.14);
+  --cta-bg:linear-gradient(135deg,#E8365F 0%,#F2603F 55%,#FF9A3D 100%);
+  --ok:#3DD16F; --ok-soft:rgba(61,209,111,.14); --on-ok:#06140A; --part:#F2BE55; --part-soft:rgba(242,190,85,.14); --bad:#F07A73;
+  --r1:#FF7A8E; --r2:#3DD16F; --r3:#6BB8FF; --flame:#FF9F2E; --flame2:#FFC857; --gold:#F2C94C;
+  --c-fuerza:#FF7A8E; --c-caminar:#3DD16F; --c-libre:#6BB8FF;
   --scrim:rgba(0,0,0,.62); --shadow:none; color-scheme:dark}
 
 /* base */
@@ -135,7 +138,7 @@ h2{font-family:var(--body);font-size:.78rem;margin:0;text-transform:uppercase;le
 #dia{border:0;color:#fff;--ink:#FFFFFF;--muted:rgba(255,255,255,.86);--line:rgba(255,255,255,.3);--bg:rgba(0,0,0,.18);--surface:rgba(255,255,255,.17);--surface2:rgba(255,255,255,.17);
   --soft:rgba(255,255,255,.24);--accent:#FFFFFF;--ok:#FFFFFF;--ok-soft:rgba(255,255,255,.22);--on-ok:#14171C;--shadow:none;position:relative;overflow:hidden}
 #dia.h-fuerza{background:linear-gradient(150deg,#C93A58 0%,#D9584A 55%,#DE7440 100%)}
-#dia.h-caminar{background:linear-gradient(150deg,#0B7A57 0%,#0D7F6B 55%,#0F7480 100%)}
+#dia.h-caminar{background:linear-gradient(150deg,#1B7A3E 0%,#228A47 55%,#2F9A50 100%)}
 #dia.h-libre{background:linear-gradient(150deg,#1B5FBF 0%,#1570B4 55%,#0F7E9E 100%)}
 #dia.h-descanso{background:linear-gradient(150deg,#3A4150 0%,#2B303A 100%)}
 .dh{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -208,7 +211,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .toggle[aria-pressed="true"] .sw::after{transform:translateX(18px)}
 
 /* botones */
-.cta{border:0;background:var(--cta);color:var(--cta-ink);border-radius:var(--pill);padding:0 20px;font-weight:800;font-size:1.08rem;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;width:100%}
+.cta{border:0;background:var(--cta-bg);color:var(--cta-ink);border-radius:var(--pill);padding:0 20px;font-weight:800;font-size:1.08rem;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;width:100%}
 .cta svg{width:20px;height:20px}
 .cta.done{background:var(--ok-soft);color:var(--ok)}
 .ghost{border:1px solid var(--line);background:var(--surface);border-radius:var(--pill);padding:0 18px;font-weight:700;min-height:48px}
@@ -236,7 +239,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .tabbar button svg{width:24px;height:24px}
 .tabbar button[aria-current="page"]{color:var(--ink)}
 .tabbar button[aria-current="page"] svg{color:var(--accent)}
-.tabbar .plus{width:56px;height:56px;border-radius:50%;background:var(--cta);color:var(--cta-ink);display:grid;place-items:center;margin:0 auto;box-shadow:0 6px 18px color-mix(in srgb,var(--cta) 35%,transparent)}
+.tabbar .plus{width:56px;height:56px;border-radius:50%;background:var(--cta-bg);color:var(--cta-ink);display:grid;place-items:center;margin:0 auto;box-shadow:0 6px 18px color-mix(in srgb,var(--cta) 35%,transparent)}
 .tabbar .plus svg{width:28px;height:28px}
 
 /* Progreso */
@@ -351,8 +354,9 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .tile{display:flex;flex-direction:column;align-items:flex-start;gap:8px;border:1px solid var(--line);background:var(--surface2);border-radius:var(--rm);padding:14px;text-align:left;min-height:96px}
 .tile svg{width:28px;height:28px}
 .tile b{font-size:1rem}.tile small{color:var(--muted);font-weight:600;font-size:.82rem;margin-top:-6px}
-.tile.main{grid-column:1/-1;background:var(--cta);color:var(--cta-ink);border-color:transparent;flex-direction:row;align-items:center;min-height:64px}
-.tile.main small{color:inherit;opacity:.85;margin:0}
+.tile.main{grid-column:1/-1;background:var(--cta-bg);color:var(--cta-ink);border-color:transparent;flex-direction:row;align-items:center;gap:14px;min-height:68px}
+.tile.main>span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile.main small{color:inherit;opacity:.88;margin:0}
 .opts{display:flex;flex-direction:column;gap:8px}
 .opt{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--rm);padding:12px;text-align:left;min-height:60px}
 .opt[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
@@ -407,7 +411,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 
 <div class="wrap">
   <header class="appbar" id="appbar">
-    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs>    <linearGradient id="lgb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#262B33"/><stop offset="1" stop-color="#121418"/></linearGradient>    <linearGradient id="lgs" x1="6" y1="28" x2="30" y2="8" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5FD8A4"/><stop offset="1" stop-color="#6BB8FF"/></linearGradient>    <radialGradient id="lgh" cx=".3" cy="0" r="1"><stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>  </defs><rect width="40" height="40" rx="11" fill="url(#lgb)"/><rect width="40" height="40" rx="11" fill="url(#lgh)"/><rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="none" stroke="#fff" stroke-opacity=".07"/><g transform="translate(20 20) scale(1.12) translate(-18.8 -17.35)">    <path d="M7.5 25.5H12.5L16 18.5L20.5 27L26.6 13.6" fill="none" stroke="url(#lgs)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>    <circle cx="28.9" cy="8.9" r="5.4" fill="#FF7A8E" opacity=".2"/>    <circle cx="28.9" cy="8.9" r="3.3" fill="#FF7A8E"/>  </g></svg>
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lgg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#E8365F"/><stop offset="1" stop-color="#FFAE3D"/></linearGradient><radialGradient id="lgh" cx=".2" cy="0" r="1.05"><stop offset="0" stop-color="#fff" stop-opacity=".24"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></radialGradient><filter id="lgf" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="1.1" stdDeviation=".9" flood-color="#7A1230" flood-opacity=".35"/></filter></defs><rect width="40" height="40" rx="11" fill="url(#lgg)"/><rect width="40" height="40" rx="11" fill="url(#lgh)"/><g transform="translate(20 20) scale(1) translate(-21.3 -19.4)"><g filter="url(#lgf)"><path d="M8 29h5l4-7 5 4 9-13" fill="none" stroke="#fff" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="31" cy="13" r="3.9" fill="#fff"/></g></g></svg>
     <div class="brand">Mi entreno</div>
     <button type="button" class="racha zero" id="racha" data-tab="logros" aria-label="Ver tu racha"></button>
     <button type="button" class="iconbtn" data-sheet="ajustes" aria-label="Ajustes" id="btn-ajustes"></button>
@@ -575,7 +579,7 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.1';
+const VERSION='2.2';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
