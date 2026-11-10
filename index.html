@@ -482,7 +482,7 @@ const IC={
 };
 
 /* ---------- estado ---------- */
-const VERSION='1.1';
+const VERSION='1.2';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -496,12 +496,12 @@ function nSets(d){let n=0;R(d).exs.forEach(e=>(d.sets&&d.sets[e.id]||[]).forEach
 function planObj(d){return d.tipo==='fuerza'?R(d).min:d.tipo==='caminar'?30:d.tipo==='libre'?20:0}
 function status(d){
   if(!d)return'none';
-  if(d.tipo==='descanso')return'rest';
+  if(d.tipo==='descanso')return'done'; // descansar también cuenta como día cumplido
   if(d.tipo==='fuerza'){const n=nSets(d);return n===0?'none':n>=tot(d)?'done':'part'}
   const m=num(d.min), obj=planObj(d);
   return m>=obj?'done':m>0?'part':'none';
 }
-const stOf=k=>days[k]?status(days[k]):(PLAN[parse(k).getDay()]==='descanso'?'rest':'none');
+const stOf=k=>days[k]?status(days[k]):(PLAN[parse(k).getDay()]==='descanso'?'done':'none');
 function exMin(d){
   const m=num((d.reloj||{}).dur)||num(d.min); if(m)return m;
   return d.tipo==='fuerza'?Math.round(nSets(d)/tot(d)*R(d).min):0;
@@ -635,7 +635,7 @@ function renderDia(){
     <div class="chips">${[20,30,40,60].map(m=>`<button type="button" data-quick="${m}" aria-pressed="${num(d.min)===m}">${m} min</button>`).join('')}</div>
     <p class="tip">En el reloj: ${lib?'el modo de lo que hagas (Senderismo, Bici…)':'«Caminar al aire libre»'}. Espera a que conecte el GPS antes de empezar y luego pasa los datos en <b>Reloj</b>.</p>`;
   } else {
-    h+=`<h2 class="dt">Descanso</h2><div class="meta">Recuperar también es entrenar. Tu racha no se rompe.</div>
+    h+=`<h2 class="dt">Descanso</h2><div class="meta">Recuperar también es entrenar. Hoy cuenta como día cumplido.</div>
     <p class="tip">Si te apetece, un paseo suave. Si sales a andar, apunta los pasos en <b>Pasos</b>.</p>`;
   }
   $('#dia').className='card hero h-'+d.tipo;
@@ -705,7 +705,7 @@ function renderProgress(){
   for(let i=0;i<35;i++){const k=addDays(start,i),st=k>TODAY?'fut':stOf(k);cal+=`<button type="button" class="c ${st}${k===TODAY?' today':''}" data-go="${k}" aria-label="${fdate(k)}" style="border-width:${k===TODAY?2:1.5}px">${parse(k).getDate()}</button>`}
   $('#c-racha').innerHTML=`<div class="streak"><div class="flame">${IC.flame}</div><div><div class="sn tab">${cs}</div><div class="sl">${cs===1?'día seguido':'días seguidos'}</div></div><div class="sb"><span class="tab">${bs}</span>mejor racha</div></div>
   <p class="smsg">${msg}</p><div class="cal">${cal}</div>
-  <div class="legend"><span><i style="background:var(--ok)"></i>Hecho</span><span><i style="background:var(--part-soft);box-shadow:inset 0 0 0 1px var(--part)"></i>A medias</span><span><i style="border:1.5px dashed var(--muted)"></i>Descanso</span></div>`;
+  <div class="legend"><span><i style="background:var(--ok)"></i>Hecho</span><span><i style="background:var(--part-soft);box-shadow:inset 0 0 0 1px var(--part)"></i>A medias</span></div>`;
   // semana
   const mon=monOf(TODAY); let act=0,mins=0,km=0,ps=[],bars=[];
   for(let i=0;i<7;i++){
@@ -717,7 +717,7 @@ function renderProgress(){
   }
   const mx=Math.max(40,...bars.map(b=>Math.max(b.m,b.o)));
   $('#c-semana').innerHTML=`<h2>Esta semana</h2>
-  <div class="stats"><div class="st"><div class="v tab">${act}/6</div><div class="k">días activos</div></div><div class="st"><div class="v tab">${Math.round(mins)}</div><div class="k">minutos</div></div><div class="st"><div class="v tab">${fn(km)}</div><div class="k">km</div></div><div class="st"><div class="v tab">${ps.length?fmtN(ps.reduce((a,b)=>a+b,0)/ps.length):'—'}</div><div class="k">pasos/día</div></div></div>
+  <div class="stats"><div class="st"><div class="v tab">${act}/7</div><div class="k">días cumplidos</div></div><div class="st"><div class="v tab">${Math.round(mins)}</div><div class="k">minutos</div></div><div class="st"><div class="v tab">${fn(km)}</div><div class="k">km</div></div><div class="st"><div class="v tab">${ps.length?fmtN(ps.reduce((a,b)=>a+b,0)/ps.length):'—'}</div><div class="k">pasos/día</div></div></div>
   <div class="bars">${bars.map(b=>`<button type="button" class="b${b.k===TODAY?' today':''}" data-go="${b.k}" style="border:0;background:transparent;padding:0" aria-label="${fdate(b.k)}: ${Math.round(b.m)} minutos"><span class="m tab">${b.m?Math.round(b.m):''}</span><i class="${b.st}" style="height:${Math.max(4,b.m/mx*82)}px"></i><span class="dl">${DC[parse(b.k).getDay()]}</span></button>`).join('')}</div>`;
   // objetivo
   const wk=Object.keys(days).sort().filter(k=>num(days[k].peso)>0);
@@ -767,7 +767,7 @@ function renderHist(){
   const ks=Object.keys(days).sort(), first=ks.length&&ks[0]<addDays(TODAY,-13)?ks[0]:addDays(TODAY,-13);
   const thisMon=monOf(TODAY); let h='',wk=null,rows='',cnt=0;
   const close=()=>{if(!wk)return;const lab=wk===thisMon?'Esta semana':wk===addDays(thisMon,-7)?'Semana pasada':(()=>{const a=parse(wk),b=parse(addDays(wk,6));return a.getDate()+' '+MC[a.getMonth()]+' – '+b.getDate()+' '+MC[b.getMonth()]})();
-    h+=`<section class="card"><div class="hw-h"><h2>${lab}</h2><span class="rel">${cnt} ${cnt===1?'día activo':'días activos'}</span></div><div class="hist">${rows}</div></section>`};
+    h+=`<section class="card"><div class="hw-h"><h2>${lab}</h2><span class="rel">${cnt} ${cnt===1?'día cumplido':'días cumplidos'}</span></div><div class="hist">${rows}</div></section>`};
   for(let k=TODAY;k>=first;k=addDays(k,-1)){
     const m=monOf(k); if(m!==wk){close();wk=m;rows='';cnt=0}
     const x=days[k], st=stOf(k), tipo=x?x.tipo:PLAN[parse(k).getDay()];
