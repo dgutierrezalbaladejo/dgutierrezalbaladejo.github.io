@@ -407,7 +407,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 
 <div class="wrap">
   <header class="appbar" id="appbar">
-    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--logo-a)"/><stop offset="1" stop-color="var(--logo-b)"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#lg)"/><path d="M8 29h5l4-7 5 4 9-13" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="31" cy="13" r="3.6" fill="#fff"/></svg>
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs>    <linearGradient id="lgb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#262B33"/><stop offset="1" stop-color="#121418"/></linearGradient>    <linearGradient id="lgs" x1="6" y1="28" x2="30" y2="8" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5FD8A4"/><stop offset="1" stop-color="#6BB8FF"/></linearGradient>    <radialGradient id="lgh" cx=".3" cy="0" r="1"><stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>  </defs><rect width="40" height="40" rx="11" fill="url(#lgb)"/><rect width="40" height="40" rx="11" fill="url(#lgh)"/><rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="none" stroke="#fff" stroke-opacity=".07"/><g transform="translate(20 20) scale(1.12) translate(-18.8 -17.35)">    <path d="M7.5 25.5H12.5L16 18.5L20.5 27L26.6 13.6" fill="none" stroke="url(#lgs)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>    <circle cx="28.9" cy="8.9" r="5.4" fill="#FF7A8E" opacity=".2"/>    <circle cx="28.9" cy="8.9" r="3.3" fill="#FF7A8E"/>  </g></svg>
     <div class="brand">Mi entreno</div>
     <button type="button" class="racha zero" id="racha" data-tab="logros" aria-label="Ver tu racha"></button>
     <button type="button" class="iconbtn" data-sheet="ajustes" aria-label="Ajustes" id="btn-ajustes"></button>
@@ -575,7 +575,7 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.0';
+const VERSION='2.1';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
