@@ -143,6 +143,8 @@ h2{font-family:var(--body);font-size:.78rem;margin:0;text-transform:uppercase;le
 .dot.fut{opacity:.5}
 .note{font-size:.92rem;background:var(--part-soft);color:var(--ink);border-radius:var(--rm);padding:12px 14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .note.info{background:var(--soft)}
+.note .opts{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#sync-res input{margin-top:6px;font-size:.85rem}
 
 /* anillos */
 .rings-card{flex-direction:row;align-items:center;gap:16px}
@@ -465,6 +467,7 @@ html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation:none!impor
       <button type="button" class="nav" id="next" aria-label="Semana siguiente">›</button>
     </div>
     <div id="aviso" hidden></div>
+    <div id="instalar" hidden></div>
     <div id="viernes" hidden></div>
     <section class="card rings-card" id="anillos" aria-label="Resumen del día"></section>
     <section class="card" id="dia" aria-live="polite"></section>
@@ -626,11 +629,22 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.5.1';
+const VERSION='2.6';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
 let sync=LS.get('me.sync',{url:'',clave:''}), pend=new Set(LS.get('me.pend',[])), ajPend=LS.get('me.ajpend',false);
+// Cuenta (usuario y contraseña) en el servidor de quien te invitó; enlaces ?unirse= y ?entrar=
+let cuenta=LS.get('me.cuenta',null), servidor=LS.get('me.servidor',''), invit=LS.get('me.invitacion',''), cuForm={u:'',p:''}, viaEnlace=false;
+if(!servidor&&cuenta&&cuenta.url)servidor=cuenta.url;
+const b64u=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const ub64=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(escape(atob(s)))};
+const APP_URL=location.origin+location.pathname.replace(/[^/]*$/,'');
+const okURL=u=>/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(u);
+const enlaceInvitacion=(url,c)=>APP_URL+'?unirse='+b64u(url)+'~'+c, enlaceEntrar=url=>APP_URL+'?entrar='+b64u(url);
+// Instalar la app (Android/Chrome: botón; iPhone: instrucciones)
+let instEv=null;
+const esIOS=/iphone|ipad|ipod/i.test(navigator.userAgent), standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
 let syncing=false, syncTimer=null, lastSync=LS.get('me.last',0), syncOk=null;
 let prefs=Object.assign({sonido:true,vibracion:true,anim:true},LS.get('me.prefs',{}));
 const sysReduce=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}})();
@@ -1070,10 +1084,31 @@ function renderSheet(){
     h=`<div class="opts">${[pm!=='gym'&&'fuerza',pm!=='casa'&&'gym','caminar','libre','descanso'].filter(Boolean).map(x=>`<button type="button" class="opt" data-settipo="${x}" aria-pressed="${d.tipo===x}"><span class="tic t-${x}">${IC[x]}</span><span><b>${TIPO_TXT[x]}</b>${x===plan&&!semanal()?' · en tu plan':''}<small>${TIPO_DESC[x]}</small></span></button>`).join('')}</div>`;
   } else if(sheetK==='hola'){
     t='¡Hola!';
-    h=`<p class="tip">Bienvenida o bienvenido a Mi entreno. Cuéntame un poco cómo entrenas; todo se puede cambiar luego en Ajustes.</p>
+    h=`${servidor?'<button type="button" class="ghost" data-sheet="login">Ya tengo cuenta: iniciar sesión</button>':''}<p class="tip">Bienvenida o bienvenido a Mi entreno. Cuéntame un poco cómo entrenas; todo se puede cambiar luego en Ajustes.</p>
     <label class="lab" for="nombre">¿Cómo te llamas?<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label>
     ${planUI()}
     <button type="button" class="cta" data-sheet-close>Empezar</button>`;
+  } else if(sheetK==='registro'){
+    t='Crear tu cuenta';
+    const sug=(gN(nom()).replace(/[^a-z0-9_-]/g,'')||'tunombre').slice(0,20);
+    h=`<p class="tip">Con tu cuenta, lo que apuntas se guarda solo en la nube y puedes entrar desde cualquier móvil.</p>
+    <label class="lab" for="nombre">¿Cómo te llamas?<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label>
+    <label class="lab" for="cu-usuario">Elige un usuario<input id="cu-usuario" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="30" placeholder="por ejemplo: ${esc(sug)}" value="${esc(cuForm.u)}"></label>
+    <span class="rel" style="margin-top:-8px">Letras sin tildes, números, - o _. Es lo que pondrás para entrar.</span>
+    <label class="lab" for="cu-pass">Contraseña<input id="cu-pass" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres" value="${esc(cuForm.p)}"></label>
+    ${planUI()}
+    <button type="button" class="cta" data-cuenta="registro">Crear cuenta y empezar</button>
+    <div class="rel" id="cu-res" aria-live="polite"></div>
+    <button type="button" class="link center" data-sheet="login">Ya tengo cuenta: iniciar sesión</button>`;
+  } else if(sheetK==='login'){
+    t='Iniciar sesión';
+    h=`${servidor?'':'<p class="tip">Para entrar necesitas el enlace de Mi entreno que te mandaron. Ábrelo desde este móvil.</p>'}
+    <label class="lab" for="cu-usuario">Usuario<input id="cu-usuario" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="30" value="${esc(cuForm.u)}"></label>
+    <label class="lab" for="cu-pass">Contraseña<input id="cu-pass" type="password" autocomplete="current-password" value="${esc(cuForm.p)}"></label>
+    <button type="button" class="cta" data-cuenta="login"${servidor?'':' disabled'}>Entrar</button>
+    <div class="rel" id="cu-res" aria-live="polite"></div>
+    <p class="rel" style="margin:0">¿Has olvidado la contraseña? Pídele a quien te invitó que te ponga una nueva.</p>
+    ${invit?'<button type="button" class="link center" data-sheet="registro">No tengo cuenta: crear una</button>':''}`;
   } else if(sheetK==='ajustes'){
     t='Ajustes';
     const wh=lastSync?new Date(lastSync).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):'todavía no';
@@ -1086,13 +1121,21 @@ function renderSheet(){
     <button type="button" class="toggle" data-pref="vibracion" aria-pressed="${prefs.vibracion}"><span>Vibración</span><span class="sw"></span></button>
     <h2>Aspecto</h2>
     <button type="button" class="toggle" data-pref="anim" aria-pressed="${prefs.anim}"><span>Animaciones<small style="display:block;color:var(--muted);font-weight:600;font-size:.82rem">${sysReduce?'Tu móvil tiene las animaciones reducidas; con esto activado, la app las muestra igualmente.':'Anillos, gráficas, series, racha y medallas.'}</small></span><span class="sw"></span></button>
-    <h2>Sincronización con Google Sheets</h2>
-    <p class="tip">${sync.url?`Conectada. Última sincronización: ${wh}.`:'Tus datos se guardan en este móvil. Pega aquí el enlace de tu hoja y la clave para tener copia y que Claude pueda verlos.'}</p>
+    ${puedeInstalar()?`<h2>App</h2>${instEv?'<button type="button" class="ghost" data-instalar>Instalar la app en este móvil</button>':'<p class="tip">En iPhone, con Safari: botón Compartir y luego «Añadir a pantalla de inicio».</p>'}`:''}
+    ${cuenta?`<h2>Tu cuenta</h2>
+    <p class="tip">Has iniciado sesión como <b>${esc(cuenta.usuario)}</b>. Lo que apuntas se guarda solo en tu cuenta. Última sincronización: ${wh}.</p>
+    <button type="button" class="ghost" data-compartir>Enlace para entrar desde otro móvil</button>
+    <button type="button" class="link center" data-salir>Cerrar sesión en este móvil</button>
+    <div class="rel" id="sync-res" aria-live="polite"></div>`:`${!sync.url&&servidor?`<h2>Tu cuenta</h2>
+    <p class="tip">Crea tu cuenta para guardar lo que apuntas en la nube y entrar desde cualquier móvil.</p>
+    <div class="opts">${invit?'<button type="button" class="cta" data-sheet="registro">Crear cuenta</button>':''}<button type="button" class="ghost" data-sheet="login">Iniciar sesión</button></div>`:''}
+    <h2>${!sync.url&&servidor?'Tu propia hoja de Google (avanzado)':'Sincronización con Google Sheets'}</h2>
+    <p class="tip">${sync.url?`Conectada. Última sincronización: ${wh}.`:'Tus datos se guardan en este móvil. Si alguien te ha invitado a Mi entreno, abre su enlace desde aquí para crear tu cuenta. Si tienes tu propia hoja con el código de Mi entreno, pega su enlace y su clave.'}</p>
     <label class="lab" for="sync-url">Enlace de la aplicación web<input id="sync-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(sync.url)}"></label>
     <label class="lab" for="sync-clave">Clave<input id="sync-clave" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(sync.clave)}"></label>
     <button type="button" class="cta" data-conectar>${sync.url?'Guardar y sincronizar ahora':'Conectar y sincronizar'}</button>
-    ${sync.url?'<button type="button" class="link center" data-desconectar>Desconectar este móvil</button>':''}
-    <div class="rel" id="sync-res" aria-live="polite"></div>
+    ${sync.url?'<button type="button" class="ghost" data-invitar>Invitar a alguien</button><p class="rel" style="margin:0">Crea un enlace para que otra persona tenga su propia cuenta. Sus datos irán a una hoja suya en tu Google Drive, separada de la tuya.</p><button type="button" class="link center" data-desconectar>Desconectar este móvil</button>':''}
+    <div class="rel" id="sync-res" aria-live="polite"></div>`}
     <h2>Copia de seguridad</h2>
     <div class="opts"><button type="button" class="ghost" data-exportar>Descargar copia (.json)</button><label class="ghost file-btn" for="importar">Importar una copia<input type="file" id="importar" accept="application/json,.json" hidden></label></div>
     <label class="lab" for="obj-pasos">Objetivo diario de pasos<input id="obj-pasos" inputmode="numeric" value="${esc(ajustes.pasosObj)}"></label>
@@ -1100,6 +1143,53 @@ function renderSheet(){
   }
   $('#sheet-t').textContent=t; $('#sheet-c').innerHTML=h;
 }
+
+/* ---------- cuentas ---------- */
+const ERR_CU={invitacion:'La invitación no es válida. Pide un enlace nuevo.',usuario:'El usuario tiene que tener de 3 a 30 letras sin tildes o números, sin espacios.',
+  pass:'La contraseña tiene que tener al menos 6 caracteres.',existe:'Ese usuario ya existe. Elige otro o inicia sesión.',lleno:'No se pueden crear más cuentas. Avisa a quien te invitó.',
+  login:'Usuario o contraseña incorrectos.',bloqueado:'Demasiados intentos. Espera 15 minutos y vuelve a probar.',accion:'Quien te invitó tiene que actualizar su código de Google.',
+  clave:'Quien te invitó tiene que actualizar su código de Google.',red:'No hay conexión. Prueba otra vez en un momento.'};
+async function cuentaAccion(tipo){
+  const out=$('#cu-res'), u=String(cuForm.u).trim().toLowerCase(), pw=String(cuForm.p);
+  if(!servidor){out.textContent='Falta el enlace de invitación: ábrelo desde este móvil.';return}
+  if(tipo==='registro'&&!nom()){out.textContent='Escribe tu nombre.';return}
+  if(!/^[a-z0-9_-]{3,30}$/.test(u)){out.textContent=tipo==='login'?ERR_CU.login:ERR_CU.usuario;return}
+  if(pw.length<6){out.textContent=tipo==='login'?ERR_CU.login:ERR_CU.pass;return}
+  out.textContent=tipo==='registro'?'Creando tu cuenta…':'Entrando…';
+  let j;
+  try{j=await api(tipo==='registro'?{accion:'registro',invitacion:invit,usuario:u,pass:pw,nombre:nom()}:{accion:'login',usuario:u,pass:pw},servidor)}
+  catch(e){out.textContent=ERR_CU[e.message]||'No se ha podido. Prueba otra vez.';return}
+  if(!j.token){out.textContent=ERR_CU.accion;return}
+  cuenta={url:servidor,usuario:j.usuario,token:j.token}; LS.set('me.cuenta',cuenta); cuForm={u:'',p:''};
+  sync={url:'',clave:''}; LS.set('me.sync',sync);
+  if(tipo==='login'){ajPend=false; if(j.nombre)ajustes.nombre=j.nombre} else ajPend=true;
+  Object.keys(days).forEach(k=>pend.add(k)); saveLocal();
+  closeSheet();
+  toast(IC.check,tipo==='registro'?'¡Cuenta creada!':'¡Hola, '+(j.nombre||j.usuario)+'!',tipo==='registro'?'Todo lo que apuntes se guarda en tu cuenta.':'Estoy cargando tus datos.');
+  await doSync(); if(!days[sel])cur=getDay(sel); renderAll();
+}
+function salir(){cuenta=null;LS.set('me.cuenta',null);syncOk=null;renderSheet();renderSyncDot();setEstado('Sesión cerrada. Tus datos siguen en este móvil.')}
+async function compartir(url,txt){
+  const out=$('#sync-res'), box=m=>{out.innerHTML=m+'<input readonly aria-label="Enlace" value="'+esc(url)+'">';const i=out.querySelector('input');i.addEventListener('focus',()=>i.select())};
+  if(navigator.share){try{await navigator.share({title:'Mi entreno',text:txt,url});out.textContent='¡Enlace enviado!';return}catch(e){if(e&&e.name==='AbortError'){out.textContent='';return}}}
+  try{await navigator.clipboard.writeText(url);box('Enlace copiado. Pégalo en WhatsApp o donde quieras:')}catch(e){box('Copia este enlace:')}
+}
+async function invitar(){
+  const out=$('#sync-res'); out.textContent='Creando el enlace…';
+  let j; try{j=await api({accion:'invitacion',clave:sync.clave},sync.url)}catch(e){j=null}
+  if(!j||!j.codigo){out.textContent='Para invitar, primero actualiza tu código de Google a la versión con cuentas.';return}
+  compartir(enlaceInvitacion(sync.url,j.codigo),'Te invito a Mi entreno. Abre el enlace para crear tu cuenta:');
+}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEv=e;renderInstall()});
+window.addEventListener('appinstalled',()=>{instEv=null;renderInstall()});
+const puedeInstalar=()=>!standalone()&&(!!instEv||esIOS);
+function renderInstall(){
+  const el=$('#instalar'); if(!el)return;
+  let off=false; try{off=!!LS.get('me.noinst',false)}catch(e){}
+  const show=puedeInstalar()&&!off&&sel===TODAY; el.hidden=!show; if(!show)return;
+  el.innerHTML=`<div class="note info"><span><b>Instala Mi entreno en tu móvil.</b> ${instEv?'Se abre como una app y funciona sin conexión.':'En iPhone, con Safari: pulsa el botón Compartir y luego «Añadir a pantalla de inicio».'}</span><div class="opts">${instEv?'<button type="button" class="ghost sm" data-instalar>Instalar</button>':''}<button type="button" class="link" data-noinst>Ahora no</button></div></div>`;
+}
+async function instalar(){if(!instEv)return;instEv.prompt();try{await instEv.userChoice}catch(e){}instEv=null;renderInstall();if(sheetK)reSheet()}
 
 /* ---------- temporizador de descanso (fuera del modo guiado) ---------- */
 let restEnd=0,restTm=null;
@@ -1333,7 +1423,7 @@ function renderHist(){
 
 /* ---------- pintar ---------- */
 function setEstado(t){$('#estado').textContent=t}
-function renderTop(anim){SI=streakInfo();renderHead();renderRings(anim);renderQuick();racha();renderAction()}
+function renderTop(anim){SI=streakInfo();renderHead();renderRings(anim);renderQuick();racha();renderAction();renderInstall()}
 function renderAll(anim){renderTop(anim);renderDia();renderProgress();renderLogros();renderHist();animNext=false}
 function renderTabs(){
   const T=[['hoy','Hoy',IC.home],['progreso','Progreso',IC.chart],['+','',''],['logros','Logros',IC.trophy],['historial','Historial',IC.hist]];
@@ -1352,14 +1442,14 @@ function queue(){
   else{cur.series='';cur.detalle=cur.tipo==='libre'?(cur.actividad||''):''}
   days[sel]=JSON.parse(JSON.stringify(cur));
   pend.add(sel); saveLocal();
-  setEstado(sync.url?'Guardado · sincronizando…':'Guardado en el móvil');
+  setEstado(sync.url||cuenta?'Guardado · sincronizando…':'Guardado en el móvil');
   clearTimeout(syncTimer); syncTimer=setTimeout(doSync,1500);
   renderTop(); renderProgress(); renderLogros(); renderHist(); checkMedals();
 }
 function flush(){clearTimeout(syncTimer); if(pend.size||ajPend)doSync()}
 function saveAjustes(){ajPend=true; saveLocal(); clearTimeout(syncTimer); syncTimer=setTimeout(doSync,1500)}
-async function api(body){
-  const r=await fetch(sync.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),cache:'no-store',redirect:'follow'});
+async function api(body,url){
+  let r; try{r=await fetch(url||(cuenta?cuenta.url:sync.url),{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),cache:'no-store',redirect:'follow'})}catch(e){throw new Error('red')}
   if(!r.ok)throw new Error('red');
   let j; try{j=await r.json()}catch(e){throw new Error('respuesta')}
   if(!j||!j.ok)throw new Error((j&&j.error)||'error');
@@ -1383,14 +1473,14 @@ function merge(j){
   renderTop(); renderProgress(); renderLogros(); renderHist(); checkMedals();
 }
 async function doSync(){
-  if(!sync.url||!sync.clave||syncing)return syncOk;
+  if(!(cuenta||(sync.url&&sync.clave))||syncing)return syncOk;
   if(!navigator.onLine){setEstado('Sin conexión. Se sincronizará cuando vuelva.');return false}
   syncing=true;
   const sent=[...pend], dias={};
   sent.forEach(k=>{if(days[k])dias[k]=days[k]});
   const sentAj=ajPend, ajP=()=>Object.assign({pasosObj:ajustes.pasosObj},ajustes.nombre!==undefined?{nombre:ajustes.nombre}:{},ajustes.perfil?{perfil:JSON.stringify(ajustes.perfil)}:{}), ajS=sentAj?JSON.stringify(ajP()):'';
   try{
-    const res=await api({clave:sync.clave,dias,ajustes:sentAj?JSON.parse(ajS):undefined});
+    const res=await api(Object.assign(cuenta?{accion:'sync',token:cuenta.token}:{clave:sync.clave},{dias,ajustes:sentAj?JSON.parse(ajS):undefined}));
     sent.forEach(k=>{if(!days[k]||!dias[k]||days[k].ts===dias[k].ts)pend.delete(k)});
     if(sentAj&&JSON.stringify(ajP())===ajS)ajPend=false;
     merge(res);
@@ -1398,7 +1488,7 @@ async function doSync(){
     syncOk=true; setEstado('Sincronizado');
   }catch(e){
     syncOk=false;
-    setEstado(e.message==='clave'?'La clave de sincronización no es correcta. Revísala en Ajustes.':'No se ha podido sincronizar. Lo reintentaré más tarde.');
+    setEstado(e.message==='sesion'?'Tu sesión se ha cerrado. Vuelve a iniciar sesión en Ajustes.':e.message==='clave'?'La clave de sincronización no es correcta. Revísala en Ajustes.':'No se ha podido sincronizar. Lo reintentaré más tarde.');
   }
   syncing=false; renderSyncDot();
   if(syncOk&&(pend.size||ajPend)){clearTimeout(syncTimer);syncTimer=setTimeout(doSync,1500)}
@@ -1406,8 +1496,9 @@ async function doSync(){
 }
 function renderSyncDot(){
   const a=$('#aviso');
-  if(!sync.url){a.hidden=false;a.innerHTML='<div class="note info"><span>Tus datos se guardan en este móvil. Conecta tu hoja de Google para tener copia de seguridad y que Claude pueda verlos.</span><button type="button" class="ghost sm" data-sheet="ajustes">Conectar ahora</button></div>'}
-  else if(syncOk===false){a.hidden=false;a.innerHTML='<div class="note"><span>'+esc($('#estado').textContent)+'</span></div>'}
+  if(!sync.url&&!cuenta&&servidor){a.hidden=false;a.innerHTML='<div class="note info"><span>Tus datos se guardan solo en este móvil. Crea tu cuenta para tenerlos en la nube y entrar desde cualquier móvil.</span><div class="opts">'+(invit?'<button type="button" class="ghost sm" data-sheet="registro">Crear cuenta</button>':'')+'<button type="button" class="ghost sm" data-sheet="login">Iniciar sesión</button></div></div>'}
+  else if(!sync.url&&!cuenta){a.hidden=false;a.innerHTML='<div class="note info"><span>Tus datos se guardan en este móvil. Conecta tu hoja de Google para tener copia de seguridad y que Claude pueda verlos.</span><button type="button" class="ghost sm" data-sheet="ajustes">Conectar ahora</button></div>'}
+  else if(syncOk===false){a.hidden=false;a.innerHTML='<div class="note"><span>'+esc($('#estado').textContent)+'</span>'+(cuenta&&/sesión/.test($('#estado').textContent)?'<button type="button" class="ghost sm" data-sheet="login">Iniciar sesión</button>':'')+'</div>'}
   else a.hidden=true;
 }
 async function conectar(){
@@ -1576,6 +1667,12 @@ document.addEventListener('click',e=>{
   if(st){const i=$('#g-reps');if(i){const v=Math.max(0,num(i.value)+(st.dataset.step==='+'?1:-1));i.value=v||'';cur.reps[i.dataset.reps]=i.value;queue()}return}
   if(T.closest('[data-guia]')){openGuia();return}
   if(T.closest('[data-conectar]')){conectar();return}
+  const cA=T.closest('[data-cuenta]'); if(cA){cuentaAccion(cA.dataset.cuenta);return}
+  if(T.closest('[data-salir]')){salir();return}
+  if(T.closest('[data-invitar]')){invitar();return}
+  if(T.closest('[data-compartir]')){compartir(enlaceEntrar(cuenta.url),'Entra en Mi entreno con tu cuenta:');return}
+  if(T.closest('[data-instalar]')){instalar();return}
+  if(T.closest('[data-noinst]')){LS.set('me.noinst',true);renderInstall();return}
   if(T.closest('[data-desconectar]')){desconectar();return}
   if(T.closest('[data-exportar]')){exportar();return}
   const rs=T.closest('[data-rest]'); if(rs){if(rs.dataset.rest==='stop')stopRest();else{restEnd+=15000}return}
@@ -1625,6 +1722,8 @@ document.addEventListener('input',e=>{
     document.querySelectorAll('[data-quick]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.quick===cur.min));queue()}
   else if(el.id==='actividad'){cur.actividad=el.value;queue()}
   else if(el.id==='notas'){cur.notas=el.value;queue()}
+  else if(el.id==='cu-usuario'){cuForm.u=el.value}
+  else if(el.id==='cu-pass'){cuForm.p=el.value}
   else if(el.id==='nombre'){ajustes.nombre=el.value.trim().slice(0,30);renderHead();saveAjustes()}
   else if(el.id==='obj-pasos'){const v=parseInt(el.value.replace(/\D/g,''),10);if(v>0){ajustes.pasosObj=v;renderRings();saveAjustes()}}
 });
@@ -1638,9 +1737,16 @@ cur=getDay(sel); renderTabs(); renderAll(true);
 try{history.replaceState({k:'root'},'')}catch(e){}
 {const t0=TAB;TAB='hoy';showTab('hoy',true);if(t0!=='hoy')showTab(t0)}
 renderSyncDot(); checkMedals();
-if(ajustes.nombre===undefined&&!Object.keys(days).length)setTimeout(()=>openSheet('hola'),400);
+// Enlaces de invitación (?unirse=) y para entrar en otro móvil (?entrar=)
+(()=>{const p=new URLSearchParams(location.search),u=p.get('unirse'),en=p.get('entrar');if(!u&&!en)return;
+  viaEnlace=true;
+  try{const [a,c]=(u||en).split('~'),url=ub64(a);if(okURL(url)){servidor=url;LS.set('me.servidor',url);if(u&&c){invit=c;LS.set('me.invitacion',c)}}}catch(e){}
+  try{history.replaceState({k:'root'},'',location.pathname)}catch(e){}
+  if(!cuenta&&servidor)setTimeout(()=>openSheet(u&&invit?'registro':'login'),300);
+})();
+if(!viaEnlace&&ajustes.nombre===undefined&&!Object.keys(days).length)setTimeout(()=>openSheet('hola'),400);
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-if(sync.url)doSync();
+if(sync.url||cuenta)doSync();
 window.addEventListener('online',()=>doSync());
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync();if(TAB==='hoy'){renderRings(true);splashPick()}}
