@@ -404,7 +404,9 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 
 .estado{font-size:.82rem;color:var(--muted);text-align:center;min-height:1.2em}
 @media (max-width:380px){.quick{gap:6px}.qt .v{font-size:.82rem}.rings{width:108px;height:108px}.stats{grid-template-columns:1fr 1fr}.medals{grid-template-columns:repeat(2,1fr)}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation:none!important;transition:none!important}
+.panel.enter{animation:enter .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}}
 </style>
 </head>
 <body>
@@ -579,13 +581,15 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.2';
+const VERSION='2.3';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
 let sync=LS.get('me.sync',{url:'',clave:''}), pend=new Set(LS.get('me.pend',[])), ajPend=LS.get('me.ajpend',false);
 let syncing=false, syncTimer=null, lastSync=LS.get('me.last',0), syncOk=null;
-let prefs=Object.assign({sonido:true,vibracion:true},LS.get('me.prefs',{}));
+let prefs=Object.assign({sonido:true,vibracion:true,anim:true},LS.get('me.prefs',{}));
+const sysReduce=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}})();
+function applyAnim(){document.documentElement.classList.toggle('no-anim',!prefs.anim)}
 let exOpen=false, figOpen='', sheetK='', TAB='hoy', progView='semana', monthOff=0, justSet='', animNext=true;
 
 function blank(k){return{fecha:k,tipo:PLAN[parse(k).getDay()],calent:false,sets:{},reps:{},min:'',actividad:'',sens:'',peso:'',notas:'',reloj:{},bascula:{}}}
@@ -676,7 +680,7 @@ function figBody(p,props){
 function figPose(id,t){const f=FIGS[id],o={};for(const k in f.A){o[k]=[f.A[k][0]+(f.B[k][0]-f.A[k][0])*t,f.A[k][1]+(f.B[k][1]-f.A[k][1])*t].map(v=>Math.round(v*10)/10)}return o}
 function figSVG(id){if(!FIGS[id])return'';return `<svg class="fig" data-fig="${id}" viewBox="20 18 140 94" role="img" aria-label="Cómo se hace">${figBody(figPose(id,1),FIGS[id].props)}</svg>`}
 let figRaf=null;
-const figReduce=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}})();
+const figReduce=false;
 function figLoop(ts){
   const els=document.querySelectorAll('svg[data-fig]');
   if(!els.length){figRaf=null;return}
@@ -686,7 +690,7 @@ function figLoop(ts){
   els.forEach(el=>{const id=el.dataset.fig;el.innerHTML=figBody(figPose(id,t),FIGS[id].props)});
   figRaf=requestAnimationFrame(figLoop);
 }
-function figStart(){if(!figReduce&&!figRaf)figRaf=requestAnimationFrame(figLoop)}
+function figStart(){if(prefs.anim&&!figRaf)figRaf=requestAnimationFrame(figLoop)}
 
 
 /* ---------- sonido y vibración ---------- */
@@ -814,9 +818,10 @@ function racha(){
 }
 
 /* ---------- hojas inferiores ---------- */
-function openSheet(k){sheetK=k;renderSheet();$('#sheet').hidden=false;$('#sheet-bg').hidden=false;document.documentElement.style.overflow='hidden';
+function openSheet(k){if(!sheetK){if(navK()==='sheet')history.replaceState(history.state,'');else history.pushState({k:'sheet',t:TAB,d:navD()+1},'')}sheetK=k;renderSheet();$('#sheet').hidden=false;$('#sheet-bg').hidden=false;document.documentElement.style.overflow='hidden';
   setTimeout(()=>{const i=$('#sheet-c input[data-autofocus]');if(i)i.focus()},80)}
-function closeSheet(){if(!sheetK)return;sheetK='';$('#sheet').hidden=true;$('#sheet-bg').hidden=true;document.documentElement.style.overflow='';flush();renderAll()}
+function closeSheet(){if(!sheetK)return;if(navK()==='sheet'){history.back();return}reallyCloseSheet()}
+function reallyCloseSheet(){if(!sheetK)return;sheetK='';$('#sheet').hidden=true;$('#sheet-bg').hidden=true;document.documentElement.style.overflow='';flush();renderAll()}
 function grid(fields,vals,attr){return `<div class="rgrid">${fields.map(f=>`<label class="rf" for="${attr}-${f.k}">${f.l}<span class="rf-in"><input id="${attr}-${f.k}" data-${attr}="${f.k}" inputmode="${f.m||'decimal'}" placeholder="${f.ph||'—'}" value="${esc(vals(f.k))}"><span class="u">${f.u||'índice'}</span></span></label>`).join('')}</div>`}
 function renderSheet(){
   const d=cur, r=d.reloj||{}, b=d.bascula||{}; let t='',h='';
@@ -868,6 +873,8 @@ function renderSheet(){
     h=`<h2>Durante el entreno</h2>
     <button type="button" class="toggle" data-pref="sonido" aria-pressed="${prefs.sonido}"><span>Sonido al acabar el descanso</span><span class="sw"></span></button>
     <button type="button" class="toggle" data-pref="vibracion" aria-pressed="${prefs.vibracion}"><span>Vibración</span><span class="sw"></span></button>
+    <h2>Aspecto</h2>
+    <button type="button" class="toggle" data-pref="anim" aria-pressed="${prefs.anim}"><span>Animaciones<small style="display:block;color:var(--muted);font-weight:600;font-size:.82rem">${sysReduce?'Tu móvil tiene las animaciones reducidas; con esto activado, la app las muestra igualmente.':'Anillos, gráficas, series, racha y medallas.'}</small></span><span class="sw"></span></button>
     <h2>Sincronización con Google Sheets</h2>
     <p class="tip">${sync.url?`Conectada. Última sincronización: ${wh}.`:'Tus datos se guardan en este móvil. Pega aquí el enlace de tu hoja y la clave para tener copia y que Claude pueda verlos.'}</p>
     <label class="lab" for="sync-url">Enlace de la aplicación web<input id="sync-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(sync.url)}"></label>
@@ -1196,12 +1203,15 @@ function startTimer(sec,onDone){
   tick();tm=setInterval(tick,250);
 }
 function openGuia(){
+  if(sheetK){reallyCloseSheet();history.replaceState({k:'guia',t:TAB,d:navD()},'')}else history.pushState({k:'guia',t:TAB,d:navD()+1},'');
   initAudio(); stopRest();
   buildSteps();si=firstStep();$('#guia').hidden=false;document.documentElement.style.overflow='hidden';
   try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})}catch(e){}
   renderGuia();
 }
-function closeGuia(){
+function closeGuia(){if(navK()==='guia'){history.back();return}reallyCloseGuia()}
+function reallyCloseGuia(){
+  if($('#guia').hidden)return;
   stopTimer();$('#guia').hidden=true;document.documentElement.style.overflow='';
   try{wl&&wl.release()}catch(e){}wl=null;renderAll();checkMedals();
 }
@@ -1247,12 +1257,32 @@ function renderGuia(){
 }
 let restSec=60;
 
-/* ---------- navegación ---------- */
-function showTab(t){
+/* ---------- navegación y botón «atrás» del móvil ---------- */
+const navK=()=>(history.state&&history.state.k)||'root';
+const navD=()=>(history.state&&history.state.d)||0;
+let navPend='';
+window.addEventListener('popstate',e=>{
+  const st=e.state||{k:'root'}, k=st.k||'root';
+  if(!$('#guia').hidden&&k!=='guia')reallyCloseGuia();
+  if(sheetK&&k!=='sheet')reallyCloseSheet();
+  const want=k==='root'?'hoy':(st.t||TAB);
+  if(want!==TAB)showTab(want,true);
+  if(navPend&&k==='root'){const p=navPend;navPend='';showTab(p)}
+});
+window.addEventListener('pageshow',e=>{if(e.persisted){if(!sheetK){$('#sheet').hidden=true;$('#sheet-bg').hidden=true}if($('#guia').hidden)document.documentElement.style.overflow='';renderAll(true)}});
+function showTab(t,fromPop){
+  if(!fromPop){
+    const k=navK(), d=navD();
+    if(t==='hoy'){if(d>0){history.go(-d);return}}
+    else if(k==='tab')history.replaceState({k:'tab',t,d:1},'');
+    else if(d===0)history.pushState({k:'tab',t,d:1},'');
+    else{navPend=t;history.go(-d);return}
+  }
   TAB=t; ['hoy','progreso','logros','historial'].forEach(x=>{$('#p-'+x).hidden=x!==t});
   renderTabs(); renderAction();
   try{localStorage.setItem('tab',t)}catch(e){}
   window.scrollTo({top:0});
+  const pn=$('#p-'+t); if(pn){pn.classList.remove('enter'); void pn.offsetWidth; pn.classList.add('enter')}
   if(t==='progreso'){animNext=true;renderProgress();animNext=false}
   if(t==='logros')renderLogros();
   if(t==='hoy')renderRings(true);
@@ -1279,17 +1309,17 @@ document.addEventListener('click',e=>{
   }
   const st=T.closest('[data-step]');
   if(st){const i=$('#g-reps');if(i){const v=Math.max(0,num(i.value)+(st.dataset.step==='+'?1:-1));i.value=v||'';cur.reps[i.dataset.reps]=i.value;queue()}return}
-  if(T.closest('[data-guia]')){closeSheet();openGuia();return}
+  if(T.closest('[data-guia]')){openGuia();return}
   if(T.closest('[data-conectar]')){conectar();return}
   if(T.closest('[data-desconectar]')){desconectar();return}
   if(T.closest('[data-exportar]')){exportar();return}
   const rs=T.closest('[data-rest]'); if(rs){if(rs.dataset.rest==='stop')stopRest();else{restEnd+=15000}return}
   if(T.closest('[data-resttimer]')){closeSheet();startRest(R(cur).rest);return}
-  const pf=T.closest('[data-pref]'); if(pf){const k=pf.dataset.pref;prefs[k]=!prefs[k];LS.set('me.prefs',prefs);pf.setAttribute('aria-pressed',prefs[k]);if(k==='vibracion'&&prefs[k])buzz(40);return}
+  const pf=T.closest('[data-pref]'); if(pf){const k=pf.dataset.pref;prefs[k]=!prefs[k];LS.set('me.prefs',prefs);pf.setAttribute('aria-pressed',prefs[k]);if(k==='vibracion'&&prefs[k])buzz(40);if(k==='anim'){applyAnim();if(prefs.anim){renderRings(true);figStart()}}return}
   if(T.closest('[data-sheet-close]')||T.id==='sheet-bg'){closeSheet();return}
   const sh=T.closest('[data-sheet]'); if(sh){openSheet(sh.dataset.sheet);return}
-  const tb=T.closest('[data-tab]'); if(tb){closeSheet();showTab(tb.dataset.tab);return}
-  const gg=T.closest('[data-go]'); if(gg){go(gg.dataset.go);showTab('hoy');return}
+  const tb=T.closest('[data-tab]'); if(tb){showTab(tb.dataset.tab);return}
+  const gg=T.closest('[data-go]'); if(gg){go(gg.dataset.go);if(TAB!=='hoy')showTab('hoy');return}
   const pv=T.closest('[data-pv]'); if(pv){progView=pv.dataset.pv;animNext=true;renderProgress();animNext=false;return}
   const mo=T.closest('[data-month]'); if(mo){monthOff=Math.min(0,monthOff+ +mo.dataset.month);animNext=true;renderProgress();animNext=false;return}
   const stp=T.closest('[data-settipo]'); if(stp){cur.tipo=stp.dataset.settipo;queue();closeSheet();return}
@@ -1325,19 +1355,22 @@ window.addEventListener('scroll',()=>{$('#appbar').classList.toggle('scrolled',w
 window.addEventListener('pagehide',()=>flush());
 
 /* ---------- arranque ---------- */
-$('#btn-ajustes').innerHTML=IC.gear;
+$('#btn-ajustes').innerHTML=IC.gear; applyAnim();
 try{const t=localStorage.getItem('tab');if(t&&['hoy','progreso','logros','historial'].includes(t))TAB=t}catch(e){}
-cur=getDay(sel); renderTabs(); renderAll(true); showTab(TAB); renderSyncDot(); checkMedals();
+cur=getDay(sel); renderTabs(); renderAll(true);
+try{history.replaceState({k:'root'},'')}catch(e){}
+{const t0=TAB;TAB='hoy';showTab('hoy',true);if(t0!=='hoy')showTab(t0)}
+renderSyncDot(); checkMedals();
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 if(sync.url)doSync();
 window.addEventListener('online',()=>doSync());
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync()}
+  if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync();if(TAB==='hoy')renderRings(true)}
   else flush();
 });
 (()=>{const p=new URLSearchParams(location.search),a=p.get('accion');if(!a)return;
-  try{history.replaceState(null,'',location.pathname)}catch(e){}
-  showTab('hoy');
+  try{history.replaceState({k:'root'},'',location.pathname)}catch(e){}
+  if(TAB!=='hoy')showTab('hoy');
   if(a==='pasos'||a==='bascula'||a==='notas')openSheet(a);
   else if(a==='entreno'&&cur.tipo==='fuerza'&&nSets(cur)<tot(cur))openGuia();
 })();
