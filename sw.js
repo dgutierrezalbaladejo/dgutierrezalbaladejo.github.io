@@ -1,9 +1,9 @@
 // Mi entreno: funciona sin conexión. Sube el número de versión al cambiar la app.
-const V = 'mi-entreno-v4';
+const V = 'mi-entreno-v5';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(V).then(c => c.addAll(SHELL.map(u => new Request(u, {cache: 'reload'})))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -20,7 +20,8 @@ self.addEventListener('fetch', e => {
   if (url.hostname.endsWith('script.google.com') || url.hostname.endsWith('googleusercontent.com')) return;
   // La página: primero la red (para recibir mejoras), y si no hay conexión, la copia guardada.
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).then(r => {
+    // cache 'no-cache': pregunta siempre al servidor, así las mejoras llegan al momento.
+    e.respondWith(fetch(req.url, {cache: 'no-cache'}).then(r => {
       const cp = r.clone(); caches.open(V).then(c => c.put('index.html', cp)); return r;
     }).catch(() => caches.match('index.html').then(r => r || caches.match('./'))));
     return;
