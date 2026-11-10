@@ -36,6 +36,7 @@
   --display:"Nunito","Nunito Sans",system-ui,sans-serif;
   --body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --tabh:64px;
+  --splash:#B87100; --splash-sh:rgba(120,70,0,.18);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#101215; --surface:#181B20; --surface2:#21252C; --ink:#ECEFF3; --muted:#98A1AE; --line:#2A2F37;
@@ -44,7 +45,7 @@
   --ok:#3DD16F; --ok-soft:rgba(61,209,111,.14); --on-ok:#06140A; --part:#F2BE55; --part-soft:rgba(242,190,85,.14); --bad:#F07A73;
   --r1:#FF7A8E; --r2:#3DD16F; --r3:#6BB8FF; --flame:#FF9F2E; --flame2:#FFC857; --gold:#F2C94C;
   --c-fuerza:#FF7A8E; --c-caminar:#3DD16F; --c-libre:#6BB8FF;
-  --scrim:rgba(0,0,0,.62); --shadow:none; color-scheme:dark}}
+  --scrim:rgba(0,0,0,.62); --splash:#FFEE3A; --splash-sh:#3F3F00; --shadow:none; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#101215; --surface:#181B20; --surface2:#21252C; --ink:#ECEFF3; --muted:#98A1AE; --line:#2A2F37;
   --accent:#FF9A5C; --cta:#F2584A; --cta-ink:#FFFFFF; --soft:rgba(255,138,76,.14);
@@ -52,7 +53,7 @@
   --ok:#3DD16F; --ok-soft:rgba(61,209,111,.14); --on-ok:#06140A; --part:#F2BE55; --part-soft:rgba(242,190,85,.14); --bad:#F07A73;
   --r1:#FF7A8E; --r2:#3DD16F; --r3:#6BB8FF; --flame:#FF9F2E; --flame2:#FFC857; --gold:#F2C94C;
   --c-fuerza:#FF7A8E; --c-caminar:#3DD16F; --c-libre:#6BB8FF;
-  --scrim:rgba(0,0,0,.62); --shadow:none; color-scheme:dark}
+  --scrim:rgba(0,0,0,.62); --splash:#FFEE3A; --splash-sh:#3F3F00; --shadow:none; color-scheme:dark}
 
 /* base */
 html{-webkit-text-size-adjust:100%;padding-top:env(safe-area-inset-top,0px)}
@@ -91,7 +92,15 @@ h2{font-family:var(--body);font-size:.78rem;margin:0;text-transform:uppercase;le
 .iconbtn svg{width:20px;height:20px}
 
 /* Hoy: saludo y semana */
-.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;position:relative}
+.hello.has-splash{padding-bottom:30px}
+.splash{position:absolute;right:12px;bottom:2px;max-width:74%;padding:2px 4px;margin:0;border:0;background:none;cursor:pointer;
+  font-family:var(--display);font-weight:900;font-size:.95rem;line-height:1.12;text-align:center;color:var(--splash);
+  text-shadow:2px 2px 0 var(--splash-sh);transform:rotate(-5deg);transform-origin:right center;-webkit-tap-highlight-color:transparent;z-index:1}
+.splash>span{display:inline-block;animation:splash .5s ease-in-out infinite alternate}
+.splash.pop>span{animation:splashIn .38s cubic-bezier(.3,1.7,.5,1),splash .5s ease-in-out .38s infinite alternate}
+@keyframes splash{to{transform:scale(1.07)}}
+@keyframes splashIn{from{transform:scale(.2);opacity:0}}
 .hi{color:var(--muted);font-weight:700;font-size:.92rem}
 .hello h1{margin:0;font-size:1.85rem;line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
 .chip-btn{border:1px solid var(--accent);background:var(--soft);color:var(--ink);border-radius:var(--pill);padding:8px 13px;font-size:.85rem;font-weight:700;flex:none}
@@ -422,6 +431,7 @@ html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation:none!impor
   <main class="panel" id="p-hoy">
     <div class="hello">
       <div><div class="hi" id="hi"></div><h1 id="fecha">Hoy</h1></div>
+      <button type="button" class="splash" id="splash" aria-live="polite" aria-label="Frase del día; toca para cambiarla" hidden><span></span></button>
       <button type="button" class="chip-btn" id="volver" hidden>Volver a hoy</button>
     </div>
     <div class="weekbar">
@@ -581,7 +591,7 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.3';
+const VERSION='2.4';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -712,9 +722,57 @@ function nextToast(){
 }
 
 /* ---------- Hoy ---------- */
+/* ---------- frases que van cambiando, como las del menú de Minecraft ---------- */
+const nom=()=>String(ajustes.nombre||'').trim();
+const SPL_GEN=['¡Hola, {n}!','¡Sin gimnasio y sin excusas!','¡Una serie más!','¡Poco a poco se llega lejos!','¡El sofá puede esperar!',
+ '¡Tu yo del futuro te lo agradece!','¡Constancia antes que intensidad!','¡Calentar no es opcional!','¡Bebe agua, {n}!','¡Espalda recta!',
+ '¡Rodillas contentas!','¡Funciona sin internet!','¡También en modo oscuro!','¡Ahora con más sentadillas!','¡Pasito a pasito!',
+ '¡Hoy mejor que ayer!','¡Esto no es Minecraft, pero casi!','¡Respira hondo!','¡Tú puedes, {n}!','¡100 % casero!','¡Recuerda estirar!',
+ '¡Sudar también es brillar!','¡Ni un paso atrás (salvo en el móvil)!','¡Lo difícil es empezar!','¡Edición '+VERSION+'!'];
+const MILES=[[7,'una semana'],[14,'dos semanas'],[21,'tres semanas'],[30,'30 días'],[50,'50 días'],[100,'100 días'],[200,'200 días'],[365,'un año']];
+function splashCtx(){
+  const x=[], s=SI.cur, st=stOf(TODAY), dT=days[TODAY], tipo=dT?dT.tipo:PLAN[parse(TODAY).getDay()], wd=parse(TODAY).getDay(), h=new Date().getHours();
+  const doneT=st==='done';
+  // racha: cuánto falta para la próxima meta (si hoy no está hecho, hoy cuenta como uno de los días que faltan)
+  const m=MILES.find(z=>z[0]>s);
+  if(m){const need=m[0]-s; if(need<=3){
+    if(need===1)x.push(doneT?`¡Mañana cumples ${m[1]} de racha!`:`¡Hoy completas ${m[1]} de racha!`);
+    else x.push(`¡A ${need} días de ${m[1]} de racha!`,`¡A punto de completar ${m[1]} de racha!`);
+  }}
+  if(s>=7)x.push(`¡${s} días seguidos!`); else if(s>=3)x.push(`¡Racha de ${s} días, {n}!`);
+  if(doneT&&tipo!=='descanso')x.push('¡Hoy ya está hecho!','¡Misión cumplida, {n}!');
+  else if(st==='part')x.push('¡Ya casi lo tienes!');
+  else if(tipo==='descanso')x.push('¡Hoy toca descansar, que también cuenta!');
+  else if(tipo==='fuerza')x.push('¡Hoy toca fuerza!');
+  else if(tipo==='caminar')x.push('¡Hoy toca caminar!');
+  const r=(dT&&dT.reloj)||{}, pas=num(r.pasos), po=num(ajustes.pasosObj)||8000;
+  if(pas>=po)x.push('¡Objetivo de pasos cumplido!'); else if(pas>0&&po-pas<=2500)x.push(`¡Te faltan ${fmtN(po-pas)} pasos!`);
+  if(wd===5&&!(dT&&num(dT.peso)))x.push('¡Viernes de báscula!'); if(wd===1)x.push('¡Semana nueva!'); if(wd===0)x.push('¡Domingo de sofá merecido!');
+  if(h>=23||h<6)x.push('¡A dormir pronto, {n}!'); else if(h<10)x.push('¡Buenos días, {n}!');
+  const ent=Object.keys(days).filter(k=>{const d=days[k];return d.tipo!=='descanso'&&status(d)!=='none'}).length;
+  if(ent>=5)x.push(`¡${ent} entrenos y subiendo!`);
+  const pk=Object.keys(days).filter(k=>num(days[k].peso)).sort();
+  if(pk.length>=2){const dif=num(days[pk[0]].peso)-num(days[pk[pk.length-1]].peso); if(dif>=.5)x.push(`¡${fn(Math.round(dif*10)/10)} kg menos desde el principio!`)}
+  const nm=(seenMedals||[]).length; if(nm>=3)x.push(`¡Ya llevas ${nm} medallas!`);
+  return x;
+}
+const splFill=s=>nom()?s.replace(/\{n\}/g,nom()):s.replace(/,? ?\{n\}/g,'');
+let splTxt='', splKey='', splLast=LS.get('me.splash','');
+function splashPick(){
+  const ctx=splashCtx(), pool=ctx.length&&Math.random()<.6?ctx:SPL_GEN.concat(ctx);
+  let c=pool.filter(s=>splFill(s)!==splLast); if(!c.length)c=pool;
+  splTxt=splFill(c[Math.floor(Math.random()*c.length)]); splLast=splTxt; LS.set('me.splash',splTxt);
+  splKey=stOf(TODAY)+'|'+SI.cur+'|'+nom();
+  const b=$('#splash'); b.firstChild.textContent=splTxt; b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+}
+function splashView(){
+  const b=$('#splash'); b.hidden=sel!==TODAY; b.parentNode.classList.toggle('has-splash',!b.hidden); if(b.hidden)return;
+  if(!splTxt||splKey!==stOf(TODAY)+'|'+SI.cur+'|'+nom())splashPick();
+}
 function greet(){const h=new Date().getHours();return h<6?'Buenas noches':h<13?'Buenos días':h<21?'Buenas tardes':'Buenas noches'}
 function renderHead(){
-  $('#hi').textContent=sel===TODAY?greet()+', Damián':sel<TODAY?'Repasando un día anterior':'Mirando un día que viene';
+  $('#hi').textContent=sel===TODAY?greet()+(nom()?', '+nom():''):sel<TODAY?'Repasando un día anterior':'Mirando un día que viene';
+  splashView();
   $('#fecha').textContent=sel===TODAY?'Hoy, '+fdate(sel).replace(/^\S+ /,''):fdate(sel);
   $('#volver').hidden=sel===TODAY;
   const mon=monOf(sel); let w='';
@@ -821,7 +879,7 @@ function racha(){
 function openSheet(k){if(!sheetK){if(navK()==='sheet')history.replaceState(history.state,'');else history.pushState({k:'sheet',t:TAB,d:navD()+1},'')}sheetK=k;renderSheet();$('#sheet').hidden=false;$('#sheet-bg').hidden=false;document.documentElement.style.overflow='hidden';
   setTimeout(()=>{const i=$('#sheet-c input[data-autofocus]');if(i)i.focus()},80)}
 function closeSheet(){if(!sheetK)return;if(navK()==='sheet'){history.back();return}reallyCloseSheet()}
-function reallyCloseSheet(){if(!sheetK)return;sheetK='';$('#sheet').hidden=true;$('#sheet-bg').hidden=true;document.documentElement.style.overflow='';flush();renderAll()}
+function reallyCloseSheet(){if(!sheetK)return;if(sheetK==='hola'&&ajustes.nombre===undefined){ajustes.nombre='';saveLocal()}sheetK='';$('#sheet').hidden=true;$('#sheet-bg').hidden=true;document.documentElement.style.overflow='';flush();renderAll()}
 function grid(fields,vals,attr){return `<div class="rgrid">${fields.map(f=>`<label class="rf" for="${attr}-${f.k}">${f.l}<span class="rf-in"><input id="${attr}-${f.k}" data-${attr}="${f.k}" inputmode="${f.m||'decimal'}" placeholder="${f.ph||'—'}" value="${esc(vals(f.k))}"><span class="u">${f.u||'índice'}</span></span></label>`).join('')}</div>`}
 function renderSheet(){
   const d=cur, r=d.reloj||{}, b=d.bascula||{}; let t='',h='';
@@ -867,10 +925,17 @@ function renderSheet(){
     t='Actividad del día';
     const plan=PLAN[parse(sel).getDay()];
     h=`<div class="opts">${['fuerza','caminar','libre','descanso'].map(x=>`<button type="button" class="opt" data-settipo="${x}" aria-pressed="${d.tipo===x}"><span class="tic t-${x}">${IC[x]}</span><span><b>${TIPO_TXT[x]}</b>${x===plan?' · en tu plan':''}<small>${TIPO_DESC[x]}</small></span></button>`).join('')}</div>`;
+  } else if(sheetK==='hola'){
+    t='¡Hola!';
+    h=`<p class="tip">Bienvenida o bienvenido a Mi entreno. ¿Cómo te llamas? Lo uso para saludarte; puedes cambiarlo cuando quieras en Ajustes.</p>
+    <label class="lab" for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label>
+    <button type="button" class="cta" data-sheet-close>Empezar</button>`;
   } else if(sheetK==='ajustes'){
     t='Ajustes';
     const wh=lastSync?new Date(lastSync).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):'todavía no';
-    h=`<h2>Durante el entreno</h2>
+    h=`<h2>Tú</h2>
+    <label class="lab" for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label>
+    <h2>Durante el entreno</h2>
     <button type="button" class="toggle" data-pref="sonido" aria-pressed="${prefs.sonido}"><span>Sonido al acabar el descanso</span><span class="sw"></span></button>
     <button type="button" class="toggle" data-pref="vibracion" aria-pressed="${prefs.vibracion}"><span>Vibración</span><span class="sw"></span></button>
     <h2>Aspecto</h2>
@@ -1114,6 +1179,7 @@ function merge(j){
     if(!l||(!pend.has(k)&&(Number(r.ts)||0)>(Number(l.ts)||0))){days[k]=r;changed=true}
   }
   if(j.ajustes&&!ajPend&&Number(j.ajustes.pasosObj)>0)ajustes.pasosObj=Number(j.ajustes.pasosObj);
+  if(j.ajustes&&!ajPend&&j.ajustes.nombre)ajustes.nombre=String(j.ajustes.nombre).trim().slice(0,30);
   if(changed){
     const focused=['#dia','#sheet','#guia'].some(q=>$(q).contains(document.activeElement));
     if(!focused){cur=getDay(sel);renderDia();if(sheetK&&sheetK!=='ajustes')renderSheet()}
@@ -1128,7 +1194,7 @@ async function doSync(){
   sent.forEach(k=>{if(days[k])dias[k]=days[k]});
   const sentAj=ajPend;
   try{
-    const res=await api({clave:sync.clave,dias,ajustes:sentAj?{pasosObj:ajustes.pasosObj}:undefined});
+    const res=await api({clave:sync.clave,dias,ajustes:sentAj?Object.assign({pasosObj:ajustes.pasosObj},ajustes.nombre!==undefined?{nombre:ajustes.nombre}:{}):undefined});
     sent.forEach(k=>{if(!days[k]||!dias[k]||days[k].ts===dias[k].ts)pend.delete(k)});
     if(sentAj)ajPend=false;
     merge(res);
@@ -1171,6 +1237,7 @@ function importar(file){
     const rd=(j&&j.dias)||{}; let n=0;
     for(const k in rd){if(!/^\d{4}-\d{2}-\d{2}$/.test(k))continue;const r=rd[k],l=days[k];if(!l||(Number(r.ts)||0)>(Number(l.ts)||0)){days[k]=r;pend.add(k);n++}}
     if(j.ajustes&&Number(j.ajustes.pasosObj)>0){ajustes.pasosObj=Number(j.ajustes.pasosObj);ajPend=true}
+    if(j.ajustes&&j.ajustes.nombre&&!nom()){ajustes.nombre=String(j.ajustes.nombre).trim().slice(0,30);ajPend=true}
     saveLocal(); cur=getDay(sel); renderAll(); $('#sync-res').textContent='Copia importada: '+n+' días nuevos o más recientes.'; doSync();
   };
   fr.readAsText(file);
@@ -1278,10 +1345,11 @@ function showTab(t,fromPop){
     else if(d===0)history.pushState({k:'tab',t,d:1},'');
     else{navPend=t;history.go(-d);return}
   }
-  TAB=t; ['hoy','progreso','logros','historial'].forEach(x=>{$('#p-'+x).hidden=x!==t});
+  const wasTab=TAB; TAB=t; ['hoy','progreso','logros','historial'].forEach(x=>{$('#p-'+x).hidden=x!==t});
   renderTabs(); renderAction();
   try{localStorage.setItem('tab',t)}catch(e){}
   window.scrollTo({top:0});
+  if(t==='hoy'&&wasTab!=='hoy'&&splTxt)splashPick();
   const pn=$('#p-'+t); if(pn){pn.classList.remove('enter'); void pn.offsetWidth; pn.classList.add('enter')}
   if(t==='progreso'){animNext=true;renderProgress();animNext=false}
   if(t==='logros')renderLogros();
@@ -1319,6 +1387,7 @@ document.addEventListener('click',e=>{
   if(T.closest('[data-sheet-close]')||T.id==='sheet-bg'){closeSheet();return}
   const sh=T.closest('[data-sheet]'); if(sh){openSheet(sh.dataset.sheet);return}
   const tb=T.closest('[data-tab]'); if(tb){showTab(tb.dataset.tab);return}
+  if(T.closest('#splash')){splashPick();buzz(15);return}
   const gg=T.closest('[data-go]'); if(gg){go(gg.dataset.go);if(TAB!=='hoy')showTab('hoy');return}
   const pv=T.closest('[data-pv]'); if(pv){progView=pv.dataset.pv;animNext=true;renderProgress();animNext=false;return}
   const mo=T.closest('[data-month]'); if(mo){monthOff=Math.min(0,monthOff+ +mo.dataset.month);animNext=true;renderProgress();animNext=false;return}
@@ -1349,6 +1418,7 @@ document.addEventListener('input',e=>{
     document.querySelectorAll('[data-quick]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.quick===cur.min));queue()}
   else if(el.id==='actividad'){cur.actividad=el.value;queue()}
   else if(el.id==='notas'){cur.notas=el.value;queue()}
+  else if(el.id==='nombre'){ajustes.nombre=el.value.trim().slice(0,30);renderHead();saveAjustes()}
   else if(el.id==='obj-pasos'){const v=parseInt(el.value.replace(/\D/g,''),10);if(v>0){ajustes.pasosObj=v;renderRings();saveAjustes()}}
 });
 window.addEventListener('scroll',()=>{$('#appbar').classList.toggle('scrolled',window.scrollY>4)},{passive:true});
@@ -1361,11 +1431,12 @@ cur=getDay(sel); renderTabs(); renderAll(true);
 try{history.replaceState({k:'root'},'')}catch(e){}
 {const t0=TAB;TAB='hoy';showTab('hoy',true);if(t0!=='hoy')showTab(t0)}
 renderSyncDot(); checkMedals();
+if(ajustes.nombre===undefined&&!Object.keys(days).length)setTimeout(()=>openSheet('hola'),400);
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 if(sync.url)doSync();
 window.addEventListener('online',()=>doSync());
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync();if(TAB==='hoy')renderRings(true)}
+  if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync();if(TAB==='hoy'){renderRings(true);splashPick()}}
   else flush();
 });
 (()=>{const p=new URLSearchParams(location.search),a=p.get('accion');if(!a)return;
