@@ -482,7 +482,7 @@ const IC={
 };
 
 /* ---------- estado ---------- */
-const VERSION='1.2';
+const VERSION='1.3';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -501,7 +501,9 @@ function status(d){
   const m=num(d.min), obj=planObj(d);
   return m>=obj?'done':m>0?'part':'none';
 }
-const stOf=k=>days[k]?status(days[k]):(PLAN[parse(k).getDay()]==='descanso'?'done':'none');
+// Primer día apuntado: los descansos sin apuntar solo cuentan desde ahí y hasta hoy (se marcan según llegan).
+const startKey=()=>{let m=TODAY;for(const k in days)if(k<m)m=k;return m};
+const stOf=k=>days[k]?status(days[k]):(PLAN[parse(k).getDay()]==='descanso'&&k<=TODAY&&k>=startKey()?'done':'none');
 function exMin(d){
   const m=num((d.reloj||{}).dur)||num(d.min); if(m)return m;
   return d.tipo==='fuerza'?Math.round(nSets(d)/tot(d)*R(d).min):0;

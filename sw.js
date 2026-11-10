@@ -1,5 +1,5 @@
 // Mi entreno: funciona sin conexión. Sube el número de versión al cambiar la app.
-const V = 'mi-entreno-v3';
+const V = 'mi-entreno-v4';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
