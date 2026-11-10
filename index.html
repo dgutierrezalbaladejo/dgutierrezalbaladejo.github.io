@@ -626,7 +626,7 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.5';
+const VERSION='2.5.1';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -1096,7 +1096,7 @@ function renderSheet(){
     <h2>Copia de seguridad</h2>
     <div class="opts"><button type="button" class="ghost" data-exportar>Descargar copia (.json)</button><label class="ghost file-btn" for="importar">Importar una copia<input type="file" id="importar" accept="application/json,.json" hidden></label></div>
     <label class="lab" for="obj-pasos">Objetivo diario de pasos<input id="obj-pasos" inputmode="numeric" value="${esc(ajustes.pasosObj)}"></label>
-    <p class="rel">Mi entreno · versión ${VERSION}</p>`;
+    <p class="rel">Mi entreno · versión ${VERSION} · <a href="versiones/" style="color:var(--accent);font-weight:700">versiones anteriores</a></p>`;
   }
   $('#sheet-t').textContent=t; $('#sheet-c').innerHTML=h;
 }

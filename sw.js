@@ -1,5 +1,5 @@
 // Mi entreno: funciona sin conexión. Sube el número de versión al cambiar la app.
-const V = 'mi-entreno-v12';
+const V = 'mi-entreno-v13';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -21,6 +21,8 @@ self.addEventListener('fetch', e => {
   // La página: primero la red (para recibir mejoras), y si no hay conexión, la copia guardada.
   if (req.mode === 'navigate') {
     // cache 'no-cache': pregunta siempre al servidor, así las mejoras llegan al momento.
+    // Las versiones antiguas (carpeta versiones/) se abren de la red y nunca sustituyen a la app guardada.
+    if (url.pathname.includes('/versiones/')) return;
     e.respondWith(fetch(req.url, {cache: 'no-cache'}).then(r => {
       const cp = r.clone(); caches.open(V).then(c => c.put('index.html', cp)); return r;
     }).catch(() => caches.match('index.html').then(r => r || caches.match('./'))));
