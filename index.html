@@ -86,6 +86,53 @@ h2{font-family:var(--body);font-size:.78rem;margin:0;text-transform:uppercase;le
 .gx-n{font-weight:800}
 .gx-last{font-size:.84rem;color:var(--muted);font-weight:700;margin-top:-2px}
 .gx-last:empty{display:none}
+.gx-sug{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.88rem;font-weight:700;background:color-mix(in srgb,var(--c-gym) 10%,transparent);border-radius:12px;padding:8px 10px;margin-top:-2px}
+.gx-sug b{color:var(--c-gym)}
+.gx-rep{display:flex;flex-direction:column;gap:8px}
+.gx-rep button{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:var(--rm);padding:10px 12px;color:var(--ink);font:inherit}
+.gx-rep button b{font-weight:800}.gx-rep button small{color:var(--muted);font-weight:600;font-size:.84rem}
+.undo{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--ink);color:var(--bg);border-radius:var(--rm);padding:8px 8px 8px 14px;font-weight:700;font-size:.92rem}
+.undo button{border:0;background:color-mix(in srgb,var(--bg) 18%,transparent);color:var(--bg);font-weight:800;border-radius:var(--pill);min-height:36px;padding:0 14px}
+.aj-prof{display:flex;align-items:center;gap:14px;padding:14px;border-radius:var(--rm);background:var(--soft)}
+.aj-prof .av{width:54px;height:54px;font-size:1.45rem}
+.aj-prof b{display:block;font-family:var(--display);font-weight:900;font-size:1.25rem}
+.aj-prof small{display:block;color:var(--muted);font-weight:700;font-size:.86rem}
+.aj-g{display:flex;flex-direction:column;gap:6px}
+.aj-gt{font-size:.76rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-left:4px}
+.aj-list{background:var(--surface2);border-radius:var(--rm);overflow:hidden}
+.aj-r{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;padding:12px 14px;border:0;background:none;text-align:left;color:var(--ink);font:inherit;text-decoration:none;border-top:1px solid var(--line)}
+.aj-r:first-child{border-top:0}
+.aj-r:active{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.aj-i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff}
+.aj-i svg{width:19px;height:19px}
+.aj-t{min-width:0}.aj-t b{display:block;font-weight:800}
+.aj-t small{display:block;color:var(--muted);font-weight:600;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aj-c{color:var(--muted);display:grid}.aj-c svg{width:18px;height:18px}
+.aj-foot{text-align:center;color:var(--muted);font-size:.84rem;margin:0}
+.sh-back{border:0;background:var(--surface2);color:var(--ink);width:36px;height:36px;border-radius:50%;display:inline-grid;place-items:center;vertical-align:middle;margin-right:10px}
+.sh-back svg{width:20px;height:20px}
+.dias-sel{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dias-sel button{border:1px solid var(--line);background:var(--surface);border-radius:12px;min-height:44px;font-weight:900;color:var(--muted);font-family:var(--display)}
+.dias-sel button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.inv-r{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid var(--line)}
+.inv-r:first-child{border-top:0;padding-top:0}
+.inv-h{display:flex;align-items:center;gap:12px}.inv-h .nm{flex:1;font-weight:800}.inv-h .nm small{display:block;color:var(--muted);font-weight:700;font-size:.82rem}
+.wcard{border-radius:22px;padding:22px 20px;color:#fff;background:linear-gradient(155deg,#E8365F 0%,#F2603F 55%,#FF9A3D 100%);display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px color-mix(in srgb,#F2603F 30%,transparent)}
+.wcard .wm{font-weight:800;opacity:.9;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase}
+.wcard h3{margin:0;font-family:var(--display);font-weight:900;font-size:2rem;line-height:1.05;text-transform:capitalize}
+.wcard .wg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wcard .wc{background:rgba(255,255,255,.16);border-radius:16px;padding:12px}
+.wcard .wc .v{font-family:var(--display);font-weight:900;font-size:1.9rem;line-height:1}
+.wcard .wc .k{font-weight:700;font-size:.85rem;opacity:.92;margin-top:4px}
+.wcard .wl{font-weight:700;font-size:.95rem;line-height:1.4}
+.podio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;text-align:center}
+.podio .pd{display:flex;flex-direction:column;align-items:center;gap:6px}
+.podio .pd b{font-weight:800;font-size:.9rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.podio .pd small{color:var(--muted);font-weight:700;font-size:.82rem}
+.podio .ps{width:100%;border-radius:12px 12px 4px 4px;background:var(--surface2);display:grid;place-items:center;font-size:1.4rem}
+.reac{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.reac .anim-b{padding:4px 10px;min-height:32px}
+.reac .anim-b .e{font-size:1rem;line-height:1}
 .gx-last b{color:var(--c-gym)}
 .gx-set{display:grid;grid-template-columns:22px 1fr auto 1fr auto 36px;align-items:center;gap:6px}
 .gx-set input{text-align:center;font-family:var(--display);font-weight:900;font-size:1.15rem;padding:6px 4px;min-width:0}
@@ -252,6 +299,10 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .cta.done{background:var(--ok-soft);color:var(--ok)}
 .ghost{border:1px solid var(--line);background:var(--surface);border-radius:var(--pill);padding:0 18px;font-weight:700;min-height:48px}
 .ghost.sm{min-height:40px;padding:0 14px;font-size:.92rem}
+.ghost:has(svg){display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.ghost svg{width:18px;height:18px;flex:none}
+.ghost.sm svg{width:16px;height:16px}
+a.cta{box-sizing:border-box;text-decoration:none}
 .file-btn{display:flex;align-items:center;justify-content:center;cursor:pointer}
 
 /* acción principal (zona del pulgar) */
@@ -261,7 +312,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .actionbar .in{max-width:560px;margin:0 auto;display:flex;gap:10px;align-items:center}
 .actionbar .cta{box-shadow:0 6px 20px color-mix(in srgb,var(--cta) 30%,transparent)}
 .actionbar .cta.done{box-shadow:none}
-.restpill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabh) + 84px + env(safe-area-inset-bottom,0px));z-index:22;
+.restpill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabh) + 84px + env(safe-area-inset-bottom,0px));z-index:50;
   display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--bg);border-radius:var(--pill);padding:8px 8px 8px 16px;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:rise .25s ease}
 .restpill .num{font-size:1.5rem;min-width:64px}
 .restpill button{border:0;border-radius:var(--pill);background:color-mix(in srgb,var(--bg) 18%,transparent);color:var(--bg);font-weight:800;min-height:40px;padding:0 12px}
@@ -289,7 +340,7 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .lg-r .bar i{display:block;height:100%;border-radius:99px;background:var(--ok)}
 .lg-r.yo .nm::after{content:' · tú';color:var(--muted);font-weight:700}
 .fd{display:flex;flex-direction:column}
-.fd-r{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.fd-r{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
 .fd-r:first-child{border-top:0;padding-top:2px}
 .fd-r .tx{font-size:.95rem;line-height:1.35}
 .fd-r .tx b{font-weight:800}
@@ -655,6 +706,15 @@ const IC={
   plus:ic('<path d="M12 5v14M5 12h14"/>'),
   trophy:ic('<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/>'),
   users:ic('<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.6 14.1A4.6 4.6 0 0 1 21 18.5"/>'),
+  atras:ic('<path d="M15 5l-7 7 7 7"/>'),
+  chev:ic('<path d="M9 5l7 7-7 7"/>'),
+  user:ic('<circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>'),
+  cal:ic('<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+  sol:ic('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>'),
+  nube:ic('<path d="M7 18.5h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.7 4.4 4.4 0 0 0 7 18.5z"/>'),
+  caja:ic('<path d="M4 8h16v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M3 4.5h18V8H3zM10 12h4"/>'),
+  movil:ic('<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18h2"/>'),
+  llave:ic('<circle cx="8" cy="15" r="4"/><path d="M11 12l8.5-8.5M16 7l2.5 2.5M14 9l2 2"/>'),
   hist:ic('<path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/><path d="M12 8v4l3 2"/>'),
   gear:ic('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
   shield:ic('<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>'),
@@ -664,7 +724,7 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.7';
+const VERSION='2.8';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -681,9 +741,16 @@ const enlaceInvitacion=(url,c)=>APP_URL+'?unirse='+b64u(url)+'~'+c, enlaceEntrar
 let instEv=null;
 const esIOS=/iphone|ipad|ipod/i.test(navigator.userAgent), standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
 let syncing=false, syncTimer=null, lastSync=LS.get('me.last',0), syncOk=null;
-let prefs=Object.assign({sonido:true,vibracion:true,anim:true},LS.get('me.prefs',{}));
+let prefs=Object.assign({sonido:true,vibracion:true,anim:true,tema:'auto',autoDescanso:true,descansoGym:90,recDias:null,recHora:'18:00'},LS.get('me.prefs',{}));
 const sysReduce=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}})();
 function applyAnim(){document.documentElement.classList.toggle('no-anim',!prefs.anim)}
+// Tema: automático (como el móvil), claro u oscuro
+function applyTema(){
+  const r=document.documentElement, m=document.querySelectorAll('meta[name="theme-color"]');
+  if(prefs.tema==='light'||prefs.tema==='dark'){r.dataset.theme=prefs.tema;m.forEach(x=>x.setAttribute('content',prefs.tema==='dark'?'#101215':'#F4F5F7'))}
+  else{delete r.dataset.theme;m.forEach(x=>x.setAttribute('content',/dark/.test(x.media||'')?'#101215':'#F4F5F7'))}
+}
+const savePrefs=()=>LS.set('me.prefs',prefs);
 let exOpen=false, figOpen='', sheetK='', TAB='hoy', progView='semana', monthOff=0, justSet='', animNext=true;
 
 function blank(k){return{fecha:k,tipo:planTipo(k),gym:[],calent:false,sets:{},reps:{},min:'',actividad:'',sens:'',peso:'',notas:'',reloj:{},bascula:{}}}
@@ -754,8 +821,24 @@ function gymNames(){
   GYM_EX.forEach(n=>{if(!seen.has(gN(n)))seen.set(gN(n),n)});
   return [...seen.values()];
 }
-const restOf=d=>d.tipo==='gym'?90:R(d).rest;
-function gymLast(x,i){const pv=gymPrev(x.n,sel);return pv?'La última vez ('+sdate(pv.k).slice(2)+'): <b>'+esc(gymSum(pv.x))+'</b>':String(x.n||'').trim()?'Primera vez que lo apuntas':''}
+const restOf=d=>d.tipo==='gym'?(+prefs.descansoGym||90):R(d).rest;
+// Sugerencia de peso: si la última vez aguantó las repeticiones con el peso más alto, sube un poco; si no, repite.
+function gymSug(x){
+  const pv=gymPrev(x.n,sel); if(!pv)return null;
+  const ss=pv.x.s.filter(gOk), mk=gymMax(pv.x); if(!mk||!ss.length)return null;
+  const top=ss.filter(s=>num(s.kg)===mk), minR=Math.min(...top.map(s=>num(s.r)||0));
+  const step=mk<20?1:mk<60?2.5:5, sube=top.length>=2&&minR>=8;
+  return {kg:sube?mk+step:mk,sube,reps:ss.map(s=>num(s.r)||''),n:ss.length};
+}
+function gymLast(x,i){
+  const pv=gymPrev(x.n,sel);
+  if(!pv)return String(x.n||'').trim()?'Primera vez que lo apuntas':'';
+  const sg=gymSug(x), vacio=!(x.s||[]).some(gOk);
+  return 'La última vez ('+sdate(pv.k).slice(2)+'): <b>'+esc(gymSum(pv.x))+'</b>'+(sg?`<div class="gx-sug"><span>${sg.sube?'Hoy prueba con <b>'+fn(sg.kg)+' kg</b>':'Hoy repite <b>'+fn(sg.kg)+' kg</b> y busca una repetición más'}</span>${vacio?`<button type="button" class="ghost sm" data-gfill="${i}">Rellenar</button>`:''}</div>`:'');
+}
+let gUndo=null;
+function gymUndo(txt){const prev=JSON.stringify(cur.gym),id=Date.now();gUndo={txt,prev,id};setTimeout(()=>{if(gUndo&&gUndo.id===id){gUndo=null;if(sheetK==='gym')reSheet()}},6000)}
+function gymRecientes(){const out=[],seen=new Set();Object.keys(days).filter(k=>k<sel&&days[k].tipo==='gym'&&gymExs(days[k]).length).sort().reverse().forEach(k=>{const n=gymExs(days[k]).map(x=>gN(x.n)).sort().join('|');if(!seen.has(n)&&out.length<3){seen.add(n);out.push(k)}});return out}
 
 /* ---------- racha por semanas: entrenar X días cada semana, sin importar cuáles ---------- */
 const sesOf=k=>{const x=days[k];return !!x&&x.tipo!=='descanso'&&status(x)==='done'};
@@ -1038,9 +1121,91 @@ function racha(){
 /* ---------- hojas inferiores ---------- */
 function openSheet(k){if(!sheetK){if(navK()==='sheet')history.replaceState(history.state,'');else history.pushState({k:'sheet',t:TAB,d:navD()+1},'')}sheetK=k;renderSheet();$('#sheet').hidden=false;$('#sheet-bg').hidden=false;document.documentElement.style.overflow='hidden';
   setTimeout(()=>{const i=$('#sheet-c input[data-autofocus]');if(i)i.focus()},80)}
-function closeSheet(){if(!sheetK)return;if(navK()==='sheet'){history.back();return}reallyCloseSheet()}
-function reallyCloseSheet(){if(!sheetK)return;if(sheetK==='hola'&&ajustes.nombre===undefined){ajustes.nombre='';saveLocal()}sheetK='';$('#sheet').hidden=true;$('#sheet-bg').hidden=true;document.documentElement.style.overflow='';flush();renderAll()}
+function closeSheet(){if(!sheetK)return;if(navK()==='sheet'){history.go(history.state&&history.state.sub?-2:-1);return}reallyCloseSheet()}
+function reallyCloseSheet(){if(!sheetK)return;ajView='';invMsg='';pwMsg='';gUndo=null;if(sheetK==='hola'&&ajustes.nombre===undefined){ajustes.nombre='';saveLocal()}sheetK='';$('#sheet').hidden=true;$('#sheet-bg').hidden=true;document.documentElement.style.overflow='';flush();renderAll()}
 function reSheet(f){if(!sheetK)return;const s=$('#sheet'),y=s.scrollTop;renderSheet();s.scrollTop=y;if(f){const i=$('#sheet-c '+f);if(i)i.focus()}}
+let ajView='';
+function ajIr(v){if(sheetK!=='ajustes')return;if(v){if(!ajView)history.pushState({k:'sheet',t:TAB,d:navD()+1,sub:1},'');ajView=v;if(v==='invitados'&&invList===null)cargarInvitados()}else if(ajView){history.back();return}renderSheet();$('#sheet').scrollTop=0}
+const ajRow=(v,ic,c,t,s)=>`<button type="button" class="aj-r" data-ajv="${v}"><span class="aj-i" style="background:var(${c})">${ic}</span><span class="aj-t"><b>${t}</b>${s?`<small>${esc(s)}</small>`:''}</span><span class="aj-c">${IC.chev}</span></button>`;
+function planResumen(){const p=pf();return (p.modo==='gym'?'Gimnasio':p.modo==='ambos'?'Casa y gimnasio':'En casa')+' · '+(p.racha==='semanal'?p.dias+(p.dias===1?' día':' días')+' por semana':'días fijos')}
+function ajMain(){
+  const wh=lastSync?new Date(lastSync).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):'';
+  const est=cuenta?'@'+cuenta.usuario+' · tus datos en la nube':sync.url?'Conectado a tu hoja de Google':'Solo en este móvil';
+  const TEMA={auto:'automático',light:'claro',dark:'oscuro'};
+  const rd=recDias();
+  return `<div class="aj-prof">${avatar(nom()||'?')}<div><b>${esc(nom()||'Sin nombre')}</b><small>${esc(est)}</small></div></div>
+  <div class="aj-g"><div class="aj-gt">Tú</div><div class="aj-list">
+    ${ajRow('perfil',IC.user,'--r1','Perfil',nom()||'Pon tu nombre')}
+    ${ajRow('plan',IC[pf().modo==='casa'?'fuerza':'gym'],'--c-gym','Tu plan',planResumen())}
+  </div></div>
+  <div class="aj-g"><div class="aj-gt">Entreno</div><div class="aj-list">
+    ${ajRow('entreno',IC.timer,'--r3','Durante el entreno',(prefs.sonido?'Sonido':'Sin sonido')+' · '+(prefs.vibracion?'vibración':'sin vibración')+(pf().modo!=='casa'?' · descanso '+fmt(+prefs.descansoGym||90):''))}
+    ${ajRow('recordatorio',IC.cal,'--ok','Recordatorio',rd.length?'Añádelo a tu calendario':'Elige días y hora')}
+  </div></div>
+  <div class="aj-g"><div class="aj-gt">App</div><div class="aj-list">
+    ${ajRow('aspecto',IC.sol,'--c-fuerza','Aspecto','Tema '+TEMA[prefs.tema||'auto']+' · animaciones '+(prefs.anim?'sí':'no'))}
+    ${puedeInstalar()?(instEv?`<button type="button" class="aj-r" data-instalar><span class="aj-i" style="background:var(--flame)">${IC.movil}</span><span class="aj-t"><b>Instalar la app</b><small>Como una app más, y funciona sin conexión</small></span><span class="aj-c">${IC.chev}</span></button>`:ajRow('instalar',IC.movil,'--flame','Instalar la app','Cómo ponerla en tu iPhone')):''}
+  </div></div>
+  <div class="aj-g"><div class="aj-gt">Cuenta y datos</div><div class="aj-list">
+    ${ajRow('cuenta',IC.nube,'--r3',cuenta?'Tu cuenta':'Sincronización',cuenta?'@'+cuenta.usuario+(wh?' · '+wh:''):sync.url?'Conectada'+(wh?' · '+wh:''):'Sin conectar')}
+    ${sync.url?ajRow('invitados',IC.users,'--c-gym','Personas invitadas','Invitar y cambiar contraseñas'):''}
+    ${ajRow('datos',IC.caja,'--flame2','Copia de seguridad','Descargar o importar tus datos')}
+    <a class="aj-r" href="versiones/"><span class="aj-i" style="background:var(--muted)">${IC.hist}</span><span class="aj-t"><b>Versiones anteriores</b><small>Por si algo falla</small></span><span class="aj-c">${IC.chev}</span></a>
+  </div></div>
+  <p class="aj-foot">Mi entreno · versión ${VERSION}</p>`;
+}
+function ajSub(v){
+  const wh=lastSync?new Date(lastSync).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):'todavía no';
+  if(v==='perfil')return ['Perfil',`<label class="lab" for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label><p class="rel" style="margin:0">Lo uso para saludarte y es el que ven tus amigos.</p>`];
+  if(v==='plan')return ['Tu plan',planUI()+(pf().pasos?`<label class="lab" for="obj-pasos">Objetivo diario de pasos<input id="obj-pasos" inputmode="numeric" value="${esc(ajustes.pasosObj)}"></label>`:'')];
+  if(v==='entreno')return ['Durante el entreno',`
+    <button type="button" class="toggle" data-pref="sonido" aria-pressed="${prefs.sonido}"><span>Sonido al acabar el descanso</span><span class="sw"></span></button>
+    <button type="button" class="toggle" data-pref="vibracion" aria-pressed="${prefs.vibracion}"><span>Vibración</span><span class="sw"></span></button>
+    ${pf().modo!=='casa'?`<button type="button" class="toggle" data-pref="autoDescanso" aria-pressed="${prefs.autoDescanso}"><span>Descanso automático en el gimnasio<small style="display:block;color:var(--muted);font-weight:600;font-size:.82rem">Al pulsar «+ Serie» empieza la cuenta atrás.</small></span><span class="sw"></span></button>
+    <div class="q">Tiempo de descanso en el gimnasio</div><div class="chips">${[60,90,120,180].map(s=>`<button type="button" data-desc="${s}" aria-pressed="${+prefs.descansoGym===s}">${fmt(s)}</button>`).join('')}</div>`:''}
+    <p class="rel" style="margin:0">En la rutina de casa, el descanso lo marca cada ejercicio.</p>`];
+  if(v==='recordatorio'){const rd=recDias(),nx=recProxima();return ['Recordatorio',`<p class="tip">Te añado un aviso a tu calendario para los días que elijas. Es la forma de que el móvil te avise aunque no abras la app.</p>
+    <div class="q">Qué días</div><div class="dias-sel">${[1,2,3,4,5,6,0].map(i=>`<button type="button" data-recdia="${i}" aria-pressed="${rd.includes(i)}" aria-label="${['domingo','lunes','martes','miércoles','jueves','viernes','sábado'][i]}">${DC[i]}</button>`).join('')}</div>
+    <label class="lab" for="rec-hora">A qué hora<input id="rec-hora" type="time" value="${esc(prefs.recHora||'18:00')}"></label>
+    ${nx?`<a class="cta" href="${esc(recGoogle())}" target="_blank" rel="noopener">${IC.cal}Añadir a Google Calendar</a>
+    <button type="button" class="ghost" data-recics>Otro calendario (iPhone, Outlook…)</button>
+    <p class="rel" style="margin:0">El primero será el ${esc(fdate(key(nx)).toLowerCase())} a las ${esc(prefs.recHora||'18:00')}. Si cambias tu plan, vuelve a añadirlo y borra el anterior en tu calendario.</p>`:'<p class="rel" style="margin:0">Elige al menos un día.</p>'}`]}
+  if(v==='aspecto')return ['Aspecto',`<div class="q">Tema</div><div class="seg">${[['auto','Automático','como el móvil'],['light','Claro',''],['dark','Oscuro','']].map(([k,l,s])=>`<button type="button" data-tema="${k}" aria-pressed="${(prefs.tema||'auto')===k}"><b>${l}</b>${s?`<small>${s}</small>`:''}</button>`).join('')}</div>
+    <button type="button" class="toggle" data-pref="anim" aria-pressed="${prefs.anim}"><span>Animaciones<small style="display:block;color:var(--muted);font-weight:600;font-size:.82rem">${sysReduce?'Tu móvil tiene las animaciones reducidas; con esto activado, la app las muestra igualmente.':'Anillos, gráficas, series, racha y medallas.'}</small></span><span class="sw"></span></button>`];
+  if(v==='instalar')return ['Instalar la app','<p class="tip">En iPhone, abre esta página con Safari, pulsa el botón Compartir (el cuadrado con la flecha) y luego «Añadir a pantalla de inicio».</p>'];
+  if(v==='datos')return ['Copia de seguridad',`<p class="tip">${cuenta||sync.url?'Tus datos ya se guardan solos en la nube. Esto es por si quieres una copia aparte.':'Tus datos están solo en este móvil: descarga una copia de vez en cuando.'}</p>
+    <div class="opts"><button type="button" class="ghost" data-exportar>Descargar copia (.json)</button><label class="ghost file-btn" for="importar">Importar una copia<input type="file" id="importar" accept="application/json,.json" hidden></label></div>
+    <div class="rel" id="sync-res" aria-live="polite"></div>`];
+  if(v==='invitados'){
+    const L=invList;
+    return ['Personas invitadas',`<button type="button" class="cta" data-invitar>${IC.users}Invitar a alguien</button>
+    <p class="rel" style="margin:0">Crea un enlace para que otra persona tenga su propia cuenta. Sus datos van a una hoja suya en tu Google Drive, separada de la tuya.</p>
+    <div class="rel" id="sync-res" aria-live="polite"></div>
+    <div class="q">Cuentas creadas</div>
+    ${L===null?'<p class="rel" style="margin:0">Cargando…</p>':L.length?`<div>${L.map(c=>`<div class="inv-r"><div class="inv-h">${avatar(c.nombre,1)}<span class="nm">${esc(c.nombre)}<small>@${esc(c.usuario)}${c.creada?' · desde el '+esc(c.creada.slice(0,10).split('-').reverse().slice(0,2).join('/')):''}</small></span>${invOpen===c.usuario?'':`<button type="button" class="ghost sm" data-invpw="${esc(c.usuario)}">${IC.llave}Contraseña</button>`}</div>
+      ${invOpen===c.usuario?`<label class="lab" for="inv-pass-${esc(c.usuario)}">Contraseña nueva para ${esc(c.nombre)}<input id="inv-pass-${esc(c.usuario)}" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="mínimo 6 caracteres"></label><div class="opts"><button type="button" class="cta" data-invset="${esc(c.usuario)}">Guardar</button><button type="button" class="link" data-invpw="">Cancelar</button></div>`:''}</div>`).join('')}</div>`:'<p class="rel" style="margin:0">Todavía no has invitado a nadie.</p>'}
+    ${invMsg?`<div class="note"><span>${esc(invMsg)}</span></div>`:''}`];
+  }
+  if(v==='cuenta'){
+    if(cuenta)return ['Tu cuenta',`<p class="tip">Has iniciado sesión como <b>${esc(cuenta.usuario)}</b>. Lo que apuntas se guarda solo en tu cuenta. Última sincronización: ${wh}.</p>
+      <button type="button" class="ghost" data-compartir>Enlace para entrar desde otro móvil</button>
+      <div class="rel" id="sync-res" aria-live="polite"></div>
+      <div class="q">Cambiar contraseña</div>
+      <label class="lab" for="pw-a">Contraseña actual<input id="pw-a" type="password" autocomplete="current-password" value="${esc(pwForm.a)}"></label>
+      <label class="lab" for="pw-n">Contraseña nueva<input id="pw-n" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres" value="${esc(pwForm.n)}"></label>
+      <button type="button" class="ghost" data-pwcambiar>Cambiar contraseña</button>${pwMsg?`<div class="note"><span>${esc(pwMsg)}</span></div>`:''}
+      <button type="button" class="link center" data-salir>Cerrar sesión en este móvil</button>`];
+    return [sync.url?'Sincronización':'Tu cuenta',`${!sync.url&&servidor?`<p class="tip">Crea tu cuenta para guardar lo que apuntas en la nube y entrar desde cualquier móvil.</p>
+      <div class="opts">${invit?'<button type="button" class="cta" data-sheet="registro">Crear cuenta</button>':''}<button type="button" class="ghost" data-sheet="login">Iniciar sesión</button></div><div class="q" style="margin-top:8px">Tu propia hoja de Google (avanzado)</div>`:''}
+      <p class="tip">${sync.url?`Conectada a tu hoja de Google. Última sincronización: ${wh}.`:'Tus datos se guardan en este móvil. Si alguien te ha invitado a Mi entreno, abre su enlace desde aquí para crear tu cuenta. Si tienes tu propia hoja con el código de Mi entreno, pega su enlace y su clave.'}</p>
+      <label class="lab" for="sync-url">Enlace de la aplicación web<input id="sync-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(sync.url)}"></label>
+      <label class="lab" for="sync-clave">Clave<input id="sync-clave" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(sync.clave)}"></label>
+      <button type="button" class="cta" data-conectar>${sync.url?'Guardar y sincronizar ahora':'Conectar y sincronizar'}</button>
+      ${sync.url?'<button type="button" class="link center" data-desconectar>Desconectar este móvil</button>':''}
+      <div class="rel" id="sync-res" aria-live="polite"></div>`];
+  }
+  return ['Ajustes',ajMain()];
+}
 function planFijoTxt(){const k0=monOf(TODAY);return [0,1,2,3,4,5,6].map(i=>{const k=addDays(k0,i);return DC[parse(k).getDay()]+' '+TIPO_TXT[planTipo(k)].toLowerCase()}).join(' · ')}
 function planUI(){
   const p=pf(), b=(k,v,l,s)=>`<button type="button" data-perf="${k}:${v}" aria-pressed="${p[k]===v}"><b>${l}</b>${s?`<small>${s}</small>`:''}</button>`;
@@ -1083,14 +1248,17 @@ function renderSheet(){
   } else if(sheetK==='gym'){
     t='Gimnasio';
     if(!d.gym||!d.gym.length)d.gym=[{n:'',s:[{r:'',kg:''}]}];
-    h=`<div class="gx-list">${d.gym.map((x,i)=>`<div class="gx">
+    const vacio=!d.gym.some(x=>String(x.n||'').trim()||(x.s||[]).some(gOk)), rec=vacio?gymRecientes():[];
+    h=`${gUndo?`<div class="undo" role="status"><span>${esc(gUndo.txt)}</span><button type="button" data-gundo>Deshacer</button></div>`:''}
+    ${rec.length?`<div class="gx-rep"><div class="q">Repetir un entreno anterior</div>${rec.map(k=>{const xs=gymExs(days[k]).map(x=>x.n.trim());return `<button type="button" data-grep="${k}"><b>${esc(fdate(k))}</b><small>${esc(xs.slice(0,3).join(', ')+(xs.length>3?' y '+(xs.length-3)+' más':''))}</small></button>`}).join('')}<div class="q" style="margin-top:6px">O empieza uno nuevo</div></div>`:''}
+    <div class="gx-list">${d.gym.map((x,i)=>`<div class="gx">
       <div class="gx-h"><input class="gx-n" data-gn="${i}" list="gym-dl" placeholder="Ejercicio (p. ej. Sentadilla)" aria-label="Ejercicio ${i+1}" value="${esc(x.n)}" autocapitalize="sentences"${!String(x.n||'').trim()&&i===d.gym.length-1?' data-autofocus':''}><button type="button" class="gx-x" data-gdel="${i}" aria-label="Quitar este ejercicio">✕</button></div>
       <div class="gx-last" data-glast="${i}">${gymLast(x,i)}</div>
       ${(x.s||[]).map((s,j)=>`<div class="gx-set"><span class="gx-i">${j+1}</span><input data-gr="${i}:${j}" inputmode="numeric" placeholder="reps" aria-label="Repeticiones, serie ${j+1}" value="${esc(s.r)}"><span class="u">×</span><input data-gk="${i}:${j}" inputmode="decimal" placeholder="kg" aria-label="Kilos, serie ${j+1}" value="${esc(s.kg)}"><span class="u">kg</span><button type="button" class="gx-x" data-gsdel="${i}:${j}" aria-label="Quitar la serie ${j+1}">−</button></div>`).join('')}
       <button type="button" class="ghost sm" data-gadd="${i}">+ Serie</button></div>`).join('')}</div>
     <button type="button" class="ghost" data-gnew>+ Añadir ejercicio</button>
     <datalist id="gym-dl">${gymNames().map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
-    <p class="tip">Al añadir una serie se copian las repeticiones y los kilos de la anterior. Sin peso (cinta, plancha…), deja los kilos vacíos.</p>
+    <p class="tip">Al añadir una serie se copian las repeticiones y los kilos de la anterior${prefs.autoDescanso?' y empieza el descanso de '+fmt(restOf(d)):''}. Sin peso (cinta, plancha…), deja los kilos vacíos.</p>
     <h2>Duración (opcional)</h2>
     <div class="big"><input id="min" inputmode="numeric" placeholder="0" aria-label="Minutos" value="${esc(d.min)}"><span class="rel">minutos</span></div>
     <div class="chips">${[45,60,75,90].map(m=>`<button type="button" data-quick="${m}" aria-pressed="${num(d.min)===m}">${m} min</button>`).join('')}</div>
@@ -1123,6 +1291,15 @@ function renderSheet(){
     <label class="lab" for="nombre">¿Cómo te llamas?<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label>
     ${planUI()}
     <button type="button" class="cta" data-sheet-close>Empezar</button>`;
+  } else if(sheetK==='resumen'){
+    const r=resumenMes(), c=resumenCeldas(r), L=resumenFrases(r);
+    t='Resumen del mes';
+    h=`<div class="wcard"><span class="wm">Mi entreno${nom()?' · '+esc(nom()):''}</span><h3>${esc(r.mes)}</h3>
+      <div class="wg">${c.map(([v,k])=>`<div class="wc"><div class="v tab">${esc(String(v).replace('.',','))}</div><div class="k">${esc(k)}</div></div>`).join('')}</div>
+      ${L.length?`<div class="wl">${L.map(esc).join('<br>')}</div>`:''}</div>
+    ${r.ses?'':'<p class="rel" style="margin:0">Este mes todavía no hay entrenos apuntados.</p>'}
+    <button type="button" class="cta" data-wrapimg>${IC.star}Guardar o compartir la imagen</button>
+    <div class="rel" id="wrap-res" aria-live="polite"></div>`;
   } else if(sheetK==='registro'){
     t='Crear tu cuenta';
     const sug=(gN(nom()).replace(/[^a-z0-9_-]/g,'')||'tunombre').slice(0,20);
@@ -1145,38 +1322,9 @@ function renderSheet(){
     <p class="rel" style="margin:0">¿Has olvidado la contraseña? Pídele a quien te invitó que te ponga una nueva.</p>
     ${invit?'<button type="button" class="link center" data-sheet="registro">No tengo cuenta: crear una</button>':''}`;
   } else if(sheetK==='ajustes'){
-    t='Ajustes';
-    const wh=lastSync?new Date(lastSync).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):'todavía no';
-    h=`<h2>Tú</h2>
-    <label class="lab" for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" autocapitalize="words" maxlength="30" value="${esc(nom())}"></label>
-    <h2>Tu plan</h2>
-    ${planUI()}
-    <h2>Durante el entreno</h2>
-    <button type="button" class="toggle" data-pref="sonido" aria-pressed="${prefs.sonido}"><span>Sonido al acabar el descanso</span><span class="sw"></span></button>
-    <button type="button" class="toggle" data-pref="vibracion" aria-pressed="${prefs.vibracion}"><span>Vibración</span><span class="sw"></span></button>
-    <h2>Aspecto</h2>
-    <button type="button" class="toggle" data-pref="anim" aria-pressed="${prefs.anim}"><span>Animaciones<small style="display:block;color:var(--muted);font-weight:600;font-size:.82rem">${sysReduce?'Tu móvil tiene las animaciones reducidas; con esto activado, la app las muestra igualmente.':'Anillos, gráficas, series, racha y medallas.'}</small></span><span class="sw"></span></button>
-    ${puedeInstalar()?`<h2>App</h2>${instEv?'<button type="button" class="ghost" data-instalar>Instalar la app en este móvil</button>':'<p class="tip">En iPhone, con Safari: botón Compartir y luego «Añadir a pantalla de inicio».</p>'}`:''}
-    ${cuenta?`<h2>Tu cuenta</h2>
-    <p class="tip">Has iniciado sesión como <b>${esc(cuenta.usuario)}</b>. Lo que apuntas se guarda solo en tu cuenta. Última sincronización: ${wh}.</p>
-    <button type="button" class="ghost" data-compartir>Enlace para entrar desde otro móvil</button>
-    <button type="button" class="link center" data-salir>Cerrar sesión en este móvil</button>
-    <div class="rel" id="sync-res" aria-live="polite"></div>`:`${!sync.url&&servidor?`<h2>Tu cuenta</h2>
-    <p class="tip">Crea tu cuenta para guardar lo que apuntas en la nube y entrar desde cualquier móvil.</p>
-    <div class="opts">${invit?'<button type="button" class="cta" data-sheet="registro">Crear cuenta</button>':''}<button type="button" class="ghost" data-sheet="login">Iniciar sesión</button></div>`:''}
-    <h2>${!sync.url&&servidor?'Tu propia hoja de Google (avanzado)':'Sincronización con Google Sheets'}</h2>
-    <p class="tip">${sync.url?`Conectada. Última sincronización: ${wh}.`:'Tus datos se guardan en este móvil. Si alguien te ha invitado a Mi entreno, abre su enlace desde aquí para crear tu cuenta. Si tienes tu propia hoja con el código de Mi entreno, pega su enlace y su clave.'}</p>
-    <label class="lab" for="sync-url">Enlace de la aplicación web<input id="sync-url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(sync.url)}"></label>
-    <label class="lab" for="sync-clave">Clave<input id="sync-clave" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(sync.clave)}"></label>
-    <button type="button" class="cta" data-conectar>${sync.url?'Guardar y sincronizar ahora':'Conectar y sincronizar'}</button>
-    ${sync.url?'<button type="button" class="ghost" data-invitar>Invitar a alguien</button><p class="rel" style="margin:0">Crea un enlace para que otra persona tenga su propia cuenta. Sus datos irán a una hoja suya en tu Google Drive, separada de la tuya.</p><button type="button" class="link center" data-desconectar>Desconectar este móvil</button>':''}
-    <div class="rel" id="sync-res" aria-live="polite"></div>`}
-    <h2>Copia de seguridad</h2>
-    <div class="opts"><button type="button" class="ghost" data-exportar>Descargar copia (.json)</button><label class="ghost file-btn" for="importar">Importar una copia<input type="file" id="importar" accept="application/json,.json" hidden></label></div>
-    <label class="lab" for="obj-pasos">Objetivo diario de pasos<input id="obj-pasos" inputmode="numeric" value="${esc(ajustes.pasosObj)}"></label>
-    <p class="rel">Mi entreno · versión ${VERSION} · <a href="versiones/" style="color:var(--accent);font-weight:700">versiones anteriores</a></p>`;
+    [t,h]=ajView?ajSub(ajView):['Ajustes',ajMain()];
   }
-  $('#sheet-t').textContent=t; $('#sheet-c').innerHTML=h;
+  $('#sheet-t').innerHTML=(sheetK==='ajustes'&&ajView?`<button type="button" class="sh-back" data-ajv="" aria-label="Volver a Ajustes">${IC.atras}</button>`:'')+esc(t); $('#sheet-c').innerHTML=h;
 }
 
 /* ---------- cuentas ---------- */
@@ -1226,6 +1374,81 @@ function renderInstall(){
 }
 async function instalar(){if(!instEv)return;instEv.prompt();try{await instEv.userChoice}catch(e){}instEv=null;renderInstall();if(sheetK)reSheet()}
 
+/* ---------- resumen del mes (para guardar como imagen) ---------- */
+function resumenMes(){
+  const b=new Date(parse(TODAY).getFullYear(),parse(TODAY).getMonth()+monthOff,1), first=key(b), last=key(new Date(b.getFullYear(),b.getMonth()+1,0)), end=last<TODAY?last:TODAY;
+  let ses=0,min=0,series=0,prs=0,km=0,best=0,run=0; const tipos={}, wd=[0,0,0,0,0,0,0], ex={};
+  for(let k=first;k<=end;k=addDays(k,1)){
+    const d=days[k];
+    if(stOf(k)==='done'){run++;best=Math.max(best,run)}else run=0;
+    if(!sesOf(k))continue;
+    ses++;min+=exMin(d);tipos[d.tipo]=(tipos[d.tipo]||0)+1;wd[parse(k).getDay()]++;km+=num((d.reloj||{}).dist);
+    if(d.tipo==='gym'){series+=gymSets(d);prs+=gymPRs(k);gymExs(d).forEach(x=>{const n=x.n.trim();ex[n]=(ex[n]||0)+1})}
+    if(d.tipo==='fuerza')series+=nSets(d);
+  }
+  let sem=0; if(semanal())for(let m=monOf(first);m<=end;m=addDays(m,7)){if(addDays(m,6)<first)continue;if(weekSes(m)>=pf().dias)sem++}
+  const mf=LS.get('me.logrosF',{}), med=Object.keys(mf).filter(id=>mf[id]>=first&&mf[id]<=end).length;
+  const topT=Object.keys(tipos).sort((a,b)=>tipos[b]-tipos[a])[0], dw=wd.indexOf(Math.max(...wd)), topE=Object.keys(ex).sort((a,b)=>ex[b]-ex[a])[0];
+  const DN=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  return {mes:MES[b.getMonth()]+' '+b.getFullYear(),ses,min:Math.round(min),series,prs,km,best,sem,med,topT,dia:ses?DN[dw]:'',topE:topE&&ex[topE]>1?topE:'',actual:monthOff===0};
+}
+function resumenFrases(r){
+  const L=[];
+  if(r.topT)L.push('Lo que más hiciste: '+(r.topT==='gym'?'gimnasio':r.topT==='fuerza'?'fuerza en casa':r.topT==='caminar'?'caminar':r.topT==='libre'?'deporte':'descansar')+'.');
+  if(r.dia)L.push('Tu día favorito: el '+r.dia+'.');
+  if(r.topE)L.push('Tu ejercicio estrella: '+r.topE+'.');
+  if(pf().pasos&&r.km>=1)L.push('Caminaste '+fn(Math.round(r.km*10)/10)+' km.');
+  return L;
+}
+function resumenCeldas(r){
+  const c=[[r.ses,r.ses===1?'día entrenado':'días entrenados'],[r.min,'minutos de ejercicio']];
+  c.push(semanal()?[r.sem,r.sem===1?'semana cumplida':'semanas cumplidas']:[r.best,'días seguidos (lo mejor)']);
+  c.push(r.prs?[r.prs,r.prs===1?'récord de peso':'récords de peso']:r.series?[r.series,'series']:[r.med,r.med===1?'medalla':'medallas']);
+  return c;
+}
+async function resumenImagen(){
+  const r=resumenMes(), c=resumenCeldas(r), L=resumenFrases(r), W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  try{await document.fonts.ready}catch(e){}
+  const x=cv.getContext('2d'), F='"Nunito","Nunito Sans",system-ui,sans-serif', g=x.createLinearGradient(0,0,W*.6,H);
+  g.addColorStop(0,'#E8365F');g.addColorStop(.55,'#F2603F');g.addColorStop(1,'#FF9A3D');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.fillStyle='#fff';x.textBaseline='top';
+  x.font='800 40px '+F;x.globalAlpha=.9;x.fillText('MI ENTRENO · '+(nom()||'').toUpperCase(),80,90);x.globalAlpha=1;
+  x.font='900 104px '+F;const t=r.mes.charAt(0).toUpperCase()+r.mes.slice(1);x.fillText(t,80,150);
+  c.forEach(([v,k],i)=>{const cx=80+(i%2)*470, cy=340+Math.floor(i/2)*300;
+    x.fillStyle='rgba(255,255,255,.17)';x.beginPath();x.roundRect?x.roundRect(cx,cy,450,270,36):x.rect(cx,cy,450,270);x.fill();
+    x.fillStyle='#fff';x.font='900 120px '+F;x.fillText(String(v).replace('.',','),cx+40,cy+40);x.font='700 38px '+F;
+    const ws=String(k).split(' ');let ln='',yy=cy+180;ws.forEach(w=>{if(x.measureText(ln+w).width>380){x.fillText(ln.trim(),cx+40,yy);ln='';yy+=44}ln+=w+' '});x.fillText(ln.trim(),cx+40,yy)});
+  x.font='700 40px '+F;L.slice(0,3).forEach((l,i)=>x.fillText(l.length>44?l.slice(0,43)+'…':l,80,970+i*62));
+  x.globalAlpha=.85;x.font='700 32px '+F;x.fillText('dgutierrezalbaladejo.github.io',80,H-110);x.globalAlpha=1;
+  const blob=await new Promise(res=>cv.toBlob(res,'image/png')), name='mi-entreno-'+r.mes.replace(' ','-')+'.png';
+  try{const f=new File([blob],name,{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Mi entreno · '+r.mes});return 'ok'}}catch(e){if(e&&e.name==='AbortError')return 'no'}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);return 'descarga';
+}
+
+/* ---------- recordatorio en el calendario ---------- */
+const BYD=['SU','MO','TU','WE','TH','FR','SA'];
+function recDias(){if(Array.isArray(prefs.recDias))return prefs.recDias;const out=[];for(let i=0;i<7;i++){const k=addDays(monOf(TODAY),i);const tp=planTipo(k);if(!semanal()&&tp!=='descanso'&&tp!=='libre')out.push(parse(k).getDay())}return out}
+function recProxima(){const ds=recDias(),[hh,mm]=String(prefs.recHora||'18:00').split(':').map(Number),now=new Date();for(let i=0;i<8;i++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i,hh,mm);if(ds.includes(d.getDay())&&d>now)return d}return null}
+const p2=n=>String(n).padStart(2,'0'), icsF=d=>d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'T'+p2(d.getHours())+p2(d.getMinutes())+'00';
+function recGoogle(){const d=recProxima();if(!d)return '';const e=new Date(d.getTime()+3600e3),tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||'Europe/Madrid';
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Entrenar · Mi entreno')+'&dates='+icsF(d)+'/'+icsF(e)+'&ctz='+encodeURIComponent(tz)
+    +'&recur='+encodeURIComponent('RRULE:FREQ=WEEKLY;BYDAY='+recDias().map(i=>BYD[i]).join(','))+'&details='+encodeURIComponent('Abre la app: '+APP_URL)}
+function recICS(){const d=recProxima();if(!d)return;const e=new Date(d.getTime()+3600e3),tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||'Europe/Madrid',now=new Date();
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Mi entreno//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:mi-entreno-'+now.getTime()+'@dgutierrezalbaladejo.github.io',
+    'DTSTAMP:'+now.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z','DTSTART;TZID='+tz+':'+icsF(d),'DTEND;TZID='+tz+':'+icsF(e),'RRULE:FREQ=WEEKLY;BYDAY='+recDias().map(i=>BYD[i]).join(','),
+    'SUMMARY:Entrenar · Mi entreno','DESCRIPTION:Abre la app: '+APP_URL,'URL:'+APP_URL,'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:¡A entrenar!','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'];
+  const blob=new Blob([L.join('\r\n')],{type:'text/calendar'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='recordatorio-mi-entreno.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+
+/* ---------- contraseñas ---------- */
+let invList=null, invMsg='', invOpen='', pwForm={a:'',n:''}, pwMsg='';
+async function cargarInvitados(){invMsg='';try{const j=await api({accion:'cuentasLista',clave:sync.clave},sync.url);invList=j.cuentas||[]}catch(e){invList=[];invMsg=e.message==='accion'||e.message==='clave'?'Para ver tus invitados, actualiza el código de Google a la versión 5.':'No se ha podido cargar la lista.'}if(sheetK==='ajustes')reSheet()}
+async function ponerClave(u){const inp=$('#inv-pass-'+u),pw=inp?inp.value:'';if(pw.length<6){invMsg='La contraseña tiene que tener al menos 6 caracteres.';reSheet();return}
+  try{await api({accion:'restablecer',clave:sync.clave,usuario:u,pass:pw},sync.url);invOpen='';const f=(invList||[]).find(x=>x.usuario===u);invMsg='Listo: '+(f?f.nombre:u)+' ya puede entrar con la contraseña nueva (en sus otros móviles tendrá que volver a entrar).'}
+  catch(e){invMsg=e.message==='accion'||e.message==='clave'?'Para cambiar contraseñas, actualiza el código de Google a la versión 5.':'No se ha podido cambiar.'}reSheet()}
+async function cambiarMiClave(){if(pwForm.n.length<6){pwMsg='La nueva contraseña tiene que tener al menos 6 caracteres.';reSheet();return}
+  try{const j=await api({accion:'cambiarClave',token:cuenta.token,actual:pwForm.a,pass:pwForm.n},cuenta.url);cuenta.token=j.token;LS.set('me.cuenta',cuenta);pwForm={a:'',n:''};pwMsg='Contraseña cambiada. En tus otros móviles tendrás que volver a entrar.'}
+  catch(e){pwMsg=e.message==='login'?'La contraseña actual no es correcta.':e.message==='accion'?'Quien te invitó tiene que actualizar su código de Google.':'No se ha podido cambiar.'}reSheet()}
+
 /* ---------- amigos ---------- */
 // Lo que se comparte es solo esto (y el servidor lo vuelve a filtrar): nombre, racha, días y minutos de la semana,
 // número de medallas y la actividad de los últimos 21 días (tipo de entreno, minutos, medallas, récords sin kilos).
@@ -1235,6 +1458,9 @@ const socURL=()=>cuenta?cuenta.url:sync.url;
 const VERBO={gym:['fue al gimnasio','Fuiste al gimnasio'],fuerza:['entrenó en casa','Entrenaste en casa'],caminar:['salió a caminar','Saliste a caminar'],
   libre:['hizo deporte','Hiciste deporte'],record:['batió un récord','Batiste un récord'],medalla:['consiguió una medalla','Conseguiste una medalla'],semana:['cumplió su objetivo de la semana','Cumpliste tu objetivo de la semana']};
 const AVC=['--r1','--c-gym','--r3','--c-fuerza','--ok','--flame'];
+const REAC=[['fuego',null],['fuerza','💪'],['aplauso','👏']];
+const reIc=r=>r==='fuego'?IC.flame:`<span class="e" aria-hidden="true">${(REAC.find(x=>x[0]===r)||REAC[0])[1]}</span>`;
+const parseAn=l=>(l||[]).map(s=>{const p=String(s).split('|');return {u:p[0],r:p[1]||'fuego'}});
 const avatar=(n,sm)=>{let h=0;for(const c of String(n))h=(h*31+c.charCodeAt(0))>>>0;return `<span class="av${sm?' sm':''}" style="background:var(${AVC[h%AVC.length]})" aria-hidden="true">${esc(String(n||'?').trim().charAt(0).toUpperCase()||'?')}</span>`};
 function socResumen(){
   const mon=monOf(TODAY), w=weekStats(mon); let h=0,m=0;
@@ -1311,6 +1537,14 @@ function renderAmigos(){
   soc.amigos.forEach(f=>rows.push({n:f.nombre,r:f.resumen,u:f.usuario}));
   const pct=r=>r&&r.semana.m?r.semana.h/r.semana.m:0;
   rows.sort((x,y)=>(y.r?1:0)-(x.r?1:0)||pct(y.r)-pct(x.r)||((y.r&&y.r.min)||0)-((x.r&&x.r.min)||0));
+  const part=rows.filter(x=>x.r);
+  if(part.length>=2){
+    const RT=[['min','Más minutos de ejercicio',r=>r.min,v=>v+' min'],['dias','Más días entrenados',r=>r.semana.h,v=>v+(v===1?' día':' días')],['pct','Mejor cumplimiento del objetivo',r=>r.semana.m?Math.round(r.semana.h/r.semana.m*100):0,v=>v+' %']];
+    const ri=Math.floor(parse(monOf(TODAY)).getTime()/(7*864e5))%RT.length, R=RT[ri], top=part.slice().sort((x,y)=>R[2](y.r)-R[2](x.r)).slice(0,3);
+    const pos=[1,0,2].filter(i=>top[i]), alt=[86,64,50], med=['🥇','🥈','🥉'];
+    h+=`<section class="card"><div class="row-h"><h2>Reto de la semana</h2><span class="rel">acaba el domingo</span></div><p class="rel" style="margin:0"><b>${R[1]}</b></p>
+      <div class="podio">${pos.map(i=>`<div class="pd">${avatar(top[i].n,1)}<b>${esc(top[i].yo?'Tú':top[i].n)}</b><small>${R[3](R[2](top[i].r))}</small><div class="ps" style="height:${alt[i]}px">${med[i]}</div></div>`).join('')}</div></section>`;
+  }
   if(soc.amigos.length||socOn)h+=`<section class="card"><div class="row-h"><h2>Esta semana</h2><span class="rel">días entrenados</span></div><div class="lg">${rows.map(x=>x.r?`<div class="lg-r${x.yo?' yo':''}">${avatar(x.n)}<div><div class="nm">${esc(x.n)}</div><div class="ssb">${x.r.semana.h} de ${x.r.semana.m} días · ${x.r.min} min${x.r.med?' · '+x.r.med+(x.r.med===1?' medalla':' medallas'):''}</div></div>
       <span class="rk" aria-label="Racha de ${x.r.racha.n} ${x.r.racha.u}">${IC.flame}${x.r.racha.n}<small>${x.r.racha.u==='semanas'?'sem':'días'}</small></span><div class="bar"><i style="width:${Math.round(Math.min(1,pct(x.r))*100)}%"></i></div></div>`
       :`<div class="lg-r">${avatar(x.n)}<div><div class="nm">${esc(x.n)}</div><div class="ssb">Todavía no comparte su progreso</div></div><span></span></div>`).join('')}</div></section>`;
@@ -1323,9 +1557,11 @@ function renderAmigos(){
   soc.amigos.forEach(f=>(f.eventos||[]).forEach(e=>fe.push({e,n:f.nombre,u:f.usuario,animos:e.animos||[]})));
   fe.sort((x,y)=>x.e.f<y.e.f?1:x.e.f>y.e.f?-1:(x.yo?1:0)-(y.yo?1:0));
   if(fe.length)h+=`<section class="card"><h2>Actividad</h2><div class="fd">${fe.slice(0,30).map(x=>{
-    const v=VERBO[x.e.t]||VERBO.libre, nm=x.animos.map(u=>names[u]||u), mio=x.animos.includes(yoU);
-    return `<div class="fd-r">${avatar(x.n,1)}<div><div class="tx">${x.yo?`<b>${v[1]}</b>`:`<b>${esc(x.n)}</b> ${v[0]}`}</div><div class="ssb">${relF(x.e.f)}${x.e.x?' · '+esc(x.e.x):''}</div>${x.yo&&nm.length?`<div class="an">${esc(nm.length<3?nm.join(' y '):nm[0]+' y '+(nm.length-1)+' más')} te ${nm.length===1?'ha':'han'} animado</div>`:''}</div>
-      ${x.yo?(nm.length?`<span class="anim-b" aria-label="${nm.length} ánimos">${IC.flame}${nm.length}</span>`:'<span></span>'):`<button type="button" class="anim-b" data-animo="${esc(x.u)}:${esc(x.e.id)}" aria-pressed="${mio}" aria-label="${mio?'Quitar ánimo':'Dar ánimo a '+esc(x.n)}">${IC.flame}${x.animos.length||'Ánimo'}</button>`}</div>`}).join('')}</div></section>`;
+    const v=VERBO[x.e.t]||VERBO.libre, an=parseAn(x.animos), nm=[...new Set(an.map(a=>names[a.u]||a.u))], mio=(an.find(a=>a.u===yoU)||{}).r;
+    const cnt=r=>an.filter(a=>a.r===r).length;
+    return `<div class="fd-r">${avatar(x.n,1)}<div><div class="tx">${x.yo?`<b>${v[1]}</b>`:`<b>${esc(x.n)}</b> ${v[0]}`}</div><div class="ssb">${relF(x.e.f)}${x.e.x?' · '+esc(x.e.x):''}</div>${x.yo&&nm.length?`<div class="an">${esc(nm.length<3?nm.join(' y '):nm[0]+' y '+(nm.length-1)+' más')} te ${nm.length===1?'ha':'han'} animado</div>`:''}
+      ${x.yo?(an.length?`<div class="reac">${REAC.filter(([r])=>cnt(r)).map(([r])=>`<span class="anim-b">${reIc(r)}${cnt(r)}</span>`).join('')}</div>`:'')
+        :`<div class="reac">${REAC.map(([r])=>`<button type="button" class="anim-b" data-animo="${esc(x.u)}:${esc(x.e.id)}:${r}" aria-pressed="${mio===r}" aria-label="${r==='fuego'?'Ánimo':r==='fuerza'?'Fuerza':'Aplauso'} para ${esc(x.n)}">${reIc(r)}${cnt(r)||(r==='fuego'&&!an.length?'Ánimo':'')}</button>`).join('')}</div>`}</div></div>`}).join('')}</div></section>`;
   else if(soc.amigos.length)h+=`<section class="card"><h2>Actividad</h2><p class="tip">Aún no hay nada. Cuando tus amigos entrenen, lo verás aquí y podrás darles ánimo.</p></section>`;
   // añadir amigos
   h+=`<section class="card"><h2>Añadir amigo</h2><p class="rel" style="margin:0">Tu usuario es <b>@${esc(yoU)}</b>. Pásaselo a tus amigos para que te añadan.</p>
@@ -1393,6 +1629,7 @@ function renderProgress(){
       <div class="stats">${stBox(semanal()?[ses,'','días entrenados']:[done,'/'+(elapsed||'—'),'días cumplidos'])}${pf().modo==='gym'?stBox([gy,'','días de gimnasio']):stBox([fz,'','entrenos de fuerza'])}${stBox([Math.round(mins),'','minutos'])}${pf().pasos?stBox([fn(km),'','km']):stBox([gs,'','series'])}</div>
       <div class="chart-h">Minutos por semana<span>objetivo OMS: 150</span></div>${bars(wk,{goal:150,max:150})}
       <div class="cal">${cal}</div>
+      <button type="button" class="ghost" data-sheet="resumen">${IC.star}Resumen del mes</button>
       <p class="rel" style="margin:0">${pas.length&&pf().pasos?'Pasos de media: <b>'+fmtN(pas.reduce((a,b)=>a+b,0)/pas.length)+'</b> al día. ':''}${dp!==null&&pf().bascula?'Peso este mes: <b>'+(dp<=0?'−':'+')+f1(Math.abs(dp))+' kg</b>.':''}</p>
     </section>`;
   }
@@ -1643,7 +1880,7 @@ async function doSync(){
 function renderSyncDot(){
   const a=$('#aviso');
   if(!sync.url&&!cuenta&&servidor){a.hidden=false;a.innerHTML='<div class="note info"><span>Tus datos se guardan solo en este móvil. Crea tu cuenta para tenerlos en la nube y entrar desde cualquier móvil.</span><div class="opts">'+(invit?'<button type="button" class="ghost sm" data-sheet="registro">Crear cuenta</button>':'')+'<button type="button" class="ghost sm" data-sheet="login">Iniciar sesión</button></div></div>'}
-  else if(!sync.url&&!cuenta){a.hidden=false;a.innerHTML='<div class="note info"><span>Tus datos se guardan en este móvil. Conecta tu hoja de Google para tener copia de seguridad y que Claude pueda verlos.</span><button type="button" class="ghost sm" data-sheet="ajustes">Conectar ahora</button></div>'}
+  else if(!sync.url&&!cuenta){a.hidden=false;a.innerHTML='<div class="note info"><span>Tus datos se guardan en este móvil. Conecta tu hoja de Google para tener copia de seguridad y que Claude pueda verlos.</span><button type="button" class="ghost sm" data-sheet="ajustes" data-ajv-ir="cuenta">Conectar ahora</button></div>'}
   else if(syncOk===false){a.hidden=false;a.innerHTML='<div class="note"><span>'+esc($('#estado').textContent)+'</span>'+(cuenta&&/sesión/.test($('#estado').textContent)?'<button type="button" class="ghost sm" data-sheet="login">Iniciar sesión</button>':'')+'</div>'}
   else a.hidden=true;
 }
@@ -1766,6 +2003,7 @@ window.addEventListener('popstate',e=>{
   const st=e.state||{k:'root'}, k=st.k||'root';
   if(!$('#guia').hidden&&k!=='guia')reallyCloseGuia();
   if(sheetK&&k!=='sheet')reallyCloseSheet();
+  else if(sheetK==='ajustes'&&ajView&&!st.sub){ajView='';renderSheet();$('#sheet').scrollTop=0}
   const want=k==='root'?'hoy':(st.t||TAB);
   if(want!==TAB)showTab(want,true);
   if(navPend&&k==='root'){const p=navPend;navPend='';showTab(p)}
@@ -1814,15 +2052,25 @@ document.addEventListener('click',e=>{
   if(st){const i=$('#g-reps');if(i){const v=Math.max(0,num(i.value)+(st.dataset.step==='+'?1:-1));i.value=v||'';cur.reps[i.dataset.reps]=i.value;queue()}return}
   if(T.closest('[data-guia]')){openGuia();return}
   if(T.closest('[data-conectar]')){conectar();return}
+  const ajv=T.closest('[data-ajv]'); if(ajv){ajIr(ajv.dataset.ajv);return}
+  const tem=T.closest('[data-tema]'); if(tem){prefs.tema=tem.dataset.tema;savePrefs();applyTema();reSheet();return}
+  const dsc=T.closest('[data-desc]'); if(dsc){prefs.descansoGym=+dsc.dataset.desc;savePrefs();reSheet();return}
+  const rdi=T.closest('[data-recdia]'); if(rdi){const n=+rdi.dataset.recdia,l=recDias().slice(),k=l.indexOf(n);if(k>=0)l.splice(k,1);else l.push(n);prefs.recDias=l;savePrefs();reSheet();return}
+  if(T.closest('[data-recics]')){recICS();return}
+  const ipw=T.closest('[data-invpw]'); if(ipw){invOpen=ipw.dataset.invpw;invMsg='';reSheet(invOpen?'#inv-pass-'+invOpen:'');return}
+  const ist=T.closest('[data-invset]'); if(ist){ponerClave(ist.dataset.invset);return}
+  if(T.closest('[data-pwcambiar]')){cambiarMiClave();return}
+  if(T.closest('[data-wrapimg]')){const o=$('#wrap-res');o.textContent='Preparando la imagen…';resumenImagen().then(r=>{o.textContent=r==='descarga'?'Imagen descargada. La tienes en Descargas.':r==='ok'?'¡Compartida!':''}).catch(()=>{o.textContent='No se ha podido crear la imagen.'});return}
   const sCs=T.closest('[data-compartir-soc]'); if(sCs){setCompartir(sCs.dataset.compartirSoc==='1');return}
   const sAm=T.closest('[data-amistad]'); if(sAm){const [op,u]=sAm.dataset.amistad.split(':');socAct({accion:'amistad',op,usuario:u},{aceptar:'¡Ahora sois amigos!',rechazar:'Solicitud rechazada.',cancelar:'Solicitud cancelada.',quitar:'Amigo quitado.'}[op]);return}
   if(T.closest('[data-soc-pedir]')){const u=socAdd.trim().toLowerCase();if(!/^[a-z0-9_-]{3,30}$/.test(u)){socMsg='Escribe su usuario (sin @ ni espacios).';renderAmigos();return}
     socAct({accion:'amistad',op:'pedir',usuario:u}).then(j=>{if(j&&!j.error){socAdd='';socMsg=j.amigos&&j.amigos.some(f=>f.usuario===u)?'¡Ahora sois amigos!':'Solicitud enviada. Cuando acepte, la verás aquí.';renderAmigos()}});return}
   if(T.closest('[data-soc-usuario]')){socAct({accion:'socialUsuario',usuario:socAdd.trim().toLowerCase(),nombre:nom()}).then(j=>{if(j&&!j.error)socAdd=''});return}
-  const sAn=T.closest('[data-animo]'); if(sAn){const i=sAn.dataset.animo.indexOf(':'),u=sAn.dataset.animo.slice(0,i),ev=sAn.dataset.animo.slice(i+1);
+  const sAn=T.closest('[data-animo]'); if(sAn){const [u,ev,r]=sAn.dataset.animo.split(':');
     const f=soc&&soc.amigos.find(x=>x.usuario===u),e=f&&f.eventos.find(x=>x.id===ev);
-    if(e){const yo=soc.yo.usuario,k=e.animos.indexOf(yo);if(k>=0)e.animos.splice(k,1);else{e.animos.push(yo);buzz(20)}renderAmigos()}
-    socAct({accion:'animo',a:u,ev});return}
+    if(e){const yo=soc.yo.usuario;let antes='';e.animos=e.animos.filter(s=>{const p=String(s).split('|');if(p[0]===yo){antes=p[1]||'fuego';return false}return true});
+      if(antes!==r){e.animos.push(r==='fuego'?yo:yo+'|'+r);buzz(20)}renderAmigos()}
+    socAct({accion:'animo',a:u,ev,r});return}
   const cA=T.closest('[data-cuenta]'); if(cA){cuentaAccion(cA.dataset.cuenta);return}
   if(T.closest('[data-salir]')){salir();return}
   if(T.closest('[data-invitar]')){invitar();return}
@@ -1835,7 +2083,7 @@ document.addEventListener('click',e=>{
   if(T.closest('[data-resttimer]')){closeSheet();startRest(restOf(cur));return}
   const pfr=T.closest('[data-pref]'); if(pfr){const k=pfr.dataset.pref;prefs[k]=!prefs[k];LS.set('me.prefs',prefs);pfr.setAttribute('aria-pressed',prefs[k]);if(k==='vibracion'&&prefs[k])buzz(40);if(k==='anim'){applyAnim();if(prefs.anim){renderRings(true);figStart()}}return}
   if(T.closest('[data-sheet-close]')||T.id==='sheet-bg'){closeSheet();return}
-  const sh=T.closest('[data-sheet]'); if(sh){openSheet(sh.dataset.sheet);return}
+  const sh=T.closest('[data-sheet]'); if(sh){openSheet(sh.dataset.sheet);if(sh.dataset.ajvIr)ajIr(sh.dataset.ajvIr);return}
   const tb=T.closest('[data-tab]'); if(tb){showTab(tb.dataset.tab);return}
   if(T.closest('#hi')&&sel===TODAY){splashPick();return}
   const gg=T.closest('[data-go]'); if(gg){go(gg.dataset.go);if(TAB!=='hoy')showTab('hoy');return}
@@ -1848,10 +2096,13 @@ document.addEventListener('click',e=>{
   const pfb=T.closest('[data-perf]'); if(pfb){const [k,v]=pfb.dataset.perf.split(':');setPerf({[k]:v});return}
   const pfd=T.closest('[data-perfdias]'); if(pfd){setPerf({dias:Math.max(1,Math.min(7,pf().dias+(pfd.dataset.perfdias==='+'?1:-1)))});return}
   const pfx=T.closest('[data-perfx]'); if(pfx){const k=pfx.dataset.perfx;setPerf({[k]:!pf()[k]});return}
-  const gA=T.closest('[data-gadd]'); if(gA){const i=+gA.dataset.gadd,x=cur.gym[i];x.s=x.s||[];const l=x.s[x.s.length-1]||{};x.s.push({r:l.r||'',kg:l.kg||''});queue();reSheet(`[data-gr="${i}:${x.s.length-1}"]`);return}
+  const gA=T.closest('[data-gadd]'); if(gA){const i=+gA.dataset.gadd,x=cur.gym[i];x.s=x.s||[];const l=x.s[x.s.length-1]||{};const hecha=gOk(l);x.s.push({r:l.r||'',kg:l.kg||''});queue();reSheet(`[data-gr="${i}:${x.s.length-1}"]`);if(hecha&&prefs.autoDescanso)startRest(restOf(cur));return}
+  if(T.closest('[data-gundo]')){if(gUndo){cur.gym=JSON.parse(gUndo.prev);gUndo=null;queue();reSheet()}return}
+  const gR=T.closest('[data-grep]'); if(gR){const src=days[gR.dataset.grep];gymUndo('Entreno copiado');cur.gym=gymExs(src).map(x=>({n:x.n.trim(),s:x.s.filter(gOk).map(s=>({r:s.r,kg:s.kg}))}));queue();reSheet();return}
+  const gF=T.closest('[data-gfill]'); if(gF){const i=+gF.dataset.gfill,x=cur.gym[i],sg=gymSug(x);if(sg){x.s=sg.reps.map(r=>({r:String(r),kg:String(sg.kg).replace('.',',')}));queue();reSheet()}return}
   if(T.closest('[data-gnew]')){cur.gym.push({n:'',s:[{r:'',kg:''}]});reSheet(`[data-gn="${cur.gym.length-1}"]`);return}
-  const gD=T.closest('[data-gdel]'); if(gD){cur.gym.splice(+gD.dataset.gdel,1);queue();reSheet();return}
-  const gS=T.closest('[data-gsdel]'); if(gS){const [i,j]=gS.dataset.gsdel.split(':').map(Number),x=cur.gym[i];x.s.splice(j,1);if(!x.s.length)x.s.push({r:'',kg:''});queue();reSheet();return}
+  const gD=T.closest('[data-gdel]'); if(gD){gymUndo('Ejercicio quitado');cur.gym.splice(+gD.dataset.gdel,1);queue();reSheet();return}
+  const gS=T.closest('[data-gsdel]'); if(gS){const [i,j]=gS.dataset.gsdel.split(':').map(Number),x=cur.gym[i];gymUndo('Serie quitada');x.s.splice(j,1);if(!x.s.length)x.s.push({r:'',kg:''});queue();reSheet();return}
   const s=T.closest('[data-set]'); if(s){
     const id=s.dataset.set,i=+s.dataset.i; const a=(cur.sets[id]||[false,false,false]).slice(); a[i]=!a[i]; cur.sets[id]=a;
     if(a[i]){justSet=id+':'+i;buzz(25);if(nSets(cur)<tot(cur))startRest(R(cur).rest);else stopRest()}
@@ -1865,7 +2116,7 @@ $('#prev').onclick=()=>go(addDays(sel,-7));
 $('#next').onclick=()=>go(addDays(sel,7));
 $('#volver').onclick=()=>go(TODAY);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
-document.addEventListener('change',e=>{if(e.target.id==='importar'&&e.target.files[0])importar(e.target.files[0])});
+document.addEventListener('change',e=>{if(e.target.id==='importar'&&e.target.files[0])importar(e.target.files[0]);if(e.target.id==='rec-hora')reSheet()});
 document.addEventListener('input',e=>{
   const el=e.target;
   if(el.dataset.gn!==undefined){const i=+el.dataset.gn;cur.gym[i].n=el.value;queue();const lb=$(`[data-glast="${i}"]`);if(lb)lb.innerHTML=gymLast(cur.gym[i],i)}
@@ -1879,6 +2130,9 @@ document.addEventListener('input',e=>{
   else if(el.id==='actividad'){cur.actividad=el.value;queue()}
   else if(el.id==='notas'){cur.notas=el.value;queue()}
   else if(el.id==='soc-add'||el.id==='soc-usuario'){socAdd=el.value}
+  else if(el.id==='pw-a'){pwForm.a=el.value}
+  else if(el.id==='pw-n'){pwForm.n=el.value}
+  else if(el.id==='rec-hora'){if(el.value){prefs.recHora=el.value;savePrefs()}}
   else if(el.id==='cu-usuario'){cuForm.u=el.value}
   else if(el.id==='cu-pass'){cuForm.p=el.value}
   else if(el.id==='nombre'){ajustes.nombre=el.value.trim().slice(0,30);renderHead();saveAjustes()}
@@ -1888,7 +2142,7 @@ window.addEventListener('scroll',()=>{$('#appbar').classList.toggle('scrolled',w
 window.addEventListener('pagehide',()=>flush());
 
 /* ---------- arranque ---------- */
-$('#btn-ajustes').innerHTML=IC.gear; applyAnim();
+$('#btn-ajustes').innerHTML=IC.gear; applyAnim(); applyTema();
 try{const t=localStorage.getItem('tab');if(t&&['hoy','progreso','logros','historial'].includes(t))TAB=t}catch(e){}
 cur=getDay(sel); renderTabs(); renderAll(true);
 try{history.replaceState({k:'root'},'')}catch(e){}
