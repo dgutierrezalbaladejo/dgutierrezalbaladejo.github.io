@@ -275,6 +275,34 @@ label.lab{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.
 .tabbar button svg{width:24px;height:24px}
 .tabbar button[aria-current="page"]{color:var(--ink)}
 .tabbar button[aria-current="page"] svg{color:var(--accent)}
+.tabbar .bdot{position:absolute;top:9px;left:calc(50% + 8px);width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--surface)}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-family:var(--display);color:#fff;flex:none;font-size:1rem}
+.av.sm{width:32px;height:32px;font-size:.88rem}
+.lg{display:flex;flex-direction:column;gap:12px}
+.lg-r{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center}
+.lg-r .nm{font-weight:800}
+.lg-r .ssb{font-size:.84rem;color:var(--muted);font-weight:700}
+.lg-r .rk{display:flex;align-items:center;gap:3px;font-weight:900;font-family:var(--display)}
+.lg-r .rk svg{width:18px;height:18px;color:var(--flame)}
+.lg-r .rk small{font-size:.72rem;font-weight:800;color:var(--muted)}
+.lg-r .bar{grid-column:2/-1;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.lg-r .bar i{display:block;height:100%;border-radius:99px;background:var(--ok)}
+.lg-r.yo .nm::after{content:' · tú';color:var(--muted);font-weight:700}
+.fd{display:flex;flex-direction:column}
+.fd-r{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.fd-r:first-child{border-top:0;padding-top:2px}
+.fd-r .tx{font-size:.95rem;line-height:1.35}
+.fd-r .tx b{font-weight:800}
+.fd-r .ssb{font-size:.84rem;color:var(--muted);font-weight:700;margin-top:2px}
+.fd-r .an{font-size:.82rem;color:var(--muted);font-weight:700;margin-top:4px}
+.anim-b{display:flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:var(--pill);padding:6px 10px;font-weight:800;font-size:.85rem;min-height:36px}
+.anim-b svg{width:16px;height:16px}
+.anim-b[aria-pressed="true"]{color:var(--flame);border-color:color-mix(in srgb,var(--flame) 45%,transparent);background:color-mix(in srgb,var(--flame) 10%,transparent)}
+.sol{display:flex;align-items:center;gap:12px}
+.sol .nm{flex:1;font-weight:800}
+.sol .nm small{display:block;color:var(--muted);font-weight:700;font-size:.82rem}
+.sol .opts{display:flex;gap:8px}
+.share-l{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:.92rem}
 .tabbar .plus{width:56px;height:56px;border-radius:50%;background:var(--cta-bg);color:var(--cta-ink);display:grid;place-items:center;margin:0 auto;box-shadow:0 6px 18px color-mix(in srgb,var(--cta) 35%,transparent)}
 .tabbar .plus svg{width:28px;height:28px}
 
@@ -477,12 +505,17 @@ html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation:none!impor
 
   <main class="panel" id="p-progreso" hidden>
     <h1 class="ptitle">Progreso</h1>
-    <div class="seg two" role="group" aria-label="Periodo"><button type="button" data-pv="semana" aria-pressed="true"><b>Semana</b></button><button type="button" data-pv="mes" aria-pressed="false"><b>Mes</b></button></div>
+    <div class="seg" role="group" aria-label="Periodo"><button type="button" data-pv="semana" aria-pressed="true"><b>Semana</b></button><button type="button" data-pv="mes" aria-pressed="false"><b>Mes</b></button><button type="button" data-pv="historial" aria-pressed="false"><b>Historial</b></button></div>
     <div class="panel" id="prog-body"></div>
     <section class="card" id="c-objetivo"></section>
     <section class="card" id="c-gym" hidden></section>
     <section class="card" id="c-bascula"><h2>Báscula</h2><div id="peso-box"></div></section>
     <section class="card" id="c-records"></section>
+  </main>
+
+  <main class="panel" id="p-amigos" hidden>
+    <h1 class="ptitle">Amigos</h1>
+    <div class="panel" id="amigos"></div>
   </main>
 
   <main class="panel" id="p-logros" hidden>
@@ -493,7 +526,8 @@ html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation:none!impor
   </main>
 
   <main class="panel" id="p-historial" hidden>
-    <h1 class="ptitle">Historial</h1>
+    <h1 class="ptitle">Progreso</h1>
+    <div class="seg" role="group" aria-label="Periodo"><button type="button" data-pv="semana" aria-pressed="false"><b>Semana</b></button><button type="button" data-pv="mes" aria-pressed="false"><b>Mes</b></button><button type="button" data-pv="historial" aria-pressed="true"><b>Historial</b></button></div>
     <div class="panel" id="hist"></div>
   </main>
 </div>
@@ -620,6 +654,7 @@ const IC={
   chart:ic('<path d="M4 19h16"/><path d="M7 16v-5M12 16V7M17 16v-8"/>'),
   plus:ic('<path d="M12 5v14M5 12h14"/>'),
   trophy:ic('<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/>'),
+  users:ic('<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.6 14.1A4.6 4.6 0 0 1 21 18.5"/>'),
   hist:ic('<path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/><path d="M12 8v4l3 2"/>'),
   gear:ic('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
   shield:ic('<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>'),
@@ -629,7 +664,7 @@ const IC={
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.6';
+const VERSION='2.7';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -1160,7 +1195,7 @@ async function cuentaAccion(tipo){
   try{j=await api(tipo==='registro'?{accion:'registro',invitacion:invit,usuario:u,pass:pw,nombre:nom()}:{accion:'login',usuario:u,pass:pw},servidor)}
   catch(e){out.textContent=ERR_CU[e.message]||'No se ha podido. Prueba otra vez.';return}
   if(!j.token){out.textContent=ERR_CU.accion;return}
-  cuenta={url:servidor,usuario:j.usuario,token:j.token}; LS.set('me.cuenta',cuenta); cuForm={u:'',p:''};
+  cuenta={url:servidor,usuario:j.usuario,token:j.token}; LS.set('me.cuenta',cuenta); cuForm={u:'',p:''}; soc=null; socOn=null; LS.set('me.social',null); LS.set('me.compartir',null);
   sync={url:'',clave:''}; LS.set('me.sync',sync);
   if(tipo==='login'){ajPend=false; if(j.nombre)ajustes.nombre=j.nombre} else ajPend=true;
   Object.keys(days).forEach(k=>pend.add(k)); saveLocal();
@@ -1168,7 +1203,7 @@ async function cuentaAccion(tipo){
   toast(IC.check,tipo==='registro'?'¡Cuenta creada!':'¡Hola, '+(j.nombre||j.usuario)+'!',tipo==='registro'?'Todo lo que apuntes se guarda en tu cuenta.':'Estoy cargando tus datos.');
   await doSync(); if(!days[sel])cur=getDay(sel); renderAll();
 }
-function salir(){cuenta=null;LS.set('me.cuenta',null);syncOk=null;renderSheet();renderSyncDot();setEstado('Sesión cerrada. Tus datos siguen en este móvil.')}
+function salir(){cuenta=null;LS.set('me.cuenta',null);soc=null;socOn=null;LS.set('me.social',null);LS.set('me.compartir',null);syncOk=null;renderSheet();renderSyncDot();setEstado('Sesión cerrada. Tus datos siguen en este móvil.')}
 async function compartir(url,txt){
   const out=$('#sync-res'), box=m=>{out.innerHTML=m+'<input readonly aria-label="Enlace" value="'+esc(url)+'">';const i=out.querySelector('input');i.addEventListener('focus',()=>i.select())};
   if(navigator.share){try{await navigator.share({title:'Mi entreno',text:txt,url});out.textContent='¡Enlace enviado!';return}catch(e){if(e&&e.name==='AbortError'){out.textContent='';return}}}
@@ -1190,6 +1225,117 @@ function renderInstall(){
   el.innerHTML=`<div class="note info"><span><b>Instala Mi entreno en tu móvil.</b> ${instEv?'Se abre como una app y funciona sin conexión.':'En iPhone, con Safari: pulsa el botón Compartir y luego «Añadir a pantalla de inicio».'}</span><div class="opts">${instEv?'<button type="button" class="ghost sm" data-instalar>Instalar</button>':''}<button type="button" class="link" data-noinst>Ahora no</button></div></div>`;
 }
 async function instalar(){if(!instEv)return;instEv.prompt();try{await instEv.userChoice}catch(e){}instEv=null;renderInstall();if(sheetK)reSheet()}
+
+/* ---------- amigos ---------- */
+// Lo que se comparte es solo esto (y el servidor lo vuelve a filtrar): nombre, racha, días y minutos de la semana,
+// número de medallas y la actividad de los últimos 21 días (tipo de entreno, minutos, medallas, récords sin kilos).
+let soc=LS.get('me.social',null), socOn=LS.get('me.compartir',null), socBusy=false, socLast=0, socErr='', socMsg='', socAdd='';
+const socAuth=()=>cuenta?{token:cuenta.token}:(sync.url&&sync.clave)?{clave:sync.clave}:null;
+const socURL=()=>cuenta?cuenta.url:sync.url;
+const VERBO={gym:['fue al gimnasio','Fuiste al gimnasio'],fuerza:['entrenó en casa','Entrenaste en casa'],caminar:['salió a caminar','Saliste a caminar'],
+  libre:['hizo deporte','Hiciste deporte'],record:['batió un récord','Batiste un récord'],medalla:['consiguió una medalla','Conseguiste una medalla'],semana:['cumplió su objetivo de la semana','Cumpliste tu objetivo de la semana']};
+const AVC=['--r1','--c-gym','--r3','--c-fuerza','--ok','--flame'];
+const avatar=(n,sm)=>{let h=0;for(const c of String(n))h=(h*31+c.charCodeAt(0))>>>0;return `<span class="av${sm?' sm':''}" style="background:var(${AVC[h%AVC.length]})" aria-hidden="true">${esc(String(n||'?').trim().charAt(0).toUpperCase()||'?')}</span>`};
+function socResumen(){
+  const mon=monOf(TODAY), w=weekStats(mon); let h=0,m=0;
+  if(semanal()){h=weekSes(mon);m=pf().dias}
+  else for(let i=0;i<7;i++){const k=addDays(mon,i);if(planTipo(k)!=='descanso')m++;if(k<=TODAY&&sesOf(k))h++}
+  const ks=Object.keys(days).filter(k=>k<=TODAY&&sesOf(k)).sort(), u=ks[ks.length-1];
+  return {racha:{n:SI.cur,u:SI.weeks?'semanas':'días'},semana:{h:Math.min(h,7),m:Math.min(m,7)},min:Math.round(w.mins),med:(seenMedals||[]).length,ult:u?{f:u,t:days[u].tipo}:null};
+}
+function socEventos(){
+  const ev=[], k0=addDays(TODAY,-20), VN={normal:'Completa',casa:'Completa sin material',expres:'Exprés'};
+  Object.keys(days).filter(k=>k>=k0&&k<=TODAY&&sesOf(k)).forEach(k=>{
+    const d=days[k], m=Math.round(exMin(d)), mm=m?m+' min':''; let x='';
+    if(d.tipo==='gym'){const n=gymExs(d).length;x=[n?n+(n===1?' ejercicio':' ejercicios'):'',mm].filter(Boolean).join(' · ')}
+    else if(d.tipo==='fuerza')x=[VN[d.var||'normal']||'Completa',nSets(d)+' series',mm].filter(Boolean).join(' · ');
+    else if(d.tipo==='libre')x=[String(d.actividad||'').trim().slice(0,40),mm].filter(Boolean).join(' · ');
+    else x=mm;
+    ev.push({id:'d'+k,f:k,t:d.tipo,x});
+    if(d.tipo==='gym'){const pr=gymExs(d).filter(e=>gymPR(e,k)).map(e=>e.n.trim());if(pr.length)ev.push({id:'r'+k,f:k,t:'record',x:pr.slice(0,3).join(', ')})}
+  });
+  const mf=LS.get('me.logrosF',{}), ML=medalsList();
+  Object.keys(mf).forEach(id=>{const m=ML.find(z=>z.id===id);if(m&&mf[id]>=k0&&mf[id]<=TODAY)ev.push({id:'m'+id,f:mf[id],t:'medalla',x:m.n})});
+  if(semanal()){const g=pf().dias;for(let m=monOf(k0);m<=TODAY;m=addDays(m,7)){let c=0,f='';for(let i=0;i<7;i++){const k=addDays(m,i);if(k>TODAY)break;if(sesOf(k)&&++c===g)f=k}if(f&&f>=k0)ev.push({id:'s'+m,f,t:'semana',x:g+(g===1?' día':' días')})}}
+  const ord={semana:0,medalla:1,record:2};
+  return ev.sort((a,b)=>a.f<b.f?1:a.f>b.f?-1:(ord[a.t]??3)-(ord[b.t]??3)).slice(0,40);
+}
+const socAnimosRecibidos=()=>soc&&soc.yo&&soc.yo.eventos?soc.yo.eventos.reduce((a,e)=>a+e.animos.length,0):0;
+const socAviso=()=>!!(soc&&((soc.solicitudes&&soc.solicitudes.length)||socAnimosRecibidos()>(LS.get('me.animosVistos',0)||0)));
+function socVisto(){if(TAB!=='amigos'||!soc)return;LS.set('me.animosVistos',socAnimosRecibidos());renderTabs()}
+const SOC_ERR={noexiste:'No hay nadie con ese usuario.',tu:'Ese eres tú.',yaamigos:'Ya sois amigos.',usuario:'El usuario tiene que tener de 3 a 30 letras sin tildes o números, sin espacios.',
+  existe:'Ese usuario ya está cogido.',accion:'Hay que actualizar el código de Google a la versión 4 (la de amigos).',clave:'Hay que actualizar el código de Google a la versión 4 (la de amigos).',
+  sesion:'Tu sesión se ha cerrado. Vuelve a iniciar sesión en Ajustes.',red:'Sin conexión: te enseño lo último que vi.',noamigo:'Ya no podéis veros.',nosolicitud:'Esa solicitud ya no existe.'};
+async function socSync(extra,force){
+  const a=socAuth(); if(!a)return null;
+  if(!force&&!extra&&Date.now()-socLast<45000)return soc;
+  if(socBusy&&!extra)return soc;
+  socBusy=true;
+  const body=Object.assign({accion:'social'},a,extra||{});
+  if(!cuenta)body.nombre=nom()||'Yo';
+  if(body.compartir===undefined&&socOn!==null)body.compartir=!!socOn;
+  if(body.compartir!==false&&socOn&&body.accion==='social'){body.resumen=socResumen();body.eventos=socEventos()}
+  let j=null;
+  try{j=await api(body,socURL());socLast=Date.now();socErr='';
+    if(j.necesitaUsuario)soc={necesitaUsuario:true};
+    else if(j.yo){soc=j;if(socOn===null&&j.yo.compartir){socOn=true;LS.set('me.compartir',true)}}
+    if(j.usuario&&body.accion==='socialUsuario'){socBusy=false;return socSync(null,true)}
+    LS.set('me.social',soc);
+  }catch(e){socErr=e.message;j={error:e.message}}
+  socBusy=false; renderAmigos(); renderTabs();
+  return j;
+}
+async function socAct(extra,msg){socMsg='';renderAmigos();const j=await socSync(extra,true);if(j&&j.error){socMsg=SOC_ERR[j.error]||'No se ha podido. Prueba otra vez.';socErr=''}else if(msg)socMsg=msg;renderAmigos();return j}
+function setCompartir(v){socOn=v;LS.set('me.compartir',v);socAct({compartir:v},v?'Ahora tus amigos ven tu progreso.':'Has dejado de compartir. Lo que habías compartido se ha borrado.')}
+const relF=k=>k===TODAY?'hoy':k===addDays(TODAY,-1)?'ayer':['dom','lun','mar','mié','jue','vie','sáb'][parse(k).getDay()]+' '+parse(k).getDate();
+function renderAmigos(){
+  const box=$('#amigos'); if(!box||TAB!=='amigos')return;
+  const a=socAuth(); let h='';
+  if(!a){
+    box.innerHTML=`<section class="card"><h2>Entrena con tus amigos</h2><p class="tip">Para ver el progreso de tus amigos necesitas una cuenta de Mi entreno. Si alguien te ha invitado, abre su enlace desde este móvil.</p>${servidor?`<div class="opts">${invit?'<button type="button" class="cta" data-sheet="registro">Crear cuenta</button>':''}<button type="button" class="ghost" data-sheet="login">Iniciar sesión</button></div>`:''}</section>`;return}
+  if(soc&&soc.necesitaUsuario){
+    box.innerHTML=`<section class="card"><h2>Elige tu usuario</h2><p class="tip">Es el nombre con el que tus amigos te encontrarán. Luego no se puede cambiar.</p>
+      <label class="lab" for="soc-usuario">Tu usuario<input id="soc-usuario" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="30" placeholder="por ejemplo: ${esc((gN(nom()).replace(/[^a-z0-9_-]/g,'')||'tunombre').slice(0,20))}" value="${esc(socAdd)}"></label>
+      <button type="button" class="cta" data-soc-usuario>Guardar</button><div class="rel" aria-live="polite">${esc(socMsg)}</div></section>`;return}
+  if(!soc){box.innerHTML=`<section class="card"><p class="tip">${socErr?esc(SOC_ERR[socErr]||'No se ha podido cargar.'):'Cargando tus amigos…'}</p></section>`;return}
+  if(socErr)h+=`<div class="note"><span>${esc(SOC_ERR[socErr]||'No se ha podido actualizar.')}</span></div>`;
+  if(socOn===null)h+=`<section class="card"><h2>Comparte tu progreso</h2><p class="tip">Tus amigos verán solo esto, y tú lo mismo de ellos:</p>
+    <ul class="share-l"><li>Tu nombre y tu racha</li><li>Cuántos días has entrenado esta semana y los minutos</li><li>Qué tipo de entreno hiciste (gimnasio, casa, caminar…) y cuándo</li><li>Tus medallas y tus récords, sin los kilos</li></ul>
+    <p class="rel" style="margin:0">Nunca tu peso, la báscula, el pulso, tus notas ni cómo te has sentido.</p>
+    <div class="opts"><button type="button" class="cta" data-compartir-soc="1">Compartir mi progreso</button><button type="button" class="ghost" data-compartir-soc="0">Ahora no</button></div></section>`;
+  const yoN=nom()||'Tú', yoU=soc.yo.usuario, names={[yoU]:yoN};
+  soc.amigos.forEach(f=>names[f.usuario]=f.nombre);
+  // clasificación de la semana
+  const rows=[];
+  if(socOn){const r=socResumen();rows.push({yo:true,n:yoN,r})}
+  soc.amigos.forEach(f=>rows.push({n:f.nombre,r:f.resumen,u:f.usuario}));
+  const pct=r=>r&&r.semana.m?r.semana.h/r.semana.m:0;
+  rows.sort((x,y)=>(y.r?1:0)-(x.r?1:0)||pct(y.r)-pct(x.r)||((y.r&&y.r.min)||0)-((x.r&&x.r.min)||0));
+  if(soc.amigos.length||socOn)h+=`<section class="card"><div class="row-h"><h2>Esta semana</h2><span class="rel">días entrenados</span></div><div class="lg">${rows.map(x=>x.r?`<div class="lg-r${x.yo?' yo':''}">${avatar(x.n)}<div><div class="nm">${esc(x.n)}</div><div class="ssb">${x.r.semana.h} de ${x.r.semana.m} días · ${x.r.min} min${x.r.med?' · '+x.r.med+(x.r.med===1?' medalla':' medallas'):''}</div></div>
+      <span class="rk" aria-label="Racha de ${x.r.racha.n} ${x.r.racha.u}">${IC.flame}${x.r.racha.n}<small>${x.r.racha.u==='semanas'?'sem':'días'}</small></span><div class="bar"><i style="width:${Math.round(Math.min(1,pct(x.r))*100)}%"></i></div></div>`
+      :`<div class="lg-r">${avatar(x.n)}<div><div class="nm">${esc(x.n)}</div><div class="ssb">Todavía no comparte su progreso</div></div><span></span></div>`).join('')}</div></section>`;
+  // solicitudes
+  if(soc.solicitudes.length||soc.enviadas.length)h+=`<section class="card"><h2>Solicitudes</h2><div class="lg">${soc.solicitudes.map(s=>`<div class="sol">${avatar(s.nombre,1)}<span class="nm">${esc(s.nombre)}<small>@${esc(s.usuario)} quiere ser tu amigo</small></span><span class="opts"><button type="button" class="ghost sm" data-amistad="aceptar:${esc(s.usuario)}">Aceptar</button><button type="button" class="link" data-amistad="rechazar:${esc(s.usuario)}" aria-label="Rechazar a ${esc(s.nombre)}">✕</button></span></div>`).join('')}
+    ${soc.enviadas.map(s=>`<div class="sol">${avatar(s.nombre,1)}<span class="nm">${esc(s.nombre)}<small>Esperando a que acepte</small></span><button type="button" class="link" data-amistad="cancelar:${esc(s.usuario)}">Cancelar</button></div>`).join('')}</div></section>`;
+  // actividad
+  const fe=[];
+  if(socOn){const an={};(soc.yo.eventos||[]).forEach(e=>an[e.id]=e.animos);socEventos().forEach(e=>fe.push({e,yo:true,n:yoN,animos:an[e.id]||[]}))}
+  soc.amigos.forEach(f=>(f.eventos||[]).forEach(e=>fe.push({e,n:f.nombre,u:f.usuario,animos:e.animos||[]})));
+  fe.sort((x,y)=>x.e.f<y.e.f?1:x.e.f>y.e.f?-1:(x.yo?1:0)-(y.yo?1:0));
+  if(fe.length)h+=`<section class="card"><h2>Actividad</h2><div class="fd">${fe.slice(0,30).map(x=>{
+    const v=VERBO[x.e.t]||VERBO.libre, nm=x.animos.map(u=>names[u]||u), mio=x.animos.includes(yoU);
+    return `<div class="fd-r">${avatar(x.n,1)}<div><div class="tx">${x.yo?`<b>${v[1]}</b>`:`<b>${esc(x.n)}</b> ${v[0]}`}</div><div class="ssb">${relF(x.e.f)}${x.e.x?' · '+esc(x.e.x):''}</div>${x.yo&&nm.length?`<div class="an">${esc(nm.length<3?nm.join(' y '):nm[0]+' y '+(nm.length-1)+' más')} te ${nm.length===1?'ha':'han'} animado</div>`:''}</div>
+      ${x.yo?(nm.length?`<span class="anim-b" aria-label="${nm.length} ánimos">${IC.flame}${nm.length}</span>`:'<span></span>'):`<button type="button" class="anim-b" data-animo="${esc(x.u)}:${esc(x.e.id)}" aria-pressed="${mio}" aria-label="${mio?'Quitar ánimo':'Dar ánimo a '+esc(x.n)}">${IC.flame}${x.animos.length||'Ánimo'}</button>`}</div>`}).join('')}</div></section>`;
+  else if(soc.amigos.length)h+=`<section class="card"><h2>Actividad</h2><p class="tip">Aún no hay nada. Cuando tus amigos entrenen, lo verás aquí y podrás darles ánimo.</p></section>`;
+  // añadir amigos
+  h+=`<section class="card"><h2>Añadir amigo</h2><p class="rel" style="margin:0">Tu usuario es <b>@${esc(yoU)}</b>. Pásaselo a tus amigos para que te añadan.</p>
+    <label class="lab" for="soc-add">Usuario de tu amigo<input id="soc-add" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="30" placeholder="por ejemplo: somia" value="${esc(socAdd)}"></label>
+    <button type="button" class="cta" data-soc-pedir${socBusy?' disabled':''}>Enviar solicitud</button><div class="rel" aria-live="polite">${esc(socMsg)}</div></section>`;
+  // tus amigos y compartir
+  h+=`<section class="card"><h2>Tus amigos</h2>${soc.amigos.length?`<div class="lg">${soc.amigos.map(f=>`<div class="sol">${avatar(f.nombre,1)}<span class="nm">${esc(f.nombre)}<small>@${esc(f.usuario)}</small></span><button type="button" class="link" data-amistad="quitar:${esc(f.usuario)}">Quitar</button></div>`).join('')}</div>`:'<p class="tip">Todavía no tienes amigos en Mi entreno. Añade a alguien con su usuario.</p>'}
+    ${socOn!==null?`<button type="button" class="toggle" data-compartir-soc="${socOn?0:1}" aria-pressed="${!!socOn}"><span>Compartir mi progreso<small style="display:block;color:var(--muted);font-weight:600;font-size:.82rem">Nombre, racha, días, minutos, tipo de entreno, medallas y récords. Nunca peso, báscula, pulso ni notas.</small></span><span class="sw"></span></button>`:''}</section>`;
+  box.innerHTML=h;
+}
 
 /* ---------- temporizador de descanso (fuera del modo guiado) ---------- */
 let restEnd=0,restTm=null;
@@ -1220,7 +1366,7 @@ function weekStats(mon){
   return {act,mins,km,pasos:ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0,fz,ses,gy,gs,prs};
 }
 function renderProgress(){
-  document.querySelectorAll('[data-pv]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pv===progView));
+  document.querySelectorAll('#p-progreso [data-pv]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pv===progView));
   let h='';
   if(progView==='semana'){
     const mon=monOf(TODAY), w=weekStats(mon), items=[], pitems=[];
@@ -1368,7 +1514,7 @@ let seenMedals=LS.get('me.logros',null), newMedals=new Set();
 function checkMedals(){
   const ms=medalState(), on=ms.filter(m=>m.on).map(m=>m.id);
   if(seenMedals===null){seenMedals=on;LS.set('me.logros',seenMedals);return}
-  ms.filter(m=>m.on&&!seenMedals.includes(m.id)).forEach(m=>{newMedals.add(m.id);toast(IC[m.ic],'Nueva medalla: '+m.n,'La tienes en Logros.')});
+  ms.filter(m=>m.on&&!seenMedals.includes(m.id)).forEach(m=>{newMedals.add(m.id);const mf=LS.get('me.logrosF',{});mf[m.id]=TODAY;LS.set('me.logrosF',mf);toast(IC[m.ic],'Nueva medalla: '+m.n,'La tienes en Logros.')});
   if(on.some(id=>!seenMedals.includes(id))){seenMedals=Array.from(new Set(seenMedals.concat(on)));LS.set('me.logros',seenMedals)}
 }
 function retos(){
@@ -1426,9 +1572,9 @@ function setEstado(t){$('#estado').textContent=t}
 function renderTop(anim){SI=streakInfo();renderHead();renderRings(anim);renderQuick();racha();renderAction();renderInstall()}
 function renderAll(anim){renderTop(anim);renderDia();renderProgress();renderLogros();renderHist();animNext=false}
 function renderTabs(){
-  const T=[['hoy','Hoy',IC.home],['progreso','Progreso',IC.chart],['+','',''],['logros','Logros',IC.trophy],['historial','Historial',IC.hist]];
+  const T=[['hoy','Hoy',IC.home],['progreso','Progreso',IC.chart],['+','',''],['amigos','Amigos',IC.users],['logros','Logros',IC.trophy]], cu=TAB==='historial'?'progreso':TAB;
   $('#tabbar-in').innerHTML=T.map(([k,l,i])=>k==='+'?`<button type="button" data-sheet="mas" aria-label="Apuntar"><span class="plus">${IC.plus}</span></button>`
-    :`<button type="button" data-tab="${k}"${TAB===k?' aria-current="page"':''}>${i}${l}</button>`).join('');
+    :`<button type="button" data-tab="${k}"${cu===k?' aria-current="page"':''}>${i}${l}${k==='amigos'&&socAviso()?'<span class="bdot" aria-label="Novedades"></span>':''}</button>`).join('');
 }
 
 function saveLocal(){
@@ -1633,7 +1779,7 @@ function showTab(t,fromPop){
     else if(d===0)history.pushState({k:'tab',t,d:1},'');
     else{navPend=t;history.go(-d);return}
   }
-  const wasTab=TAB; TAB=t; ['hoy','progreso','logros','historial'].forEach(x=>{$('#p-'+x).hidden=x!==t});
+  const wasTab=TAB; TAB=t; ['hoy','progreso','amigos','logros','historial'].forEach(x=>{$('#p-'+x).hidden=x!==t});
   renderTabs(); renderAction();
   try{localStorage.setItem('tab',t)}catch(e){}
   window.scrollTo({top:0});
@@ -1641,6 +1787,7 @@ function showTab(t,fromPop){
   const pn=$('#p-'+t); if(pn){pn.classList.remove('enter'); void pn.offsetWidth; pn.classList.add('enter')}
   if(t==='progreso'){animNext=true;renderProgress();animNext=false}
   if(t==='logros')renderLogros();
+  if(t==='amigos'){renderAmigos();socSync(null,true).then(socVisto)}
   if(t==='hoy')renderRings(true);
 }
 function go(k){flush();sel=k;cur=getDay(k);exOpen=false;figOpen='';renderAll(true)}
@@ -1667,6 +1814,15 @@ document.addEventListener('click',e=>{
   if(st){const i=$('#g-reps');if(i){const v=Math.max(0,num(i.value)+(st.dataset.step==='+'?1:-1));i.value=v||'';cur.reps[i.dataset.reps]=i.value;queue()}return}
   if(T.closest('[data-guia]')){openGuia();return}
   if(T.closest('[data-conectar]')){conectar();return}
+  const sCs=T.closest('[data-compartir-soc]'); if(sCs){setCompartir(sCs.dataset.compartirSoc==='1');return}
+  const sAm=T.closest('[data-amistad]'); if(sAm){const [op,u]=sAm.dataset.amistad.split(':');socAct({accion:'amistad',op,usuario:u},{aceptar:'¡Ahora sois amigos!',rechazar:'Solicitud rechazada.',cancelar:'Solicitud cancelada.',quitar:'Amigo quitado.'}[op]);return}
+  if(T.closest('[data-soc-pedir]')){const u=socAdd.trim().toLowerCase();if(!/^[a-z0-9_-]{3,30}$/.test(u)){socMsg='Escribe su usuario (sin @ ni espacios).';renderAmigos();return}
+    socAct({accion:'amistad',op:'pedir',usuario:u}).then(j=>{if(j&&!j.error){socAdd='';socMsg=j.amigos&&j.amigos.some(f=>f.usuario===u)?'¡Ahora sois amigos!':'Solicitud enviada. Cuando acepte, la verás aquí.';renderAmigos()}});return}
+  if(T.closest('[data-soc-usuario]')){socAct({accion:'socialUsuario',usuario:socAdd.trim().toLowerCase(),nombre:nom()}).then(j=>{if(j&&!j.error)socAdd=''});return}
+  const sAn=T.closest('[data-animo]'); if(sAn){const i=sAn.dataset.animo.indexOf(':'),u=sAn.dataset.animo.slice(0,i),ev=sAn.dataset.animo.slice(i+1);
+    const f=soc&&soc.amigos.find(x=>x.usuario===u),e=f&&f.eventos.find(x=>x.id===ev);
+    if(e){const yo=soc.yo.usuario,k=e.animos.indexOf(yo);if(k>=0)e.animos.splice(k,1);else{e.animos.push(yo);buzz(20)}renderAmigos()}
+    socAct({accion:'animo',a:u,ev});return}
   const cA=T.closest('[data-cuenta]'); if(cA){cuentaAccion(cA.dataset.cuenta);return}
   if(T.closest('[data-salir]')){salir();return}
   if(T.closest('[data-invitar]')){invitar();return}
@@ -1683,7 +1839,7 @@ document.addEventListener('click',e=>{
   const tb=T.closest('[data-tab]'); if(tb){showTab(tb.dataset.tab);return}
   if(T.closest('#hi')&&sel===TODAY){splashPick();return}
   const gg=T.closest('[data-go]'); if(gg){go(gg.dataset.go);if(TAB!=='hoy')showTab('hoy');return}
-  const pv=T.closest('[data-pv]'); if(pv){progView=pv.dataset.pv;animNext=true;renderProgress();animNext=false;return}
+  const pv=T.closest('[data-pv]'); if(pv){if(pv.dataset.pv==='historial'){showTab('historial');return}progView=pv.dataset.pv;if(TAB!=='progreso')showTab('progreso');animNext=true;renderProgress();animNext=false;return}
   const mo=T.closest('[data-month]'); if(mo){monthOff=Math.min(0,monthOff+ +mo.dataset.month);animNext=true;renderProgress();animNext=false;return}
   const stp=T.closest('[data-settipo]'); if(stp){cur.tipo=stp.dataset.settipo;queue();closeSheet();return}
   if(T.closest('[data-exopen]')){exOpen=!exOpen;renderDia();return}
@@ -1722,6 +1878,7 @@ document.addEventListener('input',e=>{
     document.querySelectorAll('[data-quick]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.quick===cur.min));queue()}
   else if(el.id==='actividad'){cur.actividad=el.value;queue()}
   else if(el.id==='notas'){cur.notas=el.value;queue()}
+  else if(el.id==='soc-add'||el.id==='soc-usuario'){socAdd=el.value}
   else if(el.id==='cu-usuario'){cuForm.u=el.value}
   else if(el.id==='cu-pass'){cuForm.p=el.value}
   else if(el.id==='nombre'){ajustes.nombre=el.value.trim().slice(0,30);renderHead();saveAjustes()}
@@ -1746,10 +1903,10 @@ renderSyncDot(); checkMedals();
 })();
 if(!viaEnlace&&ajustes.nombre===undefined&&!Object.keys(days).length)setTimeout(()=>openSheet('hola'),400);
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-if(sync.url||cuenta)doSync();
+if(sync.url||cuenta)doSync().then(()=>{if(socOn||TAB==='amigos')socSync(null,true)});
 window.addEventListener('online',()=>doSync());
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync();if(TAB==='hoy'){renderRings(true);splashPick()}}
+  if(document.visibilityState==='visible'){if(key(new Date())!==TODAY){location.reload();return}doSync().then(()=>{if(socOn||TAB==='amigos')socSync()});if(TAB==='hoy'){renderRings(true);splashPick()}}
   else flush();
 });
 (()=>{const p=new URLSearchParams(location.search),a=p.get('accion');if(!a)return;
