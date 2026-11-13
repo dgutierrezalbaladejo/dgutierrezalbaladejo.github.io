@@ -522,6 +522,19 @@ a.cta{box-sizing:border-box;text-decoration:none}
 .medal .n{font-size:.78rem;font-weight:800;line-height:1.2}
 .medal .p{font-size:.7rem;color:var(--muted);font-weight:700}
 .medal.new .m{animation:shine 1.2s ease 2}
+.medal{cursor:pointer;font:inherit;color:inherit}
+.medal .w{font-size:.68rem;color:var(--muted);font-weight:700}
+.medal.sec:not(.on) .m{background:none;border:2px dashed var(--line);color:var(--muted)}
+.mgrp{display:flex;flex-direction:column;gap:10px}
+.mgrp+.mgrp{margin-top:6px}
+.mgrp h3{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.mnext{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:12px;border-radius:var(--rm);background:color-mix(in srgb,var(--mc1,var(--flame)) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--mc1,var(--flame)) 30%,var(--line))}
+.mnext .m{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,var(--mc2,var(--flame2)),var(--mc1,var(--flame)))}
+.mnext .m svg{width:24px;height:24px}
+.mnext small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+.mnext b{display:block;font-weight:800}
+.mnext .gbar{margin-top:6px}
+.mnext .gbar i{background:linear-gradient(90deg,var(--mc2,var(--flame2)),var(--mc1,var(--flame)))}
 @keyframes shine{50%{transform:scale(1.1) rotate(-6deg)}}
 
 /* Historial */
@@ -818,11 +831,19 @@ const IC={
   shield:ic('<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>'),
   star:ic('<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>'),
   up:ic('<path d="M12 19V5M6 11l6-6 6 6"/>'),
+  monte:ic('<path d="M2.5 20l7-12 4 6.5 2.5-4 5.5 9.5z"/><path d="M7.6 11.3l1.9 1.4 1.9-1.4"/>'),
+  gota:ic('<path d="M12 3.5c3.6 4.3 6 7.7 6 10.6a6 6 0 0 1-12 0c0-2.9 2.4-6.3 6-10.6z"/>'),
+  hoja:ic('<path d="M5 19c0-8.5 5.5-13.5 14-14 0 9-5.5 14-14 14z"/><path d="M5 19l7.5-7.5"/>'),
+  rayo:ic('<path d="M13.5 2.5L5 13.5h6.5L10.5 21.5 19 10.5h-6.5z"/>'),
+  regalo:ic('<rect x="4" y="9.5" width="16" height="11" rx="1.5"/><path d="M3 9.5h18M12 9.5v11"/><path d="M12 9.5C10.5 5.5 6.5 5 7 7.5s5 2 5 2zM12 9.5c1.5-4 5.5-4.5 5-2s-5 2-5 2z"/>'),
+  diana:ic('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>'),
+  vuelta:ic('<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 3.5v4h4"/>'),
+  cinta:ic('<rect x="3" y="8.5" width="18" height="7" rx="1.5"/><path d="M7.5 8.5v3M12 8.5v3M16.5 8.5v3"/>'),
   timer:ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>')
 };
 
 /* ---------- estado y guardado en el móvil ---------- */
-const VERSION='2.10';
+const VERSION='2.11';
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 let days=LS.get('me.dias',{}), ajustes=Object.assign({pasosObj:8000},LS.get('me.ajustes',{})), sel=TODAY, cur=null;
@@ -2181,7 +2202,56 @@ function totals(){
   pesos.sort((a,b)=>a[0]<b[0]?-1:1);
   const lost=pesos.length?pesos[0][1]-pesos[pesos.length-1][1]:0, goal5=pesos.length?pesos[0][1]*.05:5;
   let gym=0,prs=0; for(const k in days){if(days[k].tipo==='gym'&&status(days[k])==='done')gym++;prs+=gymPRs(k)}
-  return {fz,km,maxp,minWeek,perfect,npes:pesos.length,lost,goal5,best:SI.best,gym,prs,doneAny:Object.keys(days).some(k=>status(days[k])==='done'&&days[k].tipo!=='descanso')};
+  const x=moreTotals(pesos);
+  return Object.assign(x,{fz,km,maxp,minWeek,perfect,npes:pesos.length,lost,goal5,best:SI.best,gym,prs,doneAny:Object.keys(days).some(k=>status(days[k])==='done'&&days[k].tipo!=='descanso')});
+}
+// Lo que necesitan las medallas nuevas (2.11)
+function moreTotals(pesos){
+  const T={warm:0,series:0,flex:0,plancha:0,tonMax:0,tonTot:0,maxMin:0,maxDist:0,monte:0,lunes:0,vuelta:0,omsW:0,perfW:0,variedad:0,
+    pasosRun:0,comN:0,comRun:0,prot:0,diana:0,agua:0,aguaRun:0,fv:0,anonuevo:0,navidad:0,doble:0,
+    w0:0,wMin:0,imc0:0,imcMin:0,g0:0,gMin:0,c0:0,cMin:0};
+  const s0=startKey(), pObj=num(ajustes.pasosObj)||6000, com=pf().comida, mo=com?macroObj():null;
+  const act=x=>x&&x.tipo!=='descanso'&&status(x)==='done';
+  const someOn=(x,id)=>(((x.sets||{})[id])||[]).some(Boolean);
+  let last=null,pr=0,cr=0,ar=0;
+  for(let k=s0;k<=TODAY;k=addDays(k,1)){
+    const x=days[k], r=(x&&x.reloj)||{}, md=k.slice(5);
+    if(x){
+      if(act(x)){
+        if(x.calent)T.warm++;
+        if(last&&Math.round((parse(k)-parse(last))/864e5)-1>=3)T.vuelta++;
+        last=k; T.maxMin=Math.max(T.maxMin,exMin(x));
+        if(x.tipo==='libre'&&/sender|monta|trek|ruta|cumbre|pico/i.test((x.actividad||'')+' '+(x.notas||'')))T.monte++;
+        if(parse(k).getDay()===1&&planTipo(k)!=='descanso')T.lunes++;
+        if(md==='01-01')T.anonuevo++; if(md==='12-25')T.navidad++;
+        if((x.tipo==='fuerza'||x.tipo==='gym')&&num(r.pasos)>=10000)T.doble++;
+      }
+      if(x.tipo==='fuerza'){T.series+=nSets(x);if(someOn(x,'flex'))T.flex=Math.max(T.flex,num((x.reps||{}).flex));if(someOn(x,'plancha'))T.plancha=Math.max(T.plancha,num((x.reps||{}).plancha))}
+      if(x.tipo==='gym'){T.series+=gymSets(x);let ton=0;gymExs(x).forEach(e=>e.s.filter(gOk).forEach(s=>{ton+=num(s.r)*num(s.kg);if(/flexi/.test(gN(e.n)))T.flex=Math.max(T.flex,num(s.r))}));T.tonMax=Math.max(T.tonMax,ton);T.tonTot+=ton}
+      T.maxDist=Math.max(T.maxDist,num(r.dist));
+      const b=x.bascula||{};
+      if(num(b.imc)){if(!T.imc0)T.imc0=num(b.imc);T.imcMin=T.imcMin?Math.min(T.imcMin,num(b.imc)):num(b.imc)}
+      if(num(b.grasa)){if(!T.g0)T.g0=num(b.grasa);T.gMin=T.gMin?Math.min(T.gMin,num(b.grasa)):num(b.grasa)}
+      if(num(b.cintura)){if(!T.c0)T.c0=num(b.cintura);T.cMin=T.cMin?Math.min(T.cMin,num(b.cintura)):num(b.cintura)}
+    }
+    pr=x&&num(r.pasos)>=pObj?pr+1:0; T.pasosRun=Math.max(T.pasosRun,pr);
+    if(com){
+      const m=x?dayMac(x):{n:0}, ok=m.n>0;
+      cr=ok?cr+1:0; T.comRun=Math.max(T.comRun,cr); if(ok)T.comN++;
+      if(ok&&mo&&m.p>=mo.p)T.prot++;
+      if(ok&&mo&&k<TODAY&&Math.abs(m.k-mo.k)<=mo.k*.1)T.diana++;
+      if(ok&&m.fv>=400)T.fv++;
+      const ag=x&&num(x.agua)>=aguaObj(); if(ag)T.agua++; ar=ag?ar+1:0; T.aguaRun=Math.max(T.aguaRun,ar);
+    }
+  }
+  for(let m=monOf(s0);m<=TODAY;m=addDays(m,7)){
+    const w=weekStats(m); if(w.mins>=150)T.omsW++;
+    let all=true; const tip=new Set();
+    for(let i=0;i<7;i++){const k=addDays(m,i),x=days[k]; if(k>TODAY||stOf(k)!=='done')all=false; if(k<=TODAY&&act(x))tip.add(x.tipo)}
+    if(all)T.perfW++; T.variedad=Math.max(T.variedad,tip.size);
+  }
+  if(pesos.length){T.w0=pesos[0][1];T.wMin=Math.min(...pesos.map(p=>p[1]))}
+  return T;
 }
 const MEDALS=[
   {id:'primero',n:'Primer paso',ic:'star',c:['--r3','--r2'],g:1,v:t=>t.doneAny?1:0,u:''},
@@ -2210,24 +2280,89 @@ const MED_G=[
   {id:'gym50',n:'50 días de gimnasio',ic:'gym',c:['--c-gym','--r1'],g:50,v:t=>t.gym,u:''},
   {id:'record1',n:'Primer récord de peso',ic:'up',c:['--gold','--flame2'],g:1,v:t=>t.prs,u:''},
   {id:'record10',n:'10 récords de peso',ic:'trophy',c:['--gold','--c-gym'],g:10,v:t=>t.prs,u:''}];
-// Las medallas que tienen sentido con tu plan (con el plan original salen las de siempre, en el mismo orden)
-function medalsList(){
-  const p=pf(), M=id=>MEDALS.find(m=>m.id===id), L=[];
-  L.push(M('primero'));
-  if(p.racha==='semanal')L.push(...MED_W); else L.push(...['racha3','racha7','racha14','racha30','perfecta'].map(M));
-  L.push(M('oms'));
-  if(p.modo!=='gym')L.push(M('fuerza5'),M('fuerza20'));
-  if(p.modo!=='casa')L.push(...MED_G);
-  if(p.pasos)L.push(M('km25'),M('km100'),M('pasos10k'));
-  if(p.bascula)L.push(M('pesada'),M('menos2'),M('obj5'));
-  return L;
+MED_W.push({id:'semanas26',n:'Medio año sin fallar',ic:'flame',c:['--gold','--flame'],g:26,v:t=>t.best,u:'semanas'});
+// Medallas nuevas de la 2.11. «d» es lo que se cuenta al tocarlas; «sec», las secretas
+const decena=t=>Math.floor((t.w0-1e-6)/10)*10;
+const MED2=[
+  {id:'racha60',n:'Dos meses imparable',ic:'flame',c:['--gold','--flame'],g:60,v:t=>t.best,u:'días',d:'60 días seguidos de racha.'},
+  {id:'racha100',n:'Centenario',ic:'flame',c:['--gold','--r1'],g:100,v:t=>t.best,u:'días',d:'100 días seguidos de racha. Leyenda.'},
+  {id:'perfectas4',n:'4 semanas perfectas',ic:'trophy',c:['--gold','--flame2'],g:4,v:t=>t.perfW,u:'',d:'Cuatro semanas cumpliendo los 7 días.'},
+  {id:'oms4',n:'Cuatro semanas OMS',ic:'timer',c:['--r2','--r3'],g:4,v:t=>t.omsW,u:'',d:'Llega a 150 minutos de ejercicio en 4 semanas distintas.'},
+  {id:'lunes',n:'Lunes sin excusas',ic:'cal',c:['--r3','--c-gym'],g:4,v:t=>t.lunes,u:'',d:'Cumple 4 lunes. El lunes marca la semana.'},
+  {id:'todoterreno',n:'Todoterreno',ic:'star',c:['--c-gym','--r2'],g:3,v:t=>t.variedad,u:'tipos',d:'Haz 3 tipos de actividad distintos en una misma semana.'},
+  {id:'vuelta',n:'Vuelta al ruedo',ic:'vuelta',c:['--ok','--r3'],g:1,v:t=>t.vuelta,u:'',d:'Vuelve a entrenar después de 3 días o más parado. Lo difícil es volver.'},
+  {id:'fuerza50',n:'50 entrenos de fuerza',ic:'fuerza',c:['--gold','--r1'],g:50,v:t=>t.fz,u:'',d:'50 entrenos de fuerza completos.'},
+  {id:'calent10',n:'Calentamiento de manual',ic:'sol',c:['--flame2','--flame'],g:10,v:t=>t.warm,u:'',d:'Calienta antes de 10 entrenos.'},
+  {id:'series100',n:'100 series',ic:'fuerza',c:['--r1','--c-fuerza'],g:100,v:t=>t.series,u:'',d:'100 series hechas, entre casa y gimnasio.'},
+  {id:'series500',n:'500 series',ic:'fuerza',c:['--gold','--c-fuerza'],g:500,v:t=>t.series,u:'',d:'500 series hechas.'},
+  {id:'flex10',n:'10 flexiones seguidas',ic:'up',c:['--r1','--flame'],g:10,v:t=>t.flex,u:'',d:'Haz una serie de 10 flexiones.'},
+  {id:'flex20',n:'20 flexiones seguidas',ic:'up',c:['--gold','--r1'],g:20,v:t=>t.flex,u:'',d:'Haz una serie de 20 flexiones.'},
+  {id:'plancha60',n:'Plancha de un minuto',ic:'timer',c:['--c-fuerza','--r3'],g:60,v:t=>t.plancha,u:'s',d:'Aguanta 60 segundos de plancha.'},
+  {id:'gymvisita',n:'Visita al gimnasio',ic:'gym',c:['--c-gym','--r3'],g:1,v:t=>t.gym,u:'',d:'Apunta un día de gimnasio.'},
+  {id:'tonelada',n:'Primera tonelada',ic:'rayo',c:['--gold','--c-gym'],g:1000,v:t=>t.tonMax,u:'kg',d:'Mueve 1.000 kg en una sesión (repeticiones × kilos de todas las series).'},
+  {id:'ton10',n:'10 toneladas',ic:'rayo',c:['--gold','--r1'],g:10000,v:t=>t.tonTot,u:'kg',d:'10.000 kg movidos en total.'},
+  {id:'km42',n:'Maratón caminando',ic:'caminar',c:['--r2','--gold'],g:42.2,v:t=>t.km,u:'km',d:'42,2 km caminados en total: lo que mide una maratón.'},
+  {id:'km250',n:'250 km caminados',ic:'caminar',c:['--gold','--r2'],g:250,v:t=>t.km,u:'km',d:'250 km en total. Más o menos de Cartagena a Valencia.'},
+  {id:'ruta10',n:'Ruta de 10 km',ic:'caminar',c:['--r2','--r3'],g:10,v:t=>t.maxDist,u:'km',d:'Camina 10 km en un mismo día.'},
+  {id:'aguante',n:'Aguante',ic:'timer',c:['--r3','--r2'],g:120,v:t=>t.maxMin,u:'min',d:'Dos horas de actividad en un día.'},
+  {id:'monte',n:'Montañero',ic:'monte',c:['--r2','--ok'],g:1,v:t=>t.monte,u:'',d:'Apunta una ruta de senderismo.'},
+  {id:'pasos15k',n:'Día de 15.000 pasos',ic:'pasos',c:['--gold','--r1'],g:15000,v:t=>t.maxp,u:'pasos',d:'15.000 pasos en un día.'},
+  {id:'pasos7',n:'Semana de pasos',ic:'pasos',c:['--r1','--r2'],g:7,v:t=>t.pasosRun,u:'días',d:'Llega a tu objetivo de pasos 7 días seguidos.'},
+  {id:'pesadas4',n:'Cuatro viernes',ic:'bascula',c:['--flame','--r3'],g:4,v:t=>t.npes,u:'',d:'Pésate 4 veces. La constancia en la báscula es lo que hace fiable la tendencia.'},
+  {id:'menos5',n:'−5 kg',ic:'bascula',c:['--r2','--ok'],g:5,v:t=>Math.max(0,t.lost),u:'kg',d:'5 kg menos desde la primera pesada.'},
+  {id:'menos10',n:'−10 kg',ic:'bascula',c:['--gold','--ok'],g:10,v:t=>Math.max(0,t.lost),u:'kg',d:'10 kg menos desde la primera pesada.'},
+  {id:'decena',n:t=>'Bajo los '+decena(t)+' kg',ic:'diana',c:['--gold','--r2'],g:1,v:t=>t.wMin&&t.wMin<decena(t)?1:0,u:'',d:t=>'Baja de '+decena(t)+' kg en la báscula.'},
+  {id:'obj10',n:'Objetivo −10 %',ic:'trophy',c:['--gold','--ok'],g:1,v:t=>t.npes>1&&t.lost>=t.w0*.1?1:0,u:'',d:'Pierde el 10 % de tu peso inicial.'},
+  {id:'imc30',n:'IMC por debajo de 30',ic:'diana',c:['--r2','--r3'],g:1,v:t=>t.imcMin&&t.imcMin<30?1:0,u:'',d:'Baja tu IMC de 30, según tu báscula.'},
+  {id:'grasa2',n:'−2 % de grasa',ic:'bascula',c:['--flame','--ok'],g:2,v:t=>Math.max(0,t.g0-t.gMin),u:'%',d:'Baja 2 puntos de grasa corporal (según la báscula).'},
+  {id:'cintura5',n:'−5 cm de cintura',ic:'cinta',c:['--r1','--ok'],g:5,v:t=>Math.max(0,t.c0-t.cMin),u:'cm',d:'5 cm menos de cintura. Es la medida que mejor refleja la grasa abdominal.'},
+  {id:'com1',n:'Primer día apuntado',ic:'comida',c:['--ok','--r2'],g:1,v:t=>t.comN,u:'',d:'Apunta lo que comes un día.'},
+  {id:'com7',n:'Semana apuntada',ic:'comida',c:['--ok','--r3'],g:7,v:t=>t.comRun,u:'días',d:'Apunta lo que comes 7 días seguidos.'},
+  {id:'com30',n:'30 días apuntando',ic:'comida',c:['--gold','--ok'],g:30,v:t=>t.comN,u:'días',d:'30 días con la comida apuntada.'},
+  {id:'prot',n:'Proteína a tope',ic:'fuerza',c:['--c-gym','--r1'],g:1,v:t=>t.prot,u:'',d:'Llega a tu objetivo de proteína un día.'},
+  {id:'prot10',n:'10 días de proteína',ic:'fuerza',c:['--gold','--c-gym'],g:10,v:t=>t.prot,u:'días',d:'Llega a tu objetivo de proteína 10 días.'},
+  {id:'diana5',n:'En el blanco',ic:'diana',c:['--ok','--gold'],g:5,v:t=>t.diana,u:'días',d:'5 días completos cerca de tu objetivo de calorías (±10 %).'},
+  {id:'agua1',n:'Bien hidratado',ic:'gota',c:['--r3','--c-gym'],g:1,v:t=>t.agua,u:'',d:'Llega a tus vasos de agua un día.'},
+  {id:'agua7',n:'Semana hidratada',ic:'gota',c:['--r3','--gold'],g:7,v:t=>t.aguaRun,u:'días',d:'Llega a tus vasos de agua 7 días seguidos.'},
+  {id:'fv1',n:'Cinco al día',ic:'hoja',c:['--ok','--r2'],g:1,v:t=>t.fv,u:'',d:'Come 400 g de fruta y verdura en un día, lo que recomienda la OMS.'},
+  {id:'fv7',n:'Huerta completa',ic:'hoja',c:['--gold','--ok'],g:7,v:t=>t.fv,u:'días',d:'7 días con 400 g de fruta y verdura.'},
+  {id:'anonuevo',n:'Año nuevo, yo nuevo',ic:'regalo',c:['--gold','--r1'],g:1,v:t=>t.anonuevo,u:'',sec:1,d:'Entrena el 1 de enero.'},
+  {id:'navidad',n:'Turrón quemado',ic:'regalo',c:['--r1','--ok'],g:1,v:t=>t.navidad,u:'',sec:1,d:'Entrena el día de Navidad.'},
+  {id:'doble',n:'Doble ración',ic:'rayo',c:['--flame','--c-gym'],g:1,v:t=>t.doble,u:'',sec:1,d:'Entrena fuerza y, además, haz 10.000 pasos el mismo día.'}
+];
+const MDESC={primero:'Completa tu primer día.',racha3:'3 días seguidos de racha.',racha7:'7 días seguidos de racha.',racha14:'14 días seguidos de racha.',racha30:'30 días seguidos de racha.',perfecta:'Cumple los 7 días de una semana.',oms:'150 minutos de ejercicio en una semana, lo que recomienda la OMS.',fuerza5:'5 entrenos de fuerza completos.',fuerza20:'20 entrenos de fuerza completos.',km25:'25 km caminados en total.',km100:'100 km caminados en total.',pasos10k:'10.000 pasos en un día.',pesada:'Apunta tu primera pesada.',menos2:'2 kg menos desde la primera pesada.',obj5:'Pierde el 5 % de tu peso inicial.',semana1:'Cumple tu primera semana.',semanas4:'4 semanas seguidas cumpliendo.',semanas12:'12 semanas seguidas cumpliendo.',semanas26:'26 semanas seguidas cumpliendo.',gym5:'5 días de gimnasio.',gym20:'20 días de gimnasio.',gym50:'50 días de gimnasio.',record1:'Supera tu mejor peso en un ejercicio.',record10:'Bate 10 récords de peso.'};
+// Las medallas que tienen sentido con tu plan, por grupos
+function medalGroups(t){
+  const p=pf(), A=MEDALS.concat(MED_W,MED_G,MED2), M=id=>A.find(m=>m.id===id), G=[];
+  const C=[M('primero')];
+  if(p.racha==='semanal')C.push(...MED_W); else C.push(...['racha3','racha7','racha14','racha30','racha60','racha100','perfecta','perfectas4'].map(M));
+  C.push(M('oms'),M('oms4'),M('lunes'),M('todoterreno'),M('vuelta'));
+  G.push(['Constancia',C]);
+  const F=[];
+  if(p.modo!=='gym')F.push(M('fuerza5'),M('fuerza20'),M('fuerza50'),M('calent10'),M('flex10'),M('flex20'),M('plancha60'));
+  F.push(M('series100'),M('series500'));
+  if(p.modo!=='casa')F.push(...MED_G,M('tonelada'),M('ton10'));
+  else if(t.gym)F.push(M('gymvisita'),M('tonelada'),M('record1'));
+  G.push(['Fuerza',F]);
+  if(p.pasos)G.push(['Caminar',['km25','km42','km100','km250','ruta10','aguante','monte','pasos10k','pasos15k','pasos7'].map(M)]);
+  if(p.bascula){const B=['pesada','pesadas4','menos2','menos5','menos10','obj5','obj10'].map(M);
+    if(t.w0>=60)B.push(M('decena')); if(t.imc0>=30)B.push(M('imc30')); if(t.g0)B.push(M('grasa2')); if(t.c0)B.push(M('cintura5'));
+    G.push(['Báscula',B])}
+  if(p.comida)G.push(['Comida',['com1','com7','com30','prot','prot10','diana5','agua1','agua7','fv1','fv7'].map(M)]);
+  G.push(['Secretas',['anonuevo','navidad','doble'].map(M)]);
+  return G.map(([n,L])=>[n,L.filter(Boolean).map(m=>{const v=m.v(t);return {...m,n:typeof m.n==='function'?m.n(t):m.n,d:typeof m.d==='function'?m.d(t):(m.d||MDESC[m.id]||''),val:v,on:v>=m.g}})]);
 }
-function medalState(){const t=totals();return medalsList().map(m=>{const v=m.v(t);return {...m,val:v,on:v>=m.g}})}
+function medalsList(){return medalGroups(totals()).flatMap(g=>g[1])}
+function medalState(){return medalsList()}
 let seenMedals=LS.get('me.logros',null), newMedals=new Set();
 function checkMedals(){
   const ms=medalState(), on=ms.filter(m=>m.on).map(m=>m.id);
   if(seenMedals===null){seenMedals=on;LS.set('me.logros',seenMedals);return}
-  ms.filter(m=>m.on&&!seenMedals.includes(m.id)).forEach(m=>{newMedals.add(m.id);const mf=LS.get('me.logrosF',{});mf[m.id]=TODAY;LS.set('me.logrosF',mf);toast(IC[m.ic],'Nueva medalla: '+m.n,'La tienes en Logros.')});
+  const nw=ms.filter(m=>m.on&&!seenMedals.includes(m.id)), mf=LS.get('me.logrosF',{});
+  // Si llegan muchas de golpe (al actualizar la app), no se fechan: no son de hoy y así no llenan lo que ven tus amigos
+  nw.forEach(m=>{newMedals.add(m.id);if(nw.length<=2)mf[m.id]=TODAY}); if(nw.length)LS.set('me.logrosF',mf);
+  if(nw.length>2)toast(IC.trophy,'¡'+nw.length+' medallas nuevas!',nw.slice(0,3).map(m=>m.n).join(', ')+(nw.length>3?'…':'')+'. Míralas en Logros.');
+  else nw.forEach(m=>toast(IC[m.ic],'Nueva medalla: '+m.n,'La tienes en Logros.'));
   if(on.some(id=>!seenMedals.includes(id))){seenMedals=Array.from(new Set(seenMedals.concat(on)));LS.set('me.logros',seenMedals)}
 }
 function retos(){
@@ -2256,9 +2391,15 @@ function renderLogros(){
   $('#c-retos').innerHTML=`<div class="row-h"><h2>Retos de la semana</h2><span class="rel">${okN}/${rs.length} superados</span></div>
   <div class="retos">${rs.map(r=>{const ok=r.v>=r.g;return `<div class="reto${ok?' ok':''}"><span class="ic" style="color:var(${r.c});background:color-mix(in srgb,var(${r.c}) 15%,transparent)">${ok?IC.check:IC[r.ic]}</span><div class="body"><div class="t">${r.t}<span class="tab">${ok?'¡Hecho!':(r.f?fn(r.v):r.v)+' / '+r.g+(r.u?' '+r.u:'')}</span></div><div class="gbar"><i style="width:${Math.min(100,r.v/r.g*100)}%;background:var(${r.c})"></i></div></div></div>`}).join('')}</div>
   <p class="rel" style="margin:0">Se renuevan cada lunes.</p>`;
-  const ms=medalState(), on=ms.filter(m=>m.on).length;
+  const MG=medalGroups(totals()), ms=MG.flatMap(g=>g[1]), on=ms.filter(m=>m.on).length, mf=LS.get('me.logrosF',{});
+  const fv=(m,v)=>m.u==='km'||m.u==='kg'&&m.g<100||m.u==='%'||m.u==='cm'?fn(Math.round(v*10)/10):fmtN(Math.round(v));
+  const st=m=>m.c?`--mc1:var(${m.c[0]});--mc2:var(${m.c[1]})`:'';
+  const nx=ms.filter(m=>!m.on&&!m.sec&&m.g>1&&m.val>0).sort((a,b)=>b.val/b.g-a.val/a.g)[0];
+  const card=m=>{const hid=m.sec&&!m.on;
+    return `<button type="button" class="medal${m.on?' on':''}${m.sec?' sec':''}${newMedals.has(m.id)?' new':''}" style="${st(m)}" data-medal="${m.id}"><span class="m">${hid?IC.regalo:IC[m.ic]}</span><span class="n">${hid?'Secreta':esc(m.n)}</span><span class="p tab">${m.on?(mf[m.id]?sdate(mf[m.id]).slice(2):'Conseguida'):hid?'¿Cuál será?':m.g>1?fv(m,m.val)+' / '+fv(m,m.g)+(m.u?' '+m.u:''):'Pendiente'}</span></button>`};
   $('#c-medallas').innerHTML=`<div class="row-h"><h2>Medallas</h2><span class="rel">${on}/${ms.length}</span></div>
-  <div class="medals">${ms.map(m=>`<div class="medal${m.on?' on':''}${newMedals.has(m.id)?' new':''}" style="${m.c?`--mc1:var(${m.c[0]});--mc2:var(${m.c[1]})`:''}"><span class="m">${IC[m.ic]}</span><span class="n">${m.n}</span><span class="p tab">${m.on?'Conseguida':m.g>1?(m.u==='km'?fn(m.val):fmtN(m.val))+' / '+fmtN(m.g)+(m.u?' '+m.u:''):'Pendiente'}</span></div>`).join('')}</div>`;
+  ${nx?`<div class="mnext" style="${st(nx)}"><span class="m">${IC[nx.ic]}</span><div><small>La tienes cerca</small><b>${esc(nx.n)}</b><small>${fv(nx,nx.val)} de ${fv(nx,nx.g)}${nx.u?' '+nx.u:''} · ${esc(nx.d)}</small><div class="gbar"><i style="width:${Math.round(nx.val/nx.g*100)}%"></i></div></div></div>`:''}
+  ${MG.filter(g=>g[1].length).map(([n,L])=>`<div class="mgrp"><h3><span>${n}</span><span class="tab">${L.filter(m=>m.on).length}/${L.length}</span></h3><div class="medals">${L.map(card).join('')}</div></div>`).join('')}`;
   newMedals.clear();
 }
 
@@ -2532,6 +2673,7 @@ document.addEventListener('click',e=>{
   if(st){const i=$('#g-reps');if(i){const v=Math.max(0,num(i.value)+(st.dataset.step==='+'?1:-1));i.value=v||'';cur.reps[i.dataset.reps]=i.value;queue()}return}
   if(T.closest('[data-guia]')){openGuia();return}
   if(T.closest('[data-conectar]')){conectar();return}
+  const mdx=T.closest('[data-medal]'); if(mdx){const m=medalsList().find(x=>x.id===mdx.dataset.medal);if(m){const hid=m.sec&&!m.on;toast(hid?IC.regalo:IC[m.ic],hid?'Medalla secreta':m.n,hid?'Sigue entrenando y algún día aparecerá…':m.d+(m.on?' ¡Conseguida!':''))}return}
   const cdy=T.closest('[data-cday]'); if(cdy){const k=addDays(sel,+cdy.dataset.cday);if(k<=TODAY){go(k);renderComidaTab(true)}return}
   const agu=T.closest('[data-agua]'); if(agu){const n=+agu.dataset.agua;cur.agua=num(cur.agua)===n?n-1:n;queue();buzz(10);renderComidaTab();return}
   const idm=T.closest('[data-idea-m]'); if(idm){ideaM=idm.dataset.ideaM;renderComidaTab();return}
